@@ -1,14 +1,11 @@
 import React, { useState }  from 'react';
 import ReactPlayer from 'react-player';
-import logo from './logo.svg';
 import './App.css';
 import NoteTaking from './note-taking';
 
-
-
 function App() {
   const [isPaused, setPaused] = useState<Boolean>(false);
-  // const setPausedTrue = () => setPaused(true)
+  //const setPausedTrue = () => setPaused(true)
   const setPausedFalse = () => setPaused(false)
 
   function noteTaking(): any {
@@ -20,7 +17,7 @@ function App() {
     <div>
       <ReactPlayer
         className='player'
-        url='videos/Full_Surgeon.mp4'
+        url='videos/sample.mp4'
         width='80%'
         height='80%'
         controls={true}

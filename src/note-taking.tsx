@@ -1,32 +1,37 @@
-import React, {useState, useRef} from 'react';
-import JoditEditor from "jodit-react";
+import React, { useState, useRef } from 'react';
+import { Editor } from '@tinymce/tinymce-react';
 
 type noteTakingProps = {
-    name: string;
-    timestamp: string;
+  name: string;
+  timestamp: string;
 };
 
-function NoteTaking({ name, timestamp }: noteTakingProps) {
+const NoteTaking = ({ name, timestamp }: noteTakingProps) => {
 
-	const editor = useRef(null)
-	const [content, setContent] = useState('')
-	
-	const config = {
-		readonly: false // all options from https://xdsoft.net/jodit/doc/
-    }
+
+  return (
+
+    <Editor
+      apiKey="ooj1q470wqf1gic73zgpx0jtyqx19mvyj225lgatvd2cwbbh"
+
+      init={{
+        height: 300,
+        placeholder: 'type your notes!',
+        menubar: false,
+        statusbar: false,
+        plugins: [
+          'advlist autolink lists link image charmap print preview anchor',
+          'searchreplace visualblocks code fullscreen save',
+          'insertdatetime media table paste code help wordcount'
+        ],
+        
+        branding: false
+        
+      }}
+      
+    />
     
-    return (
-        <>
-            <JoditEditor
-            	ref={editor}
-                value={content}
-                config={config}
-                tabIndex={1} // tabIndex of textarea
-                onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                onChange={newContent => {}}
-            />
-        </>
-    );
+  );
 }
 
 
