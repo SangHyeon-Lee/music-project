@@ -24,10 +24,10 @@ const Login: React.FC<LoginProps> = props => {
 
     const handleChange = (e:any) => {
 
-        if (e.target.name =="email"){
+        if (e.target.name ==="email"){
             setEmail(e.target.value);
         }
-        if (e.target.name =="password"){
+        if (e.target.name ==="password"){
             setPassword(e.target.value);
         }    
     }

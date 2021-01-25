@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import firebase from './firebase'
 var db = firebase.firestore();
 interface noteCollectionProps {}

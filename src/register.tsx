@@ -25,13 +25,13 @@ const Register: React.FC<RegisterProps> = props => {
     const [error,setError] = useState<any>(null);
 
     const handleChange = (e:any) => {
-        if (e.target.name =="username"){
+        if (e.target.name ==="username"){
             setUsername(e.target.value);
         }
-        if (e.target.name =="email"){
+        if (e.target.name ==="email"){
             setEmail(e.target.value);
         }
-        if (e.target.name =="password"){
+        if (e.target.name ==="password"){
             setPassword(e.target.value);
         }
     }

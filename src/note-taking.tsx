@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import { Editor, EditorState } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "./note-taking.css";
