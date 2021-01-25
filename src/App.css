@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+.player {
+  margin: auto;
+  margin-top: 50px;
+}
+
+.notetaking {
+  margin: auto;
+  margin-top: 5px;
+}
