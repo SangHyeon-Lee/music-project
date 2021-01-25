@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactPlayer from "react-player";
 import "./App.css";
 import NoteTaking from "./note-taking";
@@ -45,7 +45,7 @@ class App extends React.Component {
       <div>
         <ReactPlayer
           className="player"
-          url="videos/sample.mp4"
+          url="videos/Full_Surgeon.mp4"
           width="80%"
           height="80%"
           controls={true}

@@ -1,10 +1,10 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import { Editor, EditorState } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "./note-taking.css";
 import { Button } from "antd";
-import { firestore } from "./firebase";
-
+import firebase from './firebase'
+var db = firebase.firestore();
 interface noteTakingProps {
   userId: string;
   timestamp: number;
@@ -22,7 +22,7 @@ class NoteTaking extends React.Component<noteTakingProps, any> {
     this.setState({ editorState: e });
   }
   submitNote(): any {
-    const noteCollection = firestore
+    const noteCollection = db
       .collection("videos")
       .doc("testvideo1")
       .collection("note");

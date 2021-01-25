@@ -1,13 +1,13 @@
-import React, { useState, useRef } from "react";
-import { firestore } from "./firebase";
-
+import React from "react";
+import firebase from './firebase'
+var db = firebase.firestore();
 interface noteCollectionProps {}
 
 class NoteCollection extends React.Component<noteCollectionProps, any> {
   constructor(props: noteCollectionProps) {
     super(props);
 
-    this.ref = firestore
+    this.ref = db
       .collection("videos")
       .doc("testvideo1")
       .collection("note")
