@@ -1,6 +1,8 @@
 import firebase from 'firebase'
 require('firebase/auth')
-const config = {
+import "firebase/firestore"
+
+const firebaseConfig = {
     apiKey: "AIzaSyDUEzme_wp01pss9CcD8TEmvrNkbkbEb1Y",
     authDomain: "kixlab-music.firebaseapp.com",
     projectId: "kixlab-music",
@@ -8,7 +10,7 @@ const config = {
     messagingSenderId: "1022438807541",
     appId: "1:1022438807541:web:3d32f559ac72c1f710b2bc"
 };
-firebase.initializeApp(config);
+firebase.initializeApp(firebaseConfig);
 export const provider = new firebase.auth.GoogleAuthProvider();
 export const auth = firebase.auth();
 export default firebase;
