@@ -3,7 +3,7 @@ import firebase from './firebase'
 import { Link } from 'react-router-dom';
 import './Auth.css';
 
-var db = firebase.firestore();
+// var db = firebase.firestore();
 
 const styles = {
 	fixSize: {
