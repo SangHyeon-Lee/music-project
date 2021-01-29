@@ -1,5 +1,7 @@
 import React from "react";
 import firebase from './firebase'
+import './note-collection.css'
+
 var db = firebase.firestore();
 interface noteCollectionProps {}
 
@@ -25,17 +27,20 @@ class NoteCollection extends React.Component<noteCollectionProps, any> {
     const min_val: number = Math.floor(videoTime_num / 60);
     const sec_val: number = videoTime_num % 60;
     return (
-      <div>
-        <b>
-          {min_val}:{sec_val} &nbsp;&nbsp; {note.userId}
-        </b>
-        <br />
-        {note.category}
-        <br />
-        {note.content}
-        <br />
-        &nbsp;
-      </div>
+      <>
+        <div className='notecategory'>
+          <div>{note.category}</div>
+          <div>{min_val}:{sec_val}</div>
+        </div>
+        <div className='singlenote'>
+          <b>
+             &nbsp;&nbsp; {note.userId}
+          </b>
+          <br />
+          {note.content}
+          &nbsp;
+        </div>
+      </>
     );
   }
 
@@ -55,7 +60,7 @@ class NoteCollection extends React.Component<noteCollectionProps, any> {
 
   render() {
     return (
-      <div>
+      <div className="collection">
         {this.state.collection.map((note: any, index: any) => (
           <this.Notecomponent note={note} key={index} />
         ))}
