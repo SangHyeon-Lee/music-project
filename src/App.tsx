@@ -82,16 +82,12 @@ const App: React.FC<AppProps> = (props) => {
             onProgress={onProgress}
             playbackRate={playbackRate}
           />
-        </div>
-        <NoteCollection />
-        <div>
-          {isPaused && (
-            <NoteTaking userId="TestUser" timestamp={secondsElapsed} />
-          )}
-        </div>
-      </div>
-
-      <div>
+          <div className='notetaking-container'>
+            {isPaused && (
+              <NoteTaking userId="TestUser" timestamp={secondsElapsed} />
+            )}
+          </div>
+          <div>
         {isPaused && (
           <div>
             <Button
@@ -167,6 +163,9 @@ const App: React.FC<AppProps> = (props) => {
             )}
           </div>
         )}
+      </div>
+        </div>
+        <NoteCollection />
       </div>
     </div>
   );
