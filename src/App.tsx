@@ -4,6 +4,7 @@ import "./App.css";
 import NoteTaking from "./note-taking";
 import NoteCollection from "./note-collection";
 import { Slider } from 'antd';
+import Video from "./Video";
 
 const marks = {
   0.5: 'x0.5',
@@ -69,6 +70,7 @@ const App: React.FC<AppProps> = props => {
         onProgress={onProgress}
         playbackRate={playbackRate}
       />
+      <Video src = "videos/Full_Surgeon.mp4" />
       <NoteCollection />
       <div>
         {isPaused && (

@@ -1,0 +1,6 @@
+.default {
+    position: relative;
+}
+.default video {
+    width: 100%;
+}
