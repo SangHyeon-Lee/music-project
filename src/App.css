@@ -46,3 +46,8 @@
   margin: auto;
   margin-top: 5px;
 }
+
+.canvasdraw {
+  width: 320px;
+  height: 200px;
+}

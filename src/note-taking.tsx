@@ -26,7 +26,7 @@ class NoteTaking extends React.Component<noteTakingProps, any> {
       .collection("videos")
       .doc("testvideo1")
       .collection("note");
-    noteCollection.doc(this.props.timestamp.toString()).set({
+    noteCollection.add({
       category: "Useful",
       content: this.state.editorState
         .getCurrentContent()
@@ -44,6 +44,7 @@ class NoteTaking extends React.Component<noteTakingProps, any> {
     return (
       <div className="draft-root">
         <Editor
+          placeholder = "type your note here!"
           editorState={this.state.editorState}
           onChange={(e) => this.handleChange(e)}
         />
