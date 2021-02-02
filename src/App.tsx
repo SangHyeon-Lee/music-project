@@ -14,8 +14,7 @@ const marks = {
   1: "x1",
   1.5: "x1.5",
   2: "x2",
-  4: "x4",
-  10: "x10",
+  4: "x4"
 };
 
 interface AppProps {
@@ -66,7 +65,7 @@ const App: React.FC<AppProps> = (props) => {
               setPlayer(player);
             }}
             className="player"
-            url="videos/sample.mp4"
+            url="videos/Full_Surgeon.mp4"
             width="93%"
             height="93"
             controls={true}
