@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState  } from "react";
 import ReactPlayer from "react-player";
 import "./App.css";
 import NoteTaking from "./note-taking";
@@ -55,20 +55,22 @@ const App: React.FC<AppProps> = props => {
 
 
   return (
-    <div>
-      <Slider marks={marks} step={null} defaultValue={1} max={4} onChange={(value:any) => setPlaybackRate(value)}/>
-      <ReactPlayer
-        className="player"
-        url="videos/Full_Surgeon.mp4"
-        width="80%"
-        height="80%"
-        controls={true}
-        onPause={noteTaking}
-        onPlay={setPausedFalse}
-        onDuration={onDuration}
-        onProgress={onProgress}
-        playbackRate={playbackRate}
-      />
+    <div className="appbody">
+      <div>
+        <Slider className="slider" marks={marks} step={null} defaultValue={1} max={4} onChange={(value:any) => setPlaybackRate(value)}/>
+        <ReactPlayer
+          className="player"
+          url="videos/Full_Surgeon.mp4"
+          width="93%"
+          height="93"
+          controls={true}
+          onPause={noteTaking}
+          onPlay={setPausedFalse}
+          onDuration={onDuration}
+          onProgress={onProgress}
+          playbackRate={playbackRate}
+        />
+      </div>
       <NoteCollection />
       <div>
         {isPaused && (
