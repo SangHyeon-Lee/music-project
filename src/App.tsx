@@ -8,6 +8,7 @@ import { PictureOutlined } from "@ant-design/icons";
 import captureVideoFrame from "capture-video-frame";
 import { Link } from "react-router-dom";
 import CanvasDraw from "react-canvas-draw";
+import { CompactPicker } from "react-color";
 
 const marks = {
   0.5: "x0.5",
@@ -32,6 +33,8 @@ const App: React.FC<AppProps> = (props) => {
   const [isDraw, setDraw] = useState<boolean>(false);
   const [canvas, setCanvas] = useState<any>(null);
   const [savedImage, setsavedImage] = useState<any>(null);
+  const [showColorPicker, setColorPicker] = useState<boolean>(false);
+  const [editorColor, seteditorColor] = useState<any>("#000000");
 
   const onDuration = (duration: any) => {
     setDuration(duration);
@@ -48,6 +51,18 @@ const App: React.FC<AppProps> = (props) => {
     if (tempsecondsElapsed !== secondsElapsed) {
       setSecondsElapsed(tempsecondsElapsed);
     }
+  };
+
+  const popover = {
+    position: "absolute",
+    zIndex: "2",
+  };
+  const cover = {
+    position: "fixed",
+    top: "0px",
+    right: "0px",
+    bottom: "0px",
+    left: "0px",
   };
 
   return (
@@ -77,7 +92,7 @@ const App: React.FC<AppProps> = (props) => {
               setIsPaused(false);
               setImage(null);
               setDraw(false);
-              setsavedImage(null);
+    
             }}
             onDuration={onDuration}
             onProgress={onProgress}
@@ -87,7 +102,7 @@ const App: React.FC<AppProps> = (props) => {
         <NoteCollection />
         <div>
           {isPaused && (
-            <NoteTaking userId="TestUser" timestamp={secondsElapsed} />
+            <NoteTaking userId="TestUser" timestamp={secondsElapsed} screenshot={image}/>
           )}
         </div>
       </div>
@@ -102,7 +117,8 @@ const App: React.FC<AppProps> = (props) => {
               onClick={() => {
                 var frame = captureVideoFrame(
                   player.getInternalPlayer(),
-                  "png"
+                  "png",
+                  1
                 );
                 console.log("captured frame", frame);
                 setImage(frame.dataUri);
@@ -117,10 +133,8 @@ const App: React.FC<AppProps> = (props) => {
 
             <br />
             <br />
-            {image && (
-              <img id="capturedImage" src={image} width="320px" alt="" />
-            )}
-            {isDraw && (
+            {image && !isDraw && <img id="capturedImage" src={image} alt="" />}
+            {isDraw && !savedImage && (
               <div>
                 <Button
                   onClick={() => {
@@ -131,7 +145,8 @@ const App: React.FC<AppProps> = (props) => {
                       0,
                       0
                     ); // add drawing
-                    setsavedImage(baseCanvas.toDataURL());
+                    setDraw(false);
+                    setImage(baseCanvas.toDataURL());
                   }}
                 >
                   Save
@@ -150,22 +165,44 @@ const App: React.FC<AppProps> = (props) => {
                 >
                   Undo
                 </Button>
+                <Button
+                  onClick={() => {
+                    setColorPicker(!showColorPicker);
+                  }}
+                >
+                  Pick Color
+                </Button>
+                {showColorPicker ? (
+                  <div>
+                    <div
+                      onClick={() => {
+                        setColorPicker(false);
+                      }}
+                    />
+                    <CompactPicker
+                      color={editorColor}
+                      onChange={(color) => {
+                        seteditorColor(color.hex);
+                      }}
+                    />
+                  </div>
+                ) : null}
                 <div id="canvasdraw" className="canvasdraw">
                   <CanvasDraw
                     ref={(canvas: any) => {
                       setCanvas(canvas);
                     }}
                     imgSrc={image}
-                    canvasWidth="320px"
-                    canvasHeight="180px"
-                    hideInterface
-                    brushColor="#000000"
+                    canvasWidth="640px"
+                    canvasHeight="360px"
+                    lazyRadius="0"
+                    brushColor={editorColor}
                     brushRadius="1"
                   />
                 </div>
-                {savedImage && <img src={savedImage} alt="" />}
               </div>
             )}
+            
           </div>
         )}
       </div>
