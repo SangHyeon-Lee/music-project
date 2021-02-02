@@ -57,6 +57,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     if (videoElement) {
       const playingTime = videoElement.duration * (percent / 100);
       setCurrentTime(playingTime);
+      videoElement.currentTime = currentTime;
     }
     console.log("onProgressChange",currentTime);
   };
@@ -81,11 +82,14 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     }
   };
 
-  // const setControlInvisible = () => {
-  //   if (showControl) {
-  //     setShowControl(false);
-  //   }
-  // };
+  //재생중일때만 나가면 control바 안보이고
+  //들어오면 컨드롤바 보이게
+
+  const setControlInvisible = () => {
+    if (showControl) {
+      setShowControl(false);
+    }
+  };
 
   //added (trying)
   const noteTaking = () => {
@@ -109,7 +113,9 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   //till here
   
   return (
-    <div className={styles.default}>
+    <div className={styles.default}
+      onMouseEnter={setControlVisible}
+      onMouseLeave={setControlInvisible}>
       <Slider marks={marks} step={null} defaultValue={1} max={4} onChange={(value:any) => setPlaybackRate(value)}/>
       <video
         id="video"
@@ -118,8 +124,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         muted={true}
         ref={ref}
         playsInline={true}
-        onMouseOver={setControlVisible}
-        // onMouseOut={setControlInvisible}
         onPause={noteTaking}
         onPlay={setPausedFalse}
         // currentTime={currentTime}
