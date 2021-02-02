@@ -75,6 +75,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     }
   };
 
+  // 재생중일때만 나가면 control바 안보이고 들어오면 컨드롤바 보이게
   // control bar visible 관련 함수
   const setControlVisible = () => {
     if (!showControl) {
@@ -82,11 +83,8 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     }
   };
 
-  //재생중일때만 나가면 control바 안보이고
-  //들어오면 컨드롤바 보이게
-
   const setControlInvisible = () => {
-    if (showControl) {
+    if (showControl && !isPaused) {
       setShowControl(false);
     }
   };

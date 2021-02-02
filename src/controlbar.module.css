@@ -9,7 +9,7 @@
   z-index: 100;
   background-image: linear-gradient(to bottom, rgba(34, 34, 34, 0), #222);
   opacity: 0;
-  transition: opacity 2s;
+  transition: opacity 1s;
   pointer-events: none;
   padding: 0px 10px;
   box-sizing: border-box;
@@ -47,7 +47,7 @@
   border-radius: 50%;
   background-color: white;
   opacity: 0;
-  transition: opacity 2s;
+  transition: opacity 1s;
   pointer-events: none;
 }
 .playWrapper .playBg {
@@ -68,5 +68,5 @@
 .fadeIn {
   opacity: 1 !important;
   pointer-events: visible !important;
-  transition: opacity 2s;
+  transition: opacity 1s;
 }
