@@ -20,13 +20,13 @@
  }
 }
 .controlBar .progressBar {
-  margin-left: 4px;
+  margin-left: 20px;
   display: inline-block;
 }
 .controlBar .volume {
   width: 20px;
   height: 20px;
-  margin-left: 4px;
+  margin-left: 20px;
 }
 .controlBar .text {
   width: 35px;
@@ -34,7 +34,7 @@
   font-size: 14px;
 }
 .controlBar .endTime {
-  margin-left: 4px;
+  margin-left: 20px;
 }
 .playWrapper {
   position: absolute;
