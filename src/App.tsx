@@ -52,35 +52,45 @@ const App: React.FC<AppProps> = (props) => {
 
   return (
     <div>
-      <Slider
-        marks={marks}
-        step={null}
-        defaultValue={1}
-        max={10}
-        onChange={(value: any) => setPlaybackRate(value)}
-      />
-      <ReactPlayer
-        ref={(player) => {
-          setPlayer(player);
-        }}
-        className="player"
-        url="videos/sample.mp4"
-        width="80%"
-        height="80%"
-        controls={true}
-        onPause={() => {
-          setIsPaused(true);
-        }}
-        onPlay={() => {
-          setIsPaused(false);
-          setImage(null);
-          setDraw(false);
-          setsavedImage(null);
-        }}
-        onDuration={onDuration}
-        onProgress={onProgress}
-        playbackRate={playbackRate}
-      />
+      <div className="appbody">
+        <div>
+          <Slider
+            marks={marks}
+            step={null}
+            defaultValue={1}
+            max={4}
+            onChange={(value: any) => setPlaybackRate(value)}
+          />
+          <ReactPlayer
+            ref={(player) => {
+              setPlayer(player);
+            }}
+            className="player"
+            url="videos/sample.mp4"
+            width="93%"
+            height="93"
+            controls={true}
+            onPause={() => {
+              setIsPaused(true);
+            }}
+            onPlay={() => {
+              setIsPaused(false);
+              setImage(null);
+              setDraw(false);
+              setsavedImage(null);
+            }}
+            onDuration={onDuration}
+            onProgress={onProgress}
+            playbackRate={playbackRate}
+          />
+        </div>
+        <NoteCollection />
+        <div>
+          {isPaused && (
+            <NoteTaking userId="TestUser" timestamp={secondsElapsed} />
+          )}
+        </div>
+      </div>
 
       <div>
         {isPaused && (
@@ -156,14 +166,9 @@ const App: React.FC<AppProps> = (props) => {
                 {savedImage && <img src={savedImage} alt="" />}
               </div>
             )}
-            <br />
-            <br />
-
-            <NoteTaking userId="TestUser" timestamp={secondsElapsed}/>
           </div>
         )}
       </div>
-      <NoteCollection />
     </div>
   );
 };
