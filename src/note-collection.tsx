@@ -40,6 +40,7 @@ class NoteCollection extends React.Component<noteCollectionProps, any> {
           <br />
           {note.content}
           &nbsp;
+          <img src={note.downloadURL} alt="" />
         </div>
       </>
     );
