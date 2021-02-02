@@ -1,5 +1,6 @@
 import React from "react";
 import firebase from './firebase'
+import { Divider } from 'antd';
 import './note-collection.css'
 
 var db = firebase.firestore();
@@ -62,7 +63,10 @@ class NoteCollection extends React.Component<noteCollectionProps, any> {
     return (
       <div className="collection">
         {this.state.collection.map((note: any, index: any) => (
+          <div>
           <this.Notecomponent note={note} key={index} />
+          <Divider />
+          </div>
         ))}
       </div>
     );

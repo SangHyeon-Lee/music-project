@@ -5,6 +5,7 @@ import App from './App';
 import Login from './login';
 import Register from './register';
 import { auth } from './firebase';
+import ScreenshotEditor from './screenshot-editor';
 
 interface AppRouterProps {
     history?: any;
@@ -28,15 +29,17 @@ const AppRouter: React.FC<AppRouterProps> = props => {
     return (
         <HashRouter>
             {user &&
-                <>
-                    <App></App>
-                </>
+                <Switch>
+                    <Route path="/" exact component={App}/>
+                    <Route path="/screenshot_editor" exact component={ScreenshotEditor} />
+                </Switch>
             }
             {!user &&
                 <Switch>
                     <Route path="/login" exact component={Login} />
                     <Route path="/register" exact component={Register} />
                     <Route path="/" exact component={Login} />
+                    
                 </Switch>
             }
         </HashRouter >

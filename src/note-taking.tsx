@@ -26,7 +26,7 @@ class NoteTaking extends React.Component<noteTakingProps, any> {
       .collection("videos")
       .doc("testvideo1")
       .collection("note");
-    noteCollection.doc(this.props.timestamp.toString()).set({
+    noteCollection.add({
       category: "Useful",
       content: this.state.editorState
         .getCurrentContent()
