@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import clsx from 'clsx';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ReactPlayer from "react-player";
 import "./App.css";
 import NoteTaking from "./note-taking";
@@ -18,6 +20,70 @@ const marks = {
   2: "x2",
   4: "x4"
 };
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  appBar: {
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginRight: drawerWidth,
+  },
+  title: {
+    flexGrow: 1,
+  },
+  open: {
+    position: "absolute",
+    right: '0px',
+    margin: 'auto',
+  },
+  hide: {
+    display: 'none',
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-start',
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginRight: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginRight: 0,
+  },
+}));
+
 
 interface AppProps {
   history?: any;
@@ -34,6 +100,7 @@ const App: React.FC<AppProps> = (props) => {
   const [canvas, setCanvas] = useState<any>(null);
   const [savedImage, setsavedImage] = useState<any>(null);
   const [open, setOpen] = React.useState(false);
+  const classes = useStyles();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -62,7 +129,11 @@ const App: React.FC<AppProps> = (props) => {
   return (
     <div>
       <div className="appbody">
-        <div>
+        <div
+          className={clsx(classes.content, {
+            [classes.contentShift]: open,
+          })}
+        >
           <Slider
             marks={marks}
             step={null}
@@ -180,18 +251,18 @@ const App: React.FC<AppProps> = (props) => {
             aria-label="open drawer"
             edge="end"
             onClick={handleDrawerOpen}
-            // className={clsx(open && classes.hide)}
+            className={clsx(!open && classes.open ,open && classes.hide)}
           >
             <Menu />
           </IconButton>
         <Drawer
-          // className={classes.drawer}
+          className={classes.drawer}
           variant="persistent"
           anchor="right"
           open={open}
-          // classes={{
-          //   paper: classes.drawerPaper,
-          // }}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
         >
           <div>
             <IconButton onClick={handleDrawerClose}>
