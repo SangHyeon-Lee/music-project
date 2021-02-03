@@ -1,6 +1,7 @@
 import React from "react";
 import firebase from './firebase'
-import { Divider } from 'antd';
+import { Button } from 'antd';
+import { LikeOutlined } from '@ant-design/icons';
 import './note-collection.css'
 
 var db = firebase.firestore();
@@ -18,6 +19,7 @@ class NoteCollection extends React.Component<noteCollectionProps, any> {
     this.unsubscribe = null;
     this.state = {
       collection: [],
+      rightOpen: true,
     };
   }
   ref: any;
@@ -39,7 +41,8 @@ class NoteCollection extends React.Component<noteCollectionProps, any> {
           </b>
           <br />
           {note.content}
-          &nbsp;
+          <br />
+          <Button type="primary" shape="round" icon={<LikeOutlined />} size='small'/>
           <img src={note.downloadURL} alt="" />
         </div>
       </>
@@ -62,13 +65,14 @@ class NoteCollection extends React.Component<noteCollectionProps, any> {
 
   render() {
     return (
-      <div className="collection">
-        {this.state.collection.map((note: any, index: any) => (
-          <div>
-          <this.Notecomponent note={note} key={index} />
-          <Divider />
-          </div>
-        ))}
+      <div>
+        <div className={'collection'}>
+          {this.state.collection.map((note: any, index: any) => (
+            <div>
+            <this.Notecomponent note={note} key={index} />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }

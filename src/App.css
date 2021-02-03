@@ -46,6 +46,10 @@
   margin-top: 5px;
 }
 
+.notetaking-container {
+  margin-top: 1rem;
+}
+
 .canvasdraw {
   width: 320px;
   height: 200px;
