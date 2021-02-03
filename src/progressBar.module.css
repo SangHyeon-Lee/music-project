@@ -1,19 +1,19 @@
 .default {
   width: 65vw;
-  height: 3px;
+  height: 10px;
   background-color: gray;
   border-radius: 1.5px;
 }
 .bar {
   position: relative;
-  height: 3px;
-  background-color: white;
+  height: 10px;
+  background-color: rgba(0, 164, 168, 1);
   border-radius: 1.5px;
 }
 .bar .controller {
   -webkit-appearance: none !important;
   position: absolute;
-  top: 0px;
+  top: 4px;
   margin: 0;
   width: 65vw;
   height: 3px;
@@ -22,9 +22,24 @@
 }
 .bar .controller::-webkit-slider-thumb {
   -webkit-appearance: none !important;
-  width: 13px;
-  height: 13px;
+  width: 18px;
+  height: 18px;
   border: solid 0.5px #e6e6e6;
   border-radius: 50%;
   background-color: white;
+}
+
+.stepContainer {
+  display: flex;
+  /* justify-content: space-between; */
+}
+
+.step {
+  /* position: relative; */
+  height: 10px;
+  background-color: rgba(209, 209, 209, 0.35);
+  border-radius: 1.5px;
+  /* float: left; */
+  margin-right: 3px;
+  flex-shrink: 0;
 }

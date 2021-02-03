@@ -60,14 +60,16 @@ const Controlbar: React.FC<IProps> = ({
   const onMouseUp = () => {
     if (videoElement) {
       // controller를 옮긴 시점에 currentTime이 최신화 되지 않아, 이를 위해 수정
-      videoElement.currentTime = currentTime;
+      // videoElement.currentTime = currentTime;
       nowPlaying ? videoElement.play() : videoElement.pause();
     }
+    console.log("onMouseUp");
   };
 
   const onMouseDown = () => {
     if (videoElement) {
       videoElement.pause();
+      console.log("onMouseDown");
     }
   };
 

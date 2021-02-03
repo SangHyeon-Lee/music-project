@@ -124,6 +124,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         playsInline={true}
         onPause={noteTaking}
         onPlay={setPausedFalse}
+        onClick={onPlayIconClick}
         // currentTime={currentTime}
       >
         <source src={videoSrc} type="video/mp4" />

@@ -23,10 +23,21 @@ const ProgressBar: React.FC<IProps> = ({
   const classProps = classNames(styles.default, className);
   const percentNum = (value / max || 0) * 100;
   const percent = `${percentNum}%`;
+  const firstStep = 100;
+  const secondStep = 100;
 
   return (
     <div className={classProps}>
+      
       <div className={styles.bar} style={{ width: percent }}>
+        
+      <div className={styles.stepContainer}>
+          <div className={styles.step} style={{ width: firstStep }}>
+          </div>
+          <div className={styles.step} style={{ width: secondStep }}>
+          </div>
+        </div>
+        
         <input
           onChange={(e) => onChange(parseInt(e.target.value, 10))}
           onTouchStart={onMouseDown}
@@ -37,9 +48,13 @@ const ProgressBar: React.FC<IProps> = ({
           step="1"
           value={percentNum}
           className={styles.controller}
-        />
+        /> 
       </div>
+
+
     </div>
+
+    
   );
 };
 
