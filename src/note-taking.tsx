@@ -64,7 +64,7 @@ class NoteTaking extends React.Component<noteTakingProps, any> {
         //timestamp: "",
         userId: this.props.userId,
         videoTimestamp: this.props.timestamp,
-        downloadURL: "nodownload",
+        downloadURL: "",
       });
       console.log(
         this.state.editorState.getCurrentContent().getPlainText("\u0001")
