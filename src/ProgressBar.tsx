@@ -23,17 +23,23 @@ const ProgressBar: React.FC<IProps> = ({
   const classProps = classNames(styles.default, className);
   const percentNum = (value / max || 0) * 100;
   const percent = `${percentNum}%`;
-  const firstStep = 100;
-  const secondStep = 100;
+  const firstStep = 120;
+  const secondStep = 90;
 
   return (
     <div className={classProps}>
       <div className={styles.stepContainer}>
           <div className={styles.step} style={{ width: firstStep }}>
+            {/* <span className={styles.tooltip} style={{ marginLeft: -firstStep/2 }}>
+              First Step</span> */}
           </div>
           <div className={styles.step} style={{ width: secondStep }}>
+            {/* <span className={styles.tooltip} style={{ marginLeft: -secondStep/2 }}>
+              Second Step</span> */}
           </div>
           <div className={styles.step} style={{ width: secondStep }}>
+            {/* <span className={styles.tooltip} style={{ marginLeft: -secondStep/2 }}>
+              Second Step</span> */}
           </div>
         </div>
       <div className={styles.bgBar}>
