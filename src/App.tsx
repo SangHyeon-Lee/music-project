@@ -8,7 +8,9 @@ import { PictureOutlined } from "@ant-design/icons";
 import captureVideoFrame from "capture-video-frame";
 import { Link } from "react-router-dom";
 import CanvasDraw from "react-canvas-draw";
-
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import { Menu, ChevronRight } from '@material-ui/icons';
 const marks = {
   0.5: "x0.5",
   1: "x1",
@@ -31,7 +33,15 @@ const App: React.FC<AppProps> = (props) => {
   const [isDraw, setDraw] = useState<boolean>(false);
   const [canvas, setCanvas] = useState<any>(null);
   const [savedImage, setsavedImage] = useState<any>(null);
+  const [open, setOpen] = React.useState(false);
 
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
   const onDuration = (duration: any) => {
     setDuration(duration);
   };
@@ -165,7 +175,31 @@ const App: React.FC<AppProps> = (props) => {
         )}
       </div>
         </div>
-        <NoteCollection />
+        <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="end"
+            onClick={handleDrawerOpen}
+            // className={clsx(open && classes.hide)}
+          >
+            <Menu />
+          </IconButton>
+        <Drawer
+          // className={classes.drawer}
+          variant="persistent"
+          anchor="right"
+          open={open}
+          // classes={{
+          //   paper: classes.drawerPaper,
+          // }}
+        >
+          <div>
+            <IconButton onClick={handleDrawerClose}>
+              <ChevronRight />
+            </IconButton>
+          </div>
+          <NoteCollection />
+        </Drawer>
       </div>
     </div>
   );
