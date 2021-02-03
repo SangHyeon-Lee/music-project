@@ -14,6 +14,8 @@ import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import { Menu, ChevronRight } from '@material-ui/icons';
 import { CompactPicker } from "react-color";
+// import { Slider } from 'antd';
+import Video from "./Video";
 
 const marks = {
   0.5: "x0.5",
@@ -153,14 +155,14 @@ const App: React.FC<AppProps> = (props) => {
             [classes.contentShift]: open,
           })}
         >
-          <Slider
+          {/* <Slider
             marks={marks}
             step={null}
             defaultValue={1}
             max={4}
             onChange={(value: any) => setPlaybackRate(value)}
-          />
-          <ReactPlayer
+          /> */}
+          {/* <ReactPlayer
             ref={(player) => {
               setPlayer(player);
             }}
@@ -180,7 +182,8 @@ const App: React.FC<AppProps> = (props) => {
             onDuration={onDuration}
             onProgress={onProgress}
             playbackRate={playbackRate}
-          />
+          /> */}
+          <Video src = "videos/Full_Surgeon.mp4" />
           <div className='notetaking-container'>
             {isPaused && (
               <NoteTaking userId="TestUser" timestamp={secondsElapsed} screenshot={image}/>
