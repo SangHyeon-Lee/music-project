@@ -32,9 +32,11 @@ const App: React.FC<AppProps> = (props) => {
   const [player, setPlayer] = useState<any>(null);
   const [isDraw, setDraw] = useState<boolean>(false);
   const [canvas, setCanvas] = useState<any>(null);
-  const [savedImage, setsavedImage] = useState<any>(null);
+  //const [savedImage, setsavedImage] = useState<any>(null);
   const [showColorPicker, setColorPicker] = useState<boolean>(false);
   const [editorColor, seteditorColor] = useState<any>("#000000");
+  const [showRadius, setshowRadius] = useState<boolean>(false);
+  const [brushRadius, setbrushRadius] = useState<number>(3);
 
   const onDuration = (duration: any) => {
     setDuration(duration);
@@ -92,7 +94,6 @@ const App: React.FC<AppProps> = (props) => {
               setIsPaused(false);
               setImage(null);
               setDraw(false);
-    
             }}
             onDuration={onDuration}
             onProgress={onProgress}
@@ -102,7 +103,11 @@ const App: React.FC<AppProps> = (props) => {
         <NoteCollection />
         <div>
           {isPaused && (
-            <NoteTaking userId="TestUser" timestamp={secondsElapsed} screenshot={image}/>
+            <NoteTaking
+              userId="TestUser"
+              timestamp={secondsElapsed}
+              screenshot={image}
+            />
           )}
         </div>
       </div>
@@ -134,7 +139,7 @@ const App: React.FC<AppProps> = (props) => {
             <br />
             <br />
             {image && !isDraw && <img id="capturedImage" src={image} alt="" />}
-            {isDraw && !savedImage && (
+            {isDraw && (
               <div>
                 <Button
                   onClick={() => {
@@ -168,22 +173,39 @@ const App: React.FC<AppProps> = (props) => {
                 <Button
                   onClick={() => {
                     setColorPicker(!showColorPicker);
+                    setshowRadius(false);
                   }}
                 >
                   Pick Color
                 </Button>
+
+                <Button
+                  onClick={() => {
+                    setColorPicker(false);
+                    setshowRadius(!showRadius);
+                  }}
+                >
+                  Brush Radius
+                </Button>
                 {showColorPicker ? (
                   <div>
-                    <div
-                      onClick={() => {
-                        setColorPicker(false);
-                      }}
-                    />
                     <CompactPicker
                       color={editorColor}
                       onChange={(color) => {
                         seteditorColor(color.hex);
                       }}
+                    />
+                  </div>
+                ) : null}
+                {showRadius ? (
+                  <div>
+                    <Slider
+                      min={1}
+                      max={10}
+                      onChange={(value: React.SetStateAction<number>) => {
+                        setbrushRadius(value);
+                      }}
+                      value={typeof brushRadius === "number" ? brushRadius : 3}
                     />
                   </div>
                 ) : null}
@@ -197,12 +219,11 @@ const App: React.FC<AppProps> = (props) => {
                     canvasHeight="360px"
                     lazyRadius="0"
                     brushColor={editorColor}
-                    brushRadius="1"
+                    brushRadius={brushRadius}
                   />
                 </div>
               </div>
             )}
-            
           </div>
         )}
       </div>
