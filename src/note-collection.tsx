@@ -43,11 +43,11 @@ class NoteCollection extends React.Component<noteCollectionProps, any> {
           {note.content}
           <br />
           <Button type="primary" shape="round" icon={<LikeOutlined />} size='small'/>
+          <img src={note.downloadURL} alt="" />
         </div>
       </>
     );
   }
-
 
   onCollectionUpdate = (querySnapshot: any) => {
     const collection: any = [];

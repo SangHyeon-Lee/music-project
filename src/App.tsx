@@ -13,6 +13,8 @@ import CanvasDraw from "react-canvas-draw";
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import { Menu, ChevronRight } from '@material-ui/icons';
+import { CompactPicker } from "react-color";
+
 const marks = {
   0.5: "x0.5",
   1: "x1",
@@ -98,6 +100,11 @@ const App: React.FC<AppProps> = (props) => {
   const [player, setPlayer] = useState<any>(null);
   const [isDraw, setDraw] = useState<boolean>(false);
   const [canvas, setCanvas] = useState<any>(null);
+  //const [savedImage, setsavedImage] = useState<any>(null);
+  const [showColorPicker, setColorPicker] = useState<boolean>(false);
+  const [editorColor, seteditorColor] = useState<any>("#000000");
+  const [showRadius, setshowRadius] = useState<boolean>(false);
+  const [brushRadius, setbrushRadius] = useState<number>(3);
   const [savedImage, setsavedImage] = useState<any>(null);
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
@@ -124,6 +131,18 @@ const App: React.FC<AppProps> = (props) => {
     if (tempsecondsElapsed !== secondsElapsed) {
       setSecondsElapsed(tempsecondsElapsed);
     }
+  };
+
+  const popover = {
+    position: "absolute",
+    zIndex: "2",
+  };
+  const cover = {
+    position: "fixed",
+    top: "0px",
+    right: "0px",
+    bottom: "0px",
+    left: "0px",
   };
 
   return (
@@ -157,7 +176,6 @@ const App: React.FC<AppProps> = (props) => {
               setIsPaused(false);
               setImage(null);
               setDraw(false);
-              setsavedImage(null);
             }}
             onDuration={onDuration}
             onProgress={onProgress}
@@ -165,7 +183,7 @@ const App: React.FC<AppProps> = (props) => {
           />
           <div className='notetaking-container'>
             {isPaused && (
-              <NoteTaking userId="TestUser" timestamp={secondsElapsed} />
+              <NoteTaking userId="TestUser" timestamp={secondsElapsed} screenshot={image}/>
             )}
           </div>
           <div>
@@ -178,7 +196,8 @@ const App: React.FC<AppProps> = (props) => {
               onClick={() => {
                 var frame = captureVideoFrame(
                   player.getInternalPlayer(),
-                  "png"
+                  "png",
+                  1
                 );
                 console.log("captured frame", frame);
                 setImage(frame.dataUri);
@@ -193,9 +212,7 @@ const App: React.FC<AppProps> = (props) => {
 
             <br />
             <br />
-            {image && (
-              <img id="capturedImage" src={image} width="320px" alt="" />
-            )}
+            {image && !isDraw && <img id="capturedImage" src={image} alt="" />}
             {isDraw && (
               <div>
                 <Button
@@ -207,7 +224,8 @@ const App: React.FC<AppProps> = (props) => {
                       0,
                       0
                     ); // add drawing
-                    setsavedImage(baseCanvas.toDataURL());
+                    setDraw(false);
+                    setImage(baseCanvas.toDataURL());
                   }}
                 >
                   Save
@@ -226,20 +244,58 @@ const App: React.FC<AppProps> = (props) => {
                 >
                   Undo
                 </Button>
+                <Button
+                  onClick={() => {
+                    setColorPicker(!showColorPicker);
+                    setshowRadius(false);
+                  }}
+                >
+                  Pick Color
+                </Button>
+
+                <Button
+                  onClick={() => {
+                    setColorPicker(false);
+                    setshowRadius(!showRadius);
+                  }}
+                >
+                  Brush Radius
+                </Button>
+                {showColorPicker ? (
+                  <div>
+                    <CompactPicker
+                      color={editorColor}
+                      onChange={(color) => {
+                        seteditorColor(color.hex);
+                      }}
+                    />
+                  </div>
+                ) : null}
+                {showRadius ? (
+                  <div>
+                    <Slider
+                      min={1}
+                      max={10}
+                      onChange={(value: React.SetStateAction<number>) => {
+                        setbrushRadius(value);
+                      }}
+                      value={typeof brushRadius === "number" ? brushRadius : 3}
+                    />
+                  </div>
+                ) : null}
                 <div id="canvasdraw" className="canvasdraw">
                   <CanvasDraw
                     ref={(canvas: any) => {
                       setCanvas(canvas);
                     }}
                     imgSrc={image}
-                    canvasWidth="320px"
-                    canvasHeight="180px"
-                    hideInterface
-                    brushColor="#000000"
-                    brushRadius="1"
+                    canvasWidth="640px"
+                    canvasHeight="360px"
+                    lazyRadius="0"
+                    brushColor={editorColor}
+                    brushRadius={brushRadius}
                   />
                 </div>
-                {savedImage && <img src={savedImage} alt="" />}
               </div>
             )}
           </div>
