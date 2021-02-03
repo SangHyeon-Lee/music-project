@@ -20,7 +20,9 @@
  }
 }
 .controlBar .progressBar {
+  position: relative;
   margin-left: 20px;
+  top: -10px;
   display: inline-block;
 }
 .controlBar .volume {

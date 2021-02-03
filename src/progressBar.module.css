@@ -1,8 +1,10 @@
-.default {
+.bgBar {
   width: 65vw;
   height: 10px;
   background-color: gray;
   border-radius: 1.5px;
+  /* position: absolute;
+  top: 020px; */
 }
 .bar {
   position: relative;
@@ -31,15 +33,17 @@
 
 .stepContainer {
   display: flex;
+  top: 10px;
+  background-color: rgba(160, 160, 160, 0.616);
   /* justify-content: space-between; */
 }
 
 .step {
-  /* position: relative; */
-  height: 10px;
-  background-color: rgba(209, 209, 209, 0.35);
+  position: relative;
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0.527);
   border-radius: 1.5px;
   /* float: left; */
   margin-right: 3px;
-  flex-shrink: 0;
+  /* flex-shrink: 0; */
 }
