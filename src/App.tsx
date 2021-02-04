@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import "./App.css";
 import NoteCollection from "./note-collection";
 import Drawer from "@material-ui/core/Drawer";
@@ -77,8 +77,6 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = (props) => {
-  const [duration, setDuration] = useState<number>(0);
-  const [secondsElapsed, setSecondsElapsed] = useState<number>(0);
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
 
@@ -89,34 +87,7 @@ const App: React.FC<AppProps> = (props) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const onDuration = (duration: any) => {
-    setDuration(duration);
-  };
-  const onProgress = (progress: any) => {
-    if (!duration) {
-      // Sadly we don't have the duration yet so we can't do anything
-      return;
-    }
-
-    // progress.played is the fraction of the video that has been played
-    // so multiply with duration to get number of seconds elapsed
-    const tempsecondsElapsed = Math.floor(progress.played * duration);
-    if (tempsecondsElapsed !== secondsElapsed) {
-      setSecondsElapsed(tempsecondsElapsed);
-    }
-  };
-
-  const popover = {
-    position: "absolute",
-    zIndex: "2",
-  };
-  const cover = {
-    position: "fixed",
-    top: "0px",
-    right: "0px",
-    bottom: "0px",
-    left: "0px",
-  };
+ 
 
   return (
     <div>

@@ -29,6 +29,10 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
   const [editorColor, seteditorColor] = useState<any>("#000000");
   const [showRadius, setshowRadius] = useState<boolean>(false);
   const [brushRadius, setbrushRadius] = useState<number>(3);
+  const [noteCategory, setnoteCategory] = useState<string>("Awesome");
+  const [placeholder, setplaceholder] = useState<string>(
+    "This is such a useful tip because..."
+  );
 
   const handleChange = (e: EditorState) => {
     seteditorState(e);
@@ -51,7 +55,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
           snapshot.ref.getDownloadURL().then((downloadURL) => {
             console.log("download:    ", downloadURL);
             noteCollection.add({
-              category: "Useful",
+              category: noteCategory,
               content: editorState.getCurrentContent().getPlainText("\u0001"),
               //timestamp: "",
               userId: props.userId,
@@ -62,7 +66,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
         );
     } else {
       noteCollection.add({
-        category: "Useful",
+        category: noteCategory,
         content: editorState.getCurrentContent().getPlainText("\u0001"),
         //timestamp: "",
         userId: props.userId,
@@ -72,8 +76,24 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
       console.log(editorState.getCurrentContent().getPlainText("\u0001"));
     }
   };
+  const changeplaceholder = (category: string) => {
+    if (category === "Awesome") {
+      setplaceholder("This is such a useful tip because...");
+    } else if (category === "Difficult") {
+      setplaceholder("Watch out doing this part because...");
+    } else if (category === "What If") {
+      setplaceholder("Instead of ..., How about ...?");
+    } else if (category === "What & Why") {
+      setplaceholder("Why in this part ...?");
+    } else {
+      setplaceholder("");
+    }
+  };
+
   const onChange = (e: any) => {
     console.log(`radio checked:${e.target.value}`);
+    setnoteCategory(e.target.value);
+    changeplaceholder(e.target.value);
   };
 
   return (
@@ -81,23 +101,27 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
       <Radio.Group
         className="category-group"
         onChange={onChange}
-        defaultValue="a"
+        defaultValue="Awesome"
       >
-        <Radio.Button className="category-entry" value="a">
+        <Radio.Button className="category-entry" value="Awesome">
           Awesome
         </Radio.Button>
-        <Radio.Button className="category-entry" value="b">
+        <Radio.Button className="category-entry" value="What If">
           What If
         </Radio.Button>
-        <Radio.Button className="category-entry" value="c">
+        <Radio.Button className="category-entry" value="What & Why">
           What & Why
         </Radio.Button>
-        <Radio.Button className="category-entry" value="d">
+        <Radio.Button className="category-entry" value="Difficult">
           Difficult
         </Radio.Button>
       </Radio.Group>
       <div className="draft-root">
-        <Editor editorState={editorState} onChange={(e) => handleChange(e)} />
+        <Editor
+          editorState={editorState}
+          placeholder={placeholder}
+          onChange={(e) => handleChange(e)}
+        />
         <Button type="primary" onClick={submitNote}>
           Submit
         </Button>
@@ -108,11 +132,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
           shape="round"
           icon={<PictureOutlined />}
           onClick={() => {
-            var frame = captureVideoFrame(
-              props.player,
-              "png",
-              1
-            );
+            var frame = captureVideoFrame(props.player, "png", 1);
             console.log("captured frame", frame);
             setImage(frame.dataUri);
           }}
