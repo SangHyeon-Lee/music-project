@@ -16,6 +16,7 @@ import { Menu, ChevronRight } from '@material-ui/icons';
 import { CompactPicker } from "react-color";
 // import { Slider } from 'antd';
 import Video from "./Video";
+import LiveNote from "./live-note";
 
 const marks = {
   0.5: "x0.5",
@@ -184,6 +185,9 @@ const App: React.FC<AppProps> = (props) => {
             playbackRate={playbackRate}
           /> */}
           <Video src = "videos/Full_Surgeon.mp4" />
+          <div className="live-note-container"> 
+            <LiveNote/>
+          </div>
           <div className='notetaking-container'>
             {isPaused && (
               <NoteTaking userId="TestUser" timestamp={secondsElapsed} screenshot={image}/>

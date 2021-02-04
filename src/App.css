@@ -77,3 +77,9 @@
 .slider {
   max-width: 40%;
 }
+
+/* Live note */
+.live-note-container {
+  position: relative;
+  top: -150px;
+}
