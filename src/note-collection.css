@@ -11,3 +11,14 @@
     justify-content: space-between;
     display: flex;
 }
+
+.collection {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.noteimg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
