@@ -4,6 +4,8 @@ import NoteTaking from "./note-taking";
 import styles from "./video.module.css";
 import Controlbar from "./Controlbar";
 import { Slider } from "antd";
+import LiveNote from "./live-note";
+import "./Video.css";
 
 interface IProps {
   className?: string;
@@ -148,6 +150,9 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           nowPlaying={nowPlaying}
           videoElement={videoElement}
         />
+      </div>
+      <div className="live-note-container">
+        <LiveNote />
       </div>
       <div>
         {isPaused && (
