@@ -24,7 +24,7 @@ const marks = {
   2: "x2",
   4: "x4"
 };
-const drawerWidth = 240;
+const drawerWidth = 360;
 
 const useStyles = makeStyles((theme) => ({
   root: {

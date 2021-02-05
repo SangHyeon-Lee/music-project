@@ -48,7 +48,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
           {note.content}
           <br />
           <Button type="primary" shape="round" icon={<LikeOutlined />} size='small'/>
-          <img src={note.downloadURL} alt="" />
+          <img className='noteimg' src={note.downloadURL} alt="" />
         </div>
       </>
     );
@@ -79,7 +79,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   }
   return (
     <div>
-      <div className={'collection'}>
+      <div className='collection'>
         <span style={{ marginRight: 8 }}>Categories:</span>
               {tagsData.map(tag => (
                 <CheckableTag
