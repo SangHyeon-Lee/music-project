@@ -24,6 +24,7 @@ class LiveNote extends React.Component<liveNoteProps, any> {
   ref: any;
   unsubscribe: any;
 
+// 나중에 currentTime 받아오면 여기 수정할거라 comment out된 부분 그대로 남겨놔주세요
   Notecomponent({ note }: any) {
     const videoTime_num: number = note.videoTimestamp;
     const min_val: number = Math.floor(videoTime_num / 60);
@@ -37,8 +38,8 @@ class LiveNote extends React.Component<liveNoteProps, any> {
           <b>
              &nbsp;&nbsp; {note.userId}
           </b> */}
-          {videoTime_num}
-          {note.content}
+          {/* {videoTime_num}
+          {note.content} */}
           {/* <img src={note.downloadURL} alt="" />
         </div> */}
       </>
@@ -68,8 +69,7 @@ class LiveNote extends React.Component<liveNoteProps, any> {
             </div>
             <div className = "live-note-content">
                 This surgeon uses a round needle instead of V-lock.
-                This surgeon uses a round needle instead of V-lock.
-                <div className={'collection'}>
+                <div className = {'collection'}>
                   {this.state.collection.map((note: any, index: any) => (
                     <div>
                     <this.Notecomponent note={note} key={index} />
