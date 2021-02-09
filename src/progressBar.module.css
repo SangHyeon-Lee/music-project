@@ -48,6 +48,11 @@
   /* flex-shrink: 0; */
 }
 
+.noteicon {
+  position: absolute;
+
+}
+
 /* step별 툴팁
 
 .step .tooltip {

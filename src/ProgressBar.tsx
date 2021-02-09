@@ -2,6 +2,7 @@ import classNames from "classnames";
 import React from "react";
 
 import styles from "./progressBar.module.css";
+import { EnvironmentTwoTone } from "@ant-design/icons";
 
 interface IProps {
   max: number;
@@ -26,22 +27,28 @@ const ProgressBar: React.FC<IProps> = ({
   const firstStep = 120;
   const secondStep = 90;
 
+  const notepos = "3px";
+
   return (
     <div className={classProps}>
       <div className={styles.stepContainer}>
-          <div className={styles.step} style={{ width: firstStep }}>
-            {/* <span className={styles.tooltip} style={{ marginLeft: -firstStep/2 }}>
+        <EnvironmentTwoTone
+          className={styles.noteicon}
+          style={{ left: notepos, fontSize: "20px" }}
+        />
+        <div className={styles.step} style={{ width: firstStep }}>
+          {/* <span className={styles.tooltip} style={{ marginLeft: -firstStep/2 }}>
               First Step</span> */}
-          </div>
-          <div className={styles.step} style={{ width: secondStep }}>
-            {/* <span className={styles.tooltip} style={{ marginLeft: -secondStep/2 }}>
-              Second Step</span> */}
-          </div>
-          <div className={styles.step} style={{ width: secondStep }}>
-            {/* <span className={styles.tooltip} style={{ marginLeft: -secondStep/2 }}>
-              Second Step</span> */}
-          </div>
         </div>
+        <div className={styles.step} style={{ width: secondStep }}>
+          {/* <span className={styles.tooltip} style={{ marginLeft: -secondStep/2 }}>
+              Second Step</span> */}
+        </div>
+        <div className={styles.step} style={{ width: secondStep }}>
+          {/* <span className={styles.tooltip} style={{ marginLeft: -secondStep/2 }}>
+              Second Step</span> */}
+        </div>
+      </div>
       <div className={styles.bgBar}>
         <div className={styles.bar} style={{ width: percent }}>
           <input
@@ -54,12 +61,10 @@ const ProgressBar: React.FC<IProps> = ({
             step="1"
             value={percentNum}
             className={styles.controller}
-          /> 
+          />
         </div>
       </div>
     </div>
-
-    
   );
 };
 
