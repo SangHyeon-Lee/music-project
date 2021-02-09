@@ -3,8 +3,10 @@ import "./live-note.css";
 import { BulbFilled, LikeFilled } from "@ant-design/icons";
 import { ReplyRounded } from '@material-ui/icons';
 import firebase from "./firebase";
+import { useVideoTime } from './VideoTimeContext';
 
 var db = firebase.firestore();
+
 interface liveNoteProps {}
 
 const LiveNote: React.FC<liveNoteProps> = (props) => {
@@ -28,6 +30,9 @@ const LiveNote: React.FC<liveNoteProps> = (props) => {
     const videoNoteContent: string = note.content;
     const min_val: number = Math.floor(videoTime_num / 60);
     const sec_val: number = videoTime_num % 60;
+    const { videoTime, setVideoTime } = useVideoTime()!;
+    const noteShowingTime = 30;
+
     return (
       <>
         {/* <div className='notecategory'>
@@ -37,7 +42,9 @@ const LiveNote: React.FC<liveNoteProps> = (props) => {
           <b>
              &nbsp;&nbsp; {note.userId}
           </b> */}
-          { videoTime_num === 1 && videoNoteContent }
+          { (videoTime_num < videoTime+noteShowingTime) 
+            && (videoTime_num > videoTime-noteShowingTime) 
+            && videoNoteContent }
           {/* <img src={note.downloadURL} alt="" />
         </div> */}
       </>

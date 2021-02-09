@@ -6,6 +6,8 @@ import Controlbar from "./Controlbar";
 import { Slider } from "antd";
 import LiveNote from "./live-note";
 import "./Video.css";
+import { useVideoTime } from './VideoTimeContext';
+
 
 interface IProps {
   className?: string;
@@ -16,6 +18,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const [nowPlaying, setNowPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [showControl, setShowControl] = useState(false);
+  const { videoTime, setVideoTime } = useVideoTime()!;
 
   //added (trying)
   const [isPaused, setIsPaused] = useState<boolean>(false);
@@ -32,6 +35,8 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const videoSrc = src || "";
   const startTime = Math.floor(currentTime);
 
+  console.log(videoTime);
+
   // 동영상 시간 업데이트 함수
   const addTimeUpdate = () => {
     const observedVideoElement = ref && ref.current;
@@ -43,7 +48,8 @@ const Video: React.FC<IProps> = ({ className, src }) => {
       setNowPlaying(false);
       // observedVideoElement.play();
     }
-    console.log("addTimeUpdate", currentTime);
+    // console.log("addTimeUpdate", currentTime);
+    setVideoTime(currentTime);
   };
 
   useEffect(() => {

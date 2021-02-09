@@ -7,6 +7,7 @@ import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
 import { Menu, ChevronRight } from "@material-ui/icons";
 import Video from "./Video";
+import { VideoTimeProvider } from './VideoTimeContext';
 
 const marks = {
   0.5: "x0.5",
@@ -99,40 +100,42 @@ const App: React.FC<AppProps> = (props) => {
 
   return (
     <div>
-      <div className="appbody">
-        <div
-          className={clsx(classes.content, {
-            [classes.contentShift]: open,
-          })}
+      <VideoTimeProvider>
+        <div className="appbody">
+          <div
+            className={clsx(classes.content, {
+              [classes.contentShift]: open,
+            })}
+          >
+            <Video src="videos/Full_Surgeon.mp4" />
+          </div>
+        </div>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="end"
+          onClick={handleDrawerOpen}
+          className={clsx(!open && classes.open, open && classes.hide)}
         >
-          <Video src="videos/Full_Surgeon.mp4" />
-        </div>
-      </div>
-      <IconButton
-        color="inherit"
-        aria-label="open drawer"
-        edge="end"
-        onClick={handleDrawerOpen}
-        className={clsx(!open && classes.open, open && classes.hide)}
-      >
-        <Menu />
-      </IconButton>
-      <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="right"
-        open={open}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <div>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronRight />
-          </IconButton>
-        </div>
-        <NoteCollection />
-      </Drawer>
+          <Menu />
+        </IconButton>
+        <Drawer
+          className={classes.drawer}
+          variant="persistent"
+          anchor="right"
+          open={open}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+        >
+          <div>
+            <IconButton onClick={handleDrawerClose}>
+              <ChevronRight />
+            </IconButton>
+          </div>
+          <NoteCollection />
+        </Drawer>
+      </VideoTimeProvider>
     </div>
   );
 };
