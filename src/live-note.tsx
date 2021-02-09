@@ -31,7 +31,7 @@ const LiveNote: React.FC<liveNoteProps> = (props) => {
     const min_val: number = Math.floor(videoTime_num / 60);
     const sec_val: number = videoTime_num % 60;
     const { videoTime, setVideoTime } = useVideoTime()!;
-    const noteShowingTime = 30;
+    const noteShowingTime = 120;
 
     return (
       <>
