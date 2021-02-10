@@ -35,21 +35,21 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const videoSrc = src || "";
   const startTime = Math.floor(currentTime);
 
-  console.log(videoTime);
+  // console.log(videoTime);
 
   // 동영상 시간 업데이트 함수
   const addTimeUpdate = () => {
     const observedVideoElement = ref && ref.current;
     if (observedVideoElement) {
       observedVideoElement.addEventListener("timeupdate", function () {
-        setCurrentTime(Math.floor(observedVideoElement.currentTime));
+        setVideoTime(Math.floor(observedVideoElement.currentTime));
       });
       // 컴포넌트가 처음 마운트 될때 동영상 시작 안함
       setNowPlaying(false);
       // observedVideoElement.play();
     }
     // console.log("addTimeUpdate", currentTime);
-    setVideoTime(currentTime);
+    // setVideoTime(currentTime);
   };
 
   useEffect(() => {

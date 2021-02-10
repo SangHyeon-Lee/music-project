@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef,createRef } from "react";
 import firebase from './firebase'
-import { Button, Tag } from 'antd';
+import { Button, Tag, Space, Layout } from 'antd';
 import { LikeOutlined } from '@ant-design/icons';
 import './note-collection.css'
 import { LeakAddTwoTone } from "@material-ui/icons";
+import { useVideoTime } from './VideoTimeContext';
 
 const { CheckableTag } = Tag;
 var db = firebase.firestore();
 interface noteCollectionProps {}
 const tagsData = ['Awesome', 'What If', 'What & Why', 'Difficult', 'Useful'];
-
+const { Header, Footer, Sider, Content } = Layout;
 const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   const [ref, setRef] = useState(db
                                   .collection("videos")
@@ -19,17 +20,24 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   var unsubscribe = null;
   const [collection, setCollection] = useState<any[]>([]);
   const [rightOpen, setRightOpen] = useState(true);
-  const [filter, setFilter] = useState<string[]>([]);
-  const [filteredCollection, setFilteredCollection] = useState<any[]>(collection)
+  const [filter, setFilter] = useState<string[]>(tagsData);
+  const [filteredCollection, setFilteredCollection] = useState<any[]>(collection);
   const [noteLayout, setNoteLayout] = useState<any[]>();
+  const refList = useRef<any[]>([])
+  const { videoTime, setVideoTime } = useVideoTime()!;
   // var originalCollection = null;
+  // console.log(videoTime)
 
   useEffect(
     () => {
       unsubscribe = ref.onSnapshot(onCollectionUpdate);
+      setFilteredCollection(collection);
+      if(filteredCollection){
+        refList.current = refList.current.slice(0, filteredCollection.length);
+      }
+
     }, []
   );
-  
   const Notecomponent = ({ note }: any) => {
     const videoTime_num: number = note.videoTimestamp;
     const min_val: number = Math.floor(videoTime_num / 60);
@@ -37,24 +45,54 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
     return (
       <>
         <div className='notecategory'>
-          <div>{note.category}</div>
+          <div className={note.category}>{note.category}</div>
           <div>{min_val}:{sec_val}</div>
         </div>
         <div className='singlenote'>
-          <b>
-             &nbsp;&nbsp; {note.userId}
+          <b className='noteheader'>
+            {note.userId}
+            <Button type="primary" shape="round" icon={<LikeOutlined />} size='small'/>
           </b>
-          <br />
           {note.content}
           <br />
-          <Button type="primary" shape="round" icon={<LikeOutlined />} size='small'/>
           <img className='noteimg' src={note.downloadURL} alt="" />
         </div>
       </>
     );
   }
 
+  const checkClosest = (currentTime: number) => {
+    var data: number[] = [];
+    filteredCollection.map((note,i) => data.push(note.videoTimestamp));
+    var target = currentTime; //21에 가장 가까운값 찾기
+    var near = 0;
+    var abs = 0; //여기에 가까운 수'20'이 들어감
+    var min = 10000000; //해당 범위에서 가장 큰 값
+    var refIndex = 0;
+    //[2] Process
+    for (var i = 0; i < data.length; i++)
+    {
+        abs = ((data[i] - target) < 0) ? -(data[i] - target) : (data[i] - target);
+ 
+        if (abs < min)
+        {
+            min = abs; //MIN
+            near = data[i] //near : 가까운값
+            refIndex = i
+        }
+    }
+    // console.log("InCheckClosest", videoTime,data,currentTime,near,refIndex);
+    if(refList.current[refIndex]){
+      refList.current[refIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center',
+      });
+    }
 
+  }
+
+  checkClosest(videoTime);
 
   const onCollectionUpdate = (querySnapshot: any) => {
     const collection: any = [];
@@ -75,12 +113,13 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
             }
           });
     // setFilteredCollection(_filteredCollection);
+    console.log("FILT ;", nextSelectedTags, _filteredCollection);
     return _filteredCollection;
   }
+
   return (
     <div>
       <div className='collection'>
-        <span style={{ marginRight: 8 }}>Categories:</span>
               {tagsData.map(tag => (
                 <CheckableTag
                   key={tag}
@@ -91,7 +130,9 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
                 </CheckableTag>
               ))}
         {filteredCollection.map((note: any, index: any) => (
-          <div>
+          <div
+            key={index}
+            ref={el => refList.current[index] = el}>
             <Notecomponent note={note} key={index} />
           </div>
         ))}
