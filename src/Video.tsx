@@ -18,7 +18,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const [nowPlaying, setNowPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [showControl, setShowControl] = useState(false);
-  const { videoTime, setVideoTime } = useVideoTime()!;
+  const { videoTime, setVideoTime, videoElement, setVideoElement } = useVideoTime()!;
 
   //added (trying)
   const [isPaused, setIsPaused] = useState<boolean>(false);
@@ -28,7 +28,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const ref = useRef<HTMLVideoElement>(null);
 
   const totalTime = (ref && ref.current && ref.current.duration) || 0; //총 길이
-  const videoElement = ref && ref.current;
+  setVideoElement(ref && ref.current);
 
   const classProps = classNames(styles.video, className);
 
@@ -150,7 +150,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           onProgressChange={onProgressChange}
           onPlayIconClick={onPlayIconClick}
           totalTime={totalTime}
-          currentTime={currentTime}
+          currentTime={videoTime}
           startTime={startTime}
           showControl={showControl}
           nowPlaying={nowPlaying}

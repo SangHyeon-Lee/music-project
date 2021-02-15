@@ -76,7 +76,7 @@ const Controlbar: React.FC<IProps> = ({
   return (
     <>
       <div className={controlBarClassProps}>
-        <span className={startTimeClassProps}>{toTimeString(startTime)}</span>
+        <span className={startTimeClassProps}>{toTimeString(currentTime)}</span>
         <ProgressBar
           max={totalTime}
           value={currentTime}
@@ -90,6 +90,7 @@ const Controlbar: React.FC<IProps> = ({
           className={styles.volume}
           src={volumeClicked ? volumeIcon : muteIcon}
           onClick={handleVolume}
+          alt={""}
         />
       </div>
       <div className={playControlClassProps}>
@@ -98,6 +99,7 @@ const Controlbar: React.FC<IProps> = ({
             className={styles.playIcon}
             src={nowPlaying ? pauseIcon : playIcon}
             onClick={onPlayIconClick}
+            alt={""}
           />
         </div>
       </div>
