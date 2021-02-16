@@ -75,6 +75,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
       });
       console.log(editorState.getCurrentContent().getPlainText("\u0001"));
     }
+    window.alert("saved!");
   };
   const changeplaceholder = (category: string) => {
     if (category === "Awesome") {
