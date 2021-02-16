@@ -5,6 +5,7 @@ import { LikeOutlined } from "@ant-design/icons";
 import "./note-collection.css";
 // import { LeakAddTwoTone } from "@material-ui/icons";
 import { useVideoTime } from "./VideoTimeContext";
+import { ViewArrayOutlined } from "@material-ui/icons";
 
 const { CheckableTag } = Tag;
 var db = firebase.firestore();
@@ -17,7 +18,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
     .doc("testvideo1")
     .collection("note")
     .orderBy("videoTimestamp");
-  var unsubscribe = null;
+  // var unsubscribe = null;
   const [collection, setCollection] = useState<any[]>([]);
   // const [rightOpen, setRightOpen] = useState(true);
   const [filter, setFilter] = useState<string[]>(tagsData);
@@ -27,18 +28,33 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   // const [noteLayout, setNoteLayout] = useState<any[]>();
   const refList = useRef<any[]>([]);
   const { videoTime, setVideoTime, videoElement } = useVideoTime()!;
+  const [prevFocusedTime, setPrevFocusedTime] = useState<number>(0);
   // var originalCollection = null;
   // console.log(videoTime)
 
   useEffect(() => {
-    unsubscribe = ref.onSnapshot(onCollectionUpdate);
-    setFilteredCollection(collection);
+    const unsubscribe = ref.onSnapshot((snap) => {
+      if (collection.length === 0) {
+        const _collection: any = [];
+        snap.forEach((doc: any) => {
+          _collection.push(doc.data());
+        });
+        setCollection(_collection);
+        setFilteredCollection(_collection);
+        console.log("onCollectionUpdate", _collection);
+      }
+    });
     if (filteredCollection) {
       refList.current = refList.current.slice(0, filteredCollection.length);
     }
-  }, []);
+    // console.log("inUseEffect", filteredCollection, collection);
+    return () => unsubscribe();
+  }, [collection, filteredCollection, ref]);
+
   const linkToTime = (time: number) => {
     setVideoTime(time);
+    setPrevFocusedTime(time);
+    checkClosest(time);
     videoElement.currentTime = time;
   };
   const Notecomponent = ({ note }: any) => {
@@ -98,15 +114,19 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
       });
     }
   };
-
-  checkClosest(videoTime);
+  if (videoTime - prevFocusedTime > 10) {
+    console.log("FOCUS!!", videoTime, prevFocusedTime);
+    checkClosest(videoTime);
+    setPrevFocusedTime(videoTime);
+  }
 
   const onCollectionUpdate = (querySnapshot: any) => {
-    const collection: any = [];
+    const _collection: any = [];
     querySnapshot.forEach((doc: any) => {
-      collection.push(doc.data());
+      _collection.push(doc.data());
     });
-    setCollection(collection);
+    setCollection(_collection);
+    console.log("onCollectionUpdate", _collection);
   };
 
   const handleChange = (tag: string, checked: boolean) => {
