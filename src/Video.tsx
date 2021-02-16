@@ -6,8 +6,7 @@ import Controlbar from "./Controlbar";
 import { Slider } from "antd";
 import LiveNote from "./live-note";
 import "./Video.css";
-import { useVideoTime } from './VideoTimeContext';
-
+import { useVideoTime } from "./VideoTimeContext";
 
 interface IProps {
   className?: string;
@@ -16,13 +15,12 @@ interface IProps {
 
 const Video: React.FC<IProps> = ({ className, src }) => {
   const [nowPlaying, setNowPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
   const [showControl, setShowControl] = useState(false);
   const { videoTime, setVideoTime } = useVideoTime()!;
 
   //added (trying)
   const [isPaused, setIsPaused] = useState<boolean>(false);
-  const [playbackRate, setPlaybackRate] = useState<number>(1);
+  //const [playbackRate, setPlaybackRate] = useState<number>(1);
   //till here
 
   const ref = useRef<HTMLVideoElement>(null);
@@ -33,25 +31,26 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const classProps = classNames(styles.video, className);
 
   const videoSrc = src || "";
-  const startTime = Math.floor(currentTime);
-
-  console.log(videoTime);
+  const startTime = Math.floor(videoTime);
 
   // 동영상 시간 업데이트 함수
   const addTimeUpdate = () => {
+    console.log("addtimeupdate");
     const observedVideoElement = ref && ref.current;
     if (observedVideoElement) {
       observedVideoElement.addEventListener("timeupdate", function () {
-        setCurrentTime(Math.floor(observedVideoElement.currentTime));
+        setVideoTime(Math.floor(observedVideoElement.currentTime));
       });
       // 컴포넌트가 처음 마운트 될때 동영상 시작 안함
       setNowPlaying(false);
       // observedVideoElement.play();
     }
-    // console.log("addTimeUpdate", currentTime);
-    setVideoTime(currentTime);
   };
-
+  const setPlaybackRate = (rate: number) => {
+    if (videoElement) {
+      videoElement.playbackRate = rate;
+    }
+  }
   useEffect(() => {
     addTimeUpdate();
   }, []);
@@ -61,13 +60,12 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     if (!showControl) {
       setShowControl(true);
     }
-
+    console.log("onprogress:", percent);
     if (videoElement) {
       const playingTime = videoElement.duration * (percent / 100);
-      setCurrentTime(playingTime);
-      videoElement.currentTime = currentTime;
+      setVideoTime(playingTime);
+      videoElement.currentTime = playingTime;
     }
-    console.log("onProgressChange", currentTime);
   };
 
   // play icon 클릭했을떄 실행되는 함수
@@ -126,6 +124,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         onMouseLeave={setControlInvisible}
       >
         <Slider
+          id="playbackslider"
           marks={marks}
           step={null}
           defaultValue={1}
@@ -142,7 +141,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           onPause={noteTaking}
           onPlay={setPausedFalse}
           onClick={onPlayIconClick}
-          // currentTime={currentTime}
         >
           <source src={videoSrc} type="video/mp4" />
         </video>
@@ -150,7 +148,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           onProgressChange={onProgressChange}
           onPlayIconClick={onPlayIconClick}
           totalTime={totalTime}
-          currentTime={currentTime}
           startTime={startTime}
           showControl={showControl}
           nowPlaying={nowPlaying}
@@ -158,11 +155,15 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         />
       </div>
       <div className="live-note-container">
-        <LiveNote />
+         {/* <LiveNote /> */}
       </div>
       <div>
         {isPaused && (
-          <NoteTaking userId="TestUser" timestamp={currentTime} player= {videoElement}/>
+          <NoteTaking
+            userId="TestUser"
+            timestamp={videoTime}
+            player={videoElement}
+          />
         )}
       </div>
     </div>
