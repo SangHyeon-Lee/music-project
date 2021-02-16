@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 
 import styles from "./progressBar.module.css";
 import {
-  EnvironmentTwoTone,
   EnvironmentFilled,
   BulbFilled,
   LikeFilled,
@@ -111,6 +110,7 @@ const ProgressBar: React.FC<IProps> = ({
             fontSize: size,
             color: bubblecolor,
           }}
+          
         />
         {showNote && <ShowNote note={note} />}
       </div>
