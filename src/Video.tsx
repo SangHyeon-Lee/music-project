@@ -50,7 +50,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     if (videoElement) {
       videoElement.playbackRate = rate;
     }
-  }
+  };
   useEffect(() => {
     addTimeUpdate();
   }, []);
@@ -154,9 +154,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           videoElement={videoElement}
         />
       </div>
-      <div className="live-note-container">
-         {/* <LiveNote /> */}
-      </div>
+      <div className="live-note-container">{/* <LiveNote /> */}</div>
       <div>
         {isPaused && (
           <NoteTaking
