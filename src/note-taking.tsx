@@ -92,7 +92,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
   };
 
   const onChange = (e: any) => {
-    console.log(`radio checked:${e.target.value}`);
+    // console.log(`radio checked:${e.target.value}`);
     setnoteCategory(e.target.value);
     changeplaceholder(e.target.value);
   };

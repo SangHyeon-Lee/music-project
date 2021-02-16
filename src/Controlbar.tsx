@@ -10,14 +10,14 @@ import pauseIcon from "./assets/pause.png";
 import playIcon from "./assets/play.png";
 import muteIcon from "./assets/mute.png";
 import volumeIcon from "./assets/volume.png";
-import { useVideoTime } from './VideoTimeContext';
+import { useVideoTime } from "./VideoTimeContext";
 
 interface IProps {
   onProgressChange: (percent: number) => void;
   onPlayIconClick: () => void;
   startTime: number;
   totalTime: number;
-  
+
   showControl: boolean;
   nowPlaying: boolean;
   videoElement: HTMLVideoElement | null;
@@ -27,7 +27,7 @@ const Controlbar: React.FC<IProps> = ({
   onProgressChange,
   onPlayIconClick,
   totalTime,
-  
+
   startTime,
   showControl,
   nowPlaying,
@@ -44,7 +44,6 @@ const Controlbar: React.FC<IProps> = ({
   const startTimeClassProps = classNames(styles.text, styles.startTime);
   const endTimeClassProps = classNames(styles.text, styles.endTime);
   const { videoTime, setVideoTime } = useVideoTime()!;
-
 
   const handleVolume = () => {
     if (volumeClicked) {
@@ -79,7 +78,7 @@ const Controlbar: React.FC<IProps> = ({
   return (
     <>
       <div className={controlBarClassProps}>
-        <span className={startTimeClassProps}>{toTimeString(startTime)}</span>
+        <span className={startTimeClassProps}>{toTimeString(videoTime)}</span>
         <ProgressBar
           max={totalTime}
           className={styles.progressBar}
@@ -93,6 +92,7 @@ const Controlbar: React.FC<IProps> = ({
           className={styles.volume}
           src={volumeClicked ? volumeIcon : muteIcon}
           onClick={handleVolume}
+          alt={""}
         />
       </div>
       <div className={playControlClassProps}>
@@ -101,6 +101,7 @@ const Controlbar: React.FC<IProps> = ({
             className={styles.playIcon}
             src={nowPlaying ? pauseIcon : playIcon}
             onClick={onPlayIconClick}
+            alt={""}
           />
         </div>
       </div>

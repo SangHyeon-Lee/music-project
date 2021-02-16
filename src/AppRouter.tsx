@@ -18,10 +18,8 @@ const AppRouter: React.FC<AppRouterProps> = props => {
             if (user) {
                 setUser(user);
             } else {
-                console.log("logout!!!!!!!!!");
                 setUser(null);
             }
-            console.log("logout!?")
         });
     });
     
