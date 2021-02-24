@@ -7,6 +7,10 @@ import "./note-collection.css";
 import { useVideoTime } from "./VideoTimeContext";
 import { ViewArrayOutlined } from "@material-ui/icons";
 
+const toTimeString = (seconds:number) => {
+  return (new Date(seconds * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)![0];
+}
+
 const { CheckableTag } = Tag;
 var db = firebase.firestore();
 interface noteCollectionProps {}
@@ -61,12 +65,13 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
     const videoTime_num: number = note.videoTimestamp;
     const min_val: number = Math.floor(videoTime_num / 60);
     const sec_val: number = videoTime_num % 60;
+    const time_str: string = toTimeString(videoTime_num);
     return (
       <>
         <div className="notecategory">
           <div className={note.category}>{note.category}</div>
           <div onClick={() => linkToTime(videoTime_num)}>
-            {min_val}:{sec_val}
+            {time_str}
           </div>
         </div>
         <div className="singlenote">
@@ -81,7 +86,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
           </b>
           {note.content}
           <br />
-          <img className="noteimg" src={note.downloadURL} alt="" />
+          {note.downloadURL && <img className="noteimg" src={note.downloadURL} alt="" />}
         </div>
       </>
     );
