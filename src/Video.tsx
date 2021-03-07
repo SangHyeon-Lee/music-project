@@ -6,7 +6,10 @@ import Controlbar from "./Controlbar";
 import { Slider } from "antd";
 import LiveNote from "./live-note";
 import "./Video.css";
-import { useVideoTime } from "./VideoTimeContext";
+import { useVideoElement } from "./VideoElementContext";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "./redux/modules";
+import { setTime } from "./redux/modules/videoTime";
 
 interface IProps {
   className?: string;
@@ -16,12 +19,21 @@ interface IProps {
 const Video: React.FC<IProps> = ({ className, src }) => {
   const [nowPlaying, setNowPlaying] = useState(false);
   const [showControl, setShowControl] = useState(false);
-  const { videoTime, setVideoTime, videoElement, setVideoElement } = useVideoTime()!;
+  const { videoElement, setVideoElement } = useVideoElement()!;
 
   //added (trying)
   const [isPaused, setIsPaused] = useState<boolean>(false);
   //const [playbackRate, setPlaybackRate] = useState<number>(1);
   //till here
+
+  const videoTime = useSelector(
+    (state: RootState) => state.setVideoTime.videoTime
+  );
+  const dispatch = useDispatch();
+
+  const setVideoTime = (time: number) => {
+    dispatch(setTime(time));
+  };
 
   const ref = useRef<HTMLVideoElement>(null);
 
@@ -65,6 +77,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
       const playingTime = videoElement.duration * (percent / 100);
       setVideoTime(playingTime);
       videoElement.currentTime = playingTime;
+      console.log(videoTime);
     }
   };
 

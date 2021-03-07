@@ -3,7 +3,8 @@ import "./live-note.css";
 import { BulbFilled, LikeFilled } from "@ant-design/icons";
 import { ReplyRounded } from "@material-ui/icons";
 import firebase from "./firebase";
-import { useVideoTime } from "./VideoTimeContext";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from './redux/modules';
 
 var db = firebase.firestore();
 
@@ -20,6 +21,8 @@ const LiveNote: React.FC<liveNoteProps> = (props) => {
   var unsubscribe = null;
   const [collection, setCollection] = useState<any[]>([]);
 
+    
+
   useEffect(() => {
     unsubscribe = ref.onSnapshot(onCollectionUpdate);
   }, []);
@@ -30,9 +33,11 @@ const LiveNote: React.FC<liveNoteProps> = (props) => {
     const videoNoteContent: string = note.content;
     const min_val: number = Math.floor(videoTime_num / 60);
     const sec_val: number = videoTime_num % 60;
-    const { videoTime, setVideoTime } = useVideoTime()!;
+    
     const noteShowingTime = 120;
     
+    const videoTime = useSelector((state: RootState) => state.setVideoTime.videoTime);
+
     return (
       <>
         {/* <div className='notecategory'>

@@ -10,7 +10,8 @@ import pauseIcon from "./assets/pause.png";
 import playIcon from "./assets/play.png";
 import muteIcon from "./assets/mute.png";
 import volumeIcon from "./assets/volume.png";
-import { useVideoTime } from "./VideoTimeContext";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "./redux/modules";
 
 interface IProps {
   onProgressChange: (percent: number) => void;
@@ -43,7 +44,9 @@ const Controlbar: React.FC<IProps> = ({
   });
   const startTimeClassProps = classNames(styles.text, styles.startTime);
   const endTimeClassProps = classNames(styles.text, styles.endTime);
-  const { videoTime, setVideoTime } = useVideoTime()!;
+  const videoTime = useSelector(
+    (state: RootState) => state.setVideoTime.videoTime
+  );
 
   const handleVolume = () => {
     if (volumeClicked) {

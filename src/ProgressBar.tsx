@@ -12,7 +12,9 @@ import {
 } from "@ant-design/icons";
 import { ReplyRounded } from "@material-ui/icons";
 import firebase from "./firebase";
-import { useVideoTime } from "./VideoTimeContext";
+
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from './redux/modules';
 
 var db = firebase.firestore();
 interface IProps {
@@ -34,7 +36,7 @@ const ProgressBar: React.FC<IProps> = ({
 }) => {
   const classProps = classNames(styles.default, className);
 
-  const { videoTime, setVideoTime } = useVideoTime()!;
+  const videoTime = useSelector((state: RootState) => state.setVideoTime.videoTime);
 
   const [ref, setRef] = useState(
     db
