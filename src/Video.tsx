@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import React, { memo, useEffect, useRef, useState } from "react";
 import NoteTaking from "./note-taking";
-import styles from "./video.module.css";
 import Controlbar from "./Controlbar";
 import { Slider } from "antd";
 import LiveNote from "./live-note";
@@ -39,8 +38,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
 
   const totalTime = (ref && ref.current && ref.current.duration) || 0; //총 길이
   setVideoElement(ref && ref.current);
-
-  const classProps = classNames(styles.video, className);
 
   const videoSrc = src || "";
   const startTime = Math.floor(videoTime);
@@ -131,14 +128,12 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   return (
     <div>
       <div
-        className={styles.default}
+        className="video-player-container"
         onMouseEnter={setControlVisible}
         onMouseLeave={setControlInvisible}
       >
-        
         <video
-          id="video"
-          className={classProps}
+          className="video-container"
           loop={true}
           muted={true}
           ref={ref}
