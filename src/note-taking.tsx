@@ -11,7 +11,6 @@ import { PictureOutlined } from "@ant-design/icons";
 import captureVideoFrame from "capture-video-frame";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from './redux/modules';
-import setVideoTime from "./redux/modules/videoTime";
 
 var db = firebase.firestore();
 var storage = firebase.storage();
@@ -105,52 +104,83 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
 
   return (
     <div>
-      <Radio.Group
-        className="category-group"
-        onChange={onChange}
-        defaultValue="Awesome"
-      >
-        <Radio.Button className="category-entry" value="Awesome">
-          Awesome
-        </Radio.Button>
-        <Radio.Button className="category-entry" value="What If">
-          What If
-        </Radio.Button>
-        <Radio.Button className="category-entry" value="What & Why">
-          What & Why
-        </Radio.Button>
-        <Radio.Button className="category-entry" value="Difficult">
-          Difficult
-        </Radio.Button>
-      </Radio.Group>
-      <Button
-        type="primary"
-        shape="round"
-        icon={<PictureOutlined />}
-        onClick={() => {
-          var frame = captureVideoFrame(props.player, "png", 1);
-          console.log("captured frame", frame);
-          setImage(frame.dataUri);
-          setprevVideoTime(videoTime);
-        }}
-      >
-        Capture Frame
-      </Button>
-      <div className="draft-root">
-        <Editor
-          editorState={editorState}
-          placeholder={placeholder}
-          onChange={(e) => handleChange(e)}
-        />
-        <Button type="primary" onClick={submitNote}>
-          Submit
-        </Button>
-      </div>
       <div>
-        <br />
-        <br />
+        <Radio.Group
+          className="category-group"
+          onChange={onChange}
+          defaultValue="Awesome"
+        >
+          <Radio.Button className="category-entry" value="Awesome">
+            Awesome
+          </Radio.Button>
+          <Radio.Button className="category-entry" value="What If">
+            What If
+          </Radio.Button>
+          <Radio.Button className="category-entry" value="What & Why">
+            What & Why
+          </Radio.Button>
+          <Radio.Button className="category-entry" value="Difficult">
+            Difficult
+          </Radio.Button>
+        </Radio.Group>
+        <Button
+          type="primary"
+          shape="round"
+          icon={<PictureOutlined />}
+          onClick={() => {
+            var frame = captureVideoFrame(props.player, "png", 1);
+            console.log("captured frame", frame);
+            setImage(frame.dataUri);
+            setprevVideoTime(videoTime);
+          }}
+        >
+          Capture Frame
+        </Button>
+        <div className="draft-root">
+          <Editor
+            editorState={editorState}
+            placeholder={placeholder}
+            onChange={(e) => handleChange(e)}
+          />
+          <Button type="primary" onClick={submitNote}>
+            Submit
+          </Button>
+        </div>
+      </div>
+      
+      <div className="note-taking-container">
         {videoTime === prevVideoTime && (
           <div>
+            <Button
+              onClick={() => {
+                setColorPicker(!showColorPicker);
+                setshowRadius(false);
+              }}
+            >
+              Brush Color
+            </Button>
+            <Button
+              onClick={() => {
+                setColorPicker(false);
+                setshowRadius(!showRadius);
+              }}
+            >
+              Brush Radius
+            </Button>
+            <Button
+              onClick={() => {
+                canvas.undo();
+              }}
+            >
+              Undo
+            </Button>
+            <Button
+              onClick={() => {
+                canvas.clear();
+              }}
+            >
+              Clear
+            </Button>
             <Button
               onClick={() => {
                 let baseCanvas = canvas.canvasContainer.children[3];
@@ -164,37 +194,6 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
               }}
             >
               Save
-            </Button>
-            <Button
-              onClick={() => {
-                canvas.clear();
-              }}
-            >
-              Clear
-            </Button>
-            <Button
-              onClick={() => {
-                canvas.undo();
-              }}
-            >
-              Undo
-            </Button>
-            <Button
-              onClick={() => {
-                setColorPicker(!showColorPicker);
-                setshowRadius(false);
-              }}
-            >
-              Pick Color
-            </Button>
-
-            <Button
-              onClick={() => {
-                setColorPicker(false);
-                setshowRadius(!showRadius);
-              }}
-            >
-              Brush Radius
             </Button>
             {showColorPicker ? (
               <div>

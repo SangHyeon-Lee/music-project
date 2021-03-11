@@ -108,7 +108,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     }
   };
 
-  //added (trying)
   const noteTaking = () => {
     const isPaused = true;
     setIsPaused(isPaused);
@@ -121,13 +120,13 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   };
 
   const marks = {
-    0.5: "x0.5",
-    1: "x1",
-    1.5: "x1.5",
-    2: "x2",
-    4: "x4",
+    0.5: { style: { color: 'white',}, label: 'x0.5', },
+    1: { style: { color: 'white',}, label: 'x1', },
+    1.5: { style: { color: 'white',}, label: 'x1.5', },
+    2: { style: { color: 'white',}, label: 'x2', },
+    3: { style: { color: 'white',}, label: 'x3', },
+    4: { style: { color: 'white',}, label: 'x4', },
   };
-  //till here
 
   return (
     <div>
@@ -136,14 +135,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         onMouseEnter={setControlVisible}
         onMouseLeave={setControlInvisible}
       >
-        <Slider
-          id="playbackslider"
-          marks={marks}
-          step={null}
-          defaultValue={1}
-          max={4}
-          onChange={(value: any) => setPlaybackRate(value)}
-        />
+        
         <video
           id="video"
           className={classProps}
@@ -168,7 +160,18 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         />
       </div>
       <div className="live-note-container">{/* <LiveNote /> */}</div>
-      <div>
+      <div className="note-and-slider-container">
+        <div className="slider-container">
+          Video Speed
+          <Slider
+            id="playbackslider"
+            marks={marks}
+            step={null}
+            defaultValue={1}
+            max={4}
+            onChange={(value: any) => setPlaybackRate(value)}
+          />
+        </div>
         {isPaused && (
           <NoteTaking
             userId="TestUser"

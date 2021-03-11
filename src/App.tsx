@@ -9,13 +9,6 @@ import { Menu, ChevronRight } from "@material-ui/icons";
 import Video from "./Video";
 import { VideoElementProvider } from './VideoElementContext';
 
-const marks = {
-  0.5: "x0.5",
-  1: "x1",
-  1.5: "x1.5",
-  2: "x2",
-  4: "x4"
-};
 const drawerWidth = 360;
 
 const useStyles = makeStyles((theme) => ({

@@ -1,4 +1,24 @@
-/* Live note */
+.note-and-slider-container {
+    display: flex;
+    width: 90vw;
+    align-items: flex-start;
+}
+
+.slider-container {
+    /* position: relative;
+    top: 600px; */
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 7px;
+    width: 300px;
+    padding: 10px;
+    font-family: "Open Sans", SemiBold;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    align-self: right;
+    flex-shrink: 0;
+}
+
 .live-note-container {
     position: relative;
     top: -150px;

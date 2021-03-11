@@ -1,19 +1,29 @@
 @import '~antd/dist/antd.css';
 
 .draft-root {
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 3%;
+    margin-right: 3%;
     background: #fff;
     border: 1px solid rgb(75, 30, 30);
-    font-family: Georgia,serif;
-    font-size: 14px;
+    font-family: "Open Sans", SemiBold;
+    font-size: 16px;
     padding: 15px;
     text-align: right;
+    width: 60vw;
 }
 
 .category-group {
-    margin-left: 10%;
-    margin-right: 10%;
-    font-family: Georgia,serif;
-    font-size: 14px;
+    margin-left: 3%;
+    margin-right: 3%;
+    font-family: "Open Sans", SemiBold;
+    font-size: 16px;
+}
+
+.note-taking-container {
+    margin-left: 30%;
+    margin-right: 30%;
+    text-align: center;
+    display: flex;
+    position: relative;
+    top: -1000px;
 }
