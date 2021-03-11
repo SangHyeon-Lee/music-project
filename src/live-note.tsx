@@ -21,13 +21,10 @@ const LiveNote: React.FC<liveNoteProps> = (props) => {
   var unsubscribe = null;
   const [collection, setCollection] = useState<any[]>([]);
 
-    
-
   useEffect(() => {
     unsubscribe = ref.onSnapshot(onCollectionUpdate);
   }, []);
 
-  // 나중에 currentTime 받아오면 여기 수정할거라 comment out된 부분 그대로 남겨놔주세요
   const Notecomponent = ({ note }: any) => {
     const videoTime_num: number = note.videoTimestamp;
     const videoNoteContent: string = note.content;

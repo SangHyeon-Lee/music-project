@@ -9,6 +9,9 @@ import CanvasDraw from "react-canvas-draw";
 import { CompactPicker } from "react-color";
 import { PictureOutlined } from "@ant-design/icons";
 import captureVideoFrame from "capture-video-frame";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from './redux/modules';
+import setVideoTime from "./redux/modules/videoTime";
 
 var db = firebase.firestore();
 var storage = firebase.storage();
@@ -23,7 +26,6 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
     EditorState.createEmpty()
   );
   const [image, setImage] = useState<any>(null);
-  const [isDraw, setDraw] = useState<boolean>(false);
   const [canvas, setCanvas] = useState<any>(null);
   const [showColorPicker, setColorPicker] = useState<boolean>(false);
   const [editorColor, seteditorColor] = useState<any>("#000000");
@@ -33,6 +35,9 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
   const [placeholder, setplaceholder] = useState<string>(
     "This is such a useful tip because..."
   );
+  const [prevVideoTime, setprevVideoTime] = useState<number>(0);
+
+  const videoTime = useSelector((state: RootState) => state.setVideoTime.videoTime);
 
   const handleChange = (e: EditorState) => {
     seteditorState(e);
@@ -77,6 +82,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
     }
     window.alert("saved!");
   };
+
   const changeplaceholder = (category: string) => {
     if (category === "Awesome") {
       setplaceholder("This is such a useful tip because...");
@@ -117,6 +123,19 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
           Difficult
         </Radio.Button>
       </Radio.Group>
+      <Button
+        type="primary"
+        shape="round"
+        icon={<PictureOutlined />}
+        onClick={() => {
+          var frame = captureVideoFrame(props.player, "png", 1);
+          console.log("captured frame", frame);
+          setImage(frame.dataUri);
+          setprevVideoTime(videoTime);
+        }}
+      >
+        Capture Frame
+      </Button>
       <div className="draft-root">
         <Editor
           editorState={editorState}
@@ -128,27 +147,9 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
         </Button>
       </div>
       <div>
-        <Button
-          type="primary"
-          shape="round"
-          icon={<PictureOutlined />}
-          onClick={() => {
-            var frame = captureVideoFrame(props.player, "png", 1);
-            console.log("captured frame", frame);
-            setImage(frame.dataUri);
-          }}
-        >
-          Capture Frame
-        </Button>
-
-        <Button type="link" onClick={() => setDraw(!isDraw)}>
-          Draw
-        </Button>
-
         <br />
         <br />
-        {image && !isDraw && <img id="capturedImage" src={image} alt="" />}
-        {isDraw && (
+        {videoTime === prevVideoTime && (
           <div>
             <Button
               onClick={() => {
@@ -159,7 +160,6 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
                   0,
                   0
                 ); // add drawing
-                setDraw(false);
                 setImage(baseCanvas.toDataURL());
               }}
             >
