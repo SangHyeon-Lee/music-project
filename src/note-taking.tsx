@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Editor, EditorState } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "./note-taking.css";
-import { Slider, Button, Radio } from "antd";
+import { Slider, Button, Radio, Popover } from "antd";
 import firebase from "./firebase";
 import { v4 as uuid } from "uuid";
 import CanvasDraw from "react-canvas-draw";
 import { CompactPicker } from "react-color";
 import { PictureOutlined } from "@ant-design/icons";
+import { ColorLens, LineWeight, Undo, Delete, Save } from "@material-ui/icons";
 import captureVideoFrame from "capture-video-frame";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from './redux/modules';
@@ -134,7 +135,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
             setprevVideoTime(videoTime);
           }}
         >
-          Capture Frame
+          Take a Screenshot and Draw
         </Button>
         <div className="draft-root">
           <Editor
@@ -150,86 +151,103 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
       
       <div className="note-taking-container">
         {videoTime === prevVideoTime && (
-          <div>
-            <Button
-              onClick={() => {
-                setColorPicker(!showColorPicker);
-                setshowRadius(false);
-              }}
-            >
-              Brush Color
-            </Button>
-            <Button
-              onClick={() => {
-                setColorPicker(false);
-                setshowRadius(!showRadius);
-              }}
-            >
-              Brush Radius
-            </Button>
-            <Button
-              onClick={() => {
-                canvas.undo();
-              }}
-            >
-              Undo
-            </Button>
-            <Button
-              onClick={() => {
-                canvas.clear();
-              }}
-            >
-              Clear
-            </Button>
-            <Button
-              onClick={() => {
-                let baseCanvas = canvas.canvasContainer.children[3];
-                let baseCanvasContex = baseCanvas.getContext("2d");
-                baseCanvasContex.drawImage(
-                  canvas.canvasContainer.children[1],
-                  0,
-                  0
-                ); // add drawing
-                setImage(baseCanvas.toDataURL());
-              }}
-            >
-              Save
-            </Button>
-            {showColorPicker ? (
-              <div>
-                <CompactPicker
-                  color={editorColor}
-                  onChange={(color) => {
-                    seteditorColor(color.hex);
-                  }}
-                />
-              </div>
-            ) : null}
-            {showRadius ? (
-              <div>
-                <Slider
-                  min={1}
-                  max={10}
-                  onChange={(value: React.SetStateAction<number>) => {
-                    setbrushRadius(value);
-                  }}
-                  value={typeof brushRadius === "number" ? brushRadius : 3}
-                />
-              </div>
-            ) : null}
-            <div id="canvasdraw" className="canvasdraw">
+          <div className="screenshot-editor-container">
+            <div className="screenshot-picture-container">
               <CanvasDraw
                 ref={(canvas: any) => {
                   setCanvas(canvas);
                 }}
                 imgSrc={image}
-                canvasWidth="640px"
-                canvasHeight="360px"
+                canvasWidth="30vw"
+                canvasHeight="24vw"
                 lazyRadius="0"
                 brushColor={editorColor}
                 brushRadius={brushRadius}
               />
             </div>
+            
+            <div>
+              <Popover placement="bottom" content="Brush Color">
+                <Button
+                  onClick={() => {
+                    setColorPicker(!showColorPicker);
+                    setshowRadius(false);
+                  }}
+                >
+                  <ColorLens />
+                </Button>
+              </Popover>
+              <Popover placement="bottom" content="Brush Radius">
+                <Button
+                  onClick={() => {
+                    setColorPicker(false);
+                    setshowRadius(!showRadius);
+                  }}
+                >
+                  <LineWeight />
+                </Button>
+              </Popover>
+              <Popover placement="bottom" content="Undo">
+                <Button
+                  onClick={() => {
+                    canvas.undo();
+                  }}
+                >
+                  <Undo />
+                </Button>
+              </Popover>
+              <Popover placement="bottom" content="Clear">
+                <Button
+                  onClick={() => {
+                    canvas.clear();
+                  }}
+                >
+                  <Delete />
+                </Button>
+              </Popover>
+              <Popover placement="bottom" content="Save">
+                <Button
+                  onClick={() => {
+                    let baseCanvas = canvas.canvasContainer.children[3];
+                    let baseCanvasContex = baseCanvas.getContext("2d");
+                    baseCanvasContex.drawImage(
+                      canvas.canvasContainer.children[1],
+                      0,
+                      0
+                    ); // add drawing
+                    setImage(baseCanvas.toDataURL());
+                  }}
+                >
+                  <Save />
+                </Button>
+              </Popover>
+            </div>
+
+            <div>
+              {showColorPicker ? (
+                <div>
+                  <CompactPicker
+                    color={editorColor}
+                    onChange={(color) => {
+                      seteditorColor(color.hex);
+                    }}
+                  />
+                </div>
+              ) : null}
+              {showRadius ? (
+                <div className="lineweight-container">
+                  <Slider
+                    min={1}
+                    max={10}
+                    onChange={(value: React.SetStateAction<number>) => {
+                      setbrushRadius(value);
+                    }}
+                    value={typeof brushRadius === "number" ? brushRadius : 3}
+                  />
+                </div>
+              ) : null}
+            </div>
+            
           </div>
         )}
       </div>
