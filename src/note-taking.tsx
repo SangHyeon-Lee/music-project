@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { Editor, EditorState } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "./note-taking.css";
-import { Slider, Button, Radio } from "antd";
+import { Slider, Button, Radio, Popover } from "antd";
 import firebase from "./firebase";
 import { v4 as uuid } from "uuid";
 import CanvasDraw from "react-canvas-draw";
 import { CompactPicker } from "react-color";
 import { PictureOutlined } from "@ant-design/icons";
+import { ColorLens, LineWeight, Undo, Delete, Save } from "@material-ui/icons";
 import captureVideoFrame from "capture-video-frame";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from './redux/modules';
 
 var db = firebase.firestore();
 var storage = firebase.storage();
@@ -23,7 +26,6 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
     EditorState.createEmpty()
   );
   const [image, setImage] = useState<any>(null);
-  const [isDraw, setDraw] = useState<boolean>(false);
   const [canvas, setCanvas] = useState<any>(null);
   const [showColorPicker, setColorPicker] = useState<boolean>(false);
   const [editorColor, seteditorColor] = useState<any>("#000000");
@@ -33,6 +35,9 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
   const [placeholder, setplaceholder] = useState<string>(
     "This is such a useful tip because..."
   );
+  const [prevVideoTime, setprevVideoTime] = useState<number>(0);
+
+  const videoTime = useSelector((state: RootState) => state.setVideoTime.videoTime);
 
   const handleChange = (e: EditorState) => {
     seteditorState(e);
@@ -75,7 +80,9 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
       });
       console.log(editorState.getCurrentContent().getPlainText("\u0001"));
     }
+    window.alert("saved!");
   };
+
   const changeplaceholder = (category: string) => {
     if (category === "Awesome") {
       setplaceholder("This is such a useful tip because...");
@@ -98,35 +105,25 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
 
   return (
     <div>
-      <Radio.Group
-        className="category-group"
-        onChange={onChange}
-        defaultValue="Awesome"
-      >
-        <Radio.Button className="category-entry" value="Awesome">
-          Awesome
-        </Radio.Button>
-        <Radio.Button className="category-entry" value="What If">
-          What If
-        </Radio.Button>
-        <Radio.Button className="category-entry" value="What & Why">
-          What & Why
-        </Radio.Button>
-        <Radio.Button className="category-entry" value="Difficult">
-          Difficult
-        </Radio.Button>
-      </Radio.Group>
-      <div className="draft-root">
-        <Editor
-          editorState={editorState}
-          placeholder={placeholder}
-          onChange={(e) => handleChange(e)}
-        />
-        <Button type="primary" onClick={submitNote}>
-          Submit
-        </Button>
-      </div>
       <div>
+        <Radio.Group
+          className="category-group"
+          onChange={onChange}
+          defaultValue="Awesome"
+        >
+          <Radio.Button className="category-entry" value="Awesome">
+            Awesome
+          </Radio.Button>
+          <Radio.Button className="category-entry" value="What If">
+            What If
+          </Radio.Button>
+          <Radio.Button className="category-entry" value="What & Why">
+            What & Why
+          </Radio.Button>
+          <Radio.Button className="category-entry" value="Difficult">
+            Difficult
+          </Radio.Button>
+        </Radio.Group>
         <Button
           type="primary"
           shape="round"
@@ -135,101 +132,122 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
             var frame = captureVideoFrame(props.player, "png", 1);
             console.log("captured frame", frame);
             setImage(frame.dataUri);
+            setprevVideoTime(videoTime);
           }}
         >
-          Capture Frame
+          Take a Screenshot and Draw
         </Button>
-
-        <Button type="link" onClick={() => setDraw(!isDraw)}>
-          Draw
-        </Button>
-
-        <br />
-        <br />
-        {image && !isDraw && <img id="capturedImage" src={image} alt="" />}
-        {isDraw && (
-          <div>
-            <Button
-              onClick={() => {
-                let baseCanvas = canvas.canvasContainer.children[3];
-                let baseCanvasContex = baseCanvas.getContext("2d");
-                baseCanvasContex.drawImage(
-                  canvas.canvasContainer.children[1],
-                  0,
-                  0
-                ); // add drawing
-                setDraw(false);
-                setImage(baseCanvas.toDataURL());
-              }}
-            >
-              Save
-            </Button>
-            <Button
-              onClick={() => {
-                canvas.clear();
-              }}
-            >
-              Clear
-            </Button>
-            <Button
-              onClick={() => {
-                canvas.undo();
-              }}
-            >
-              Undo
-            </Button>
-            <Button
-              onClick={() => {
-                setColorPicker(!showColorPicker);
-                setshowRadius(false);
-              }}
-            >
-              Pick Color
-            </Button>
-
-            <Button
-              onClick={() => {
-                setColorPicker(false);
-                setshowRadius(!showRadius);
-              }}
-            >
-              Brush Radius
-            </Button>
-            {showColorPicker ? (
-              <div>
-                <CompactPicker
-                  color={editorColor}
-                  onChange={(color) => {
-                    seteditorColor(color.hex);
-                  }}
-                />
-              </div>
-            ) : null}
-            {showRadius ? (
-              <div>
-                <Slider
-                  min={1}
-                  max={10}
-                  onChange={(value: React.SetStateAction<number>) => {
-                    setbrushRadius(value);
-                  }}
-                  value={typeof brushRadius === "number" ? brushRadius : 3}
-                />
-              </div>
-            ) : null}
-            <div id="canvasdraw" className="canvasdraw">
+        <div className="draft-root">
+          <Editor
+            editorState={editorState}
+            placeholder={placeholder}
+            onChange={(e) => handleChange(e)}
+          />
+          <Button type="primary" onClick={submitNote}>
+            Submit
+          </Button>
+        </div>
+      </div>
+      
+      <div className="note-taking-container">
+        {videoTime === prevVideoTime && (
+          <div className="screenshot-editor-container">
+            <div className="screenshot-picture-container">
               <CanvasDraw
                 ref={(canvas: any) => {
                   setCanvas(canvas);
                 }}
                 imgSrc={image}
-                canvasWidth="640px"
-                canvasHeight="360px"
+                canvasWidth="30vw"
+                canvasHeight="24vw"
                 lazyRadius="0"
                 brushColor={editorColor}
                 brushRadius={brushRadius}
               />
             </div>
+            
+            <div>
+              <Popover placement="bottom" content="Brush Color">
+                <Button
+                  onClick={() => {
+                    setColorPicker(!showColorPicker);
+                    setshowRadius(false);
+                  }}
+                >
+                  <ColorLens />
+                </Button>
+              </Popover>
+              <Popover placement="bottom" content="Brush Radius">
+                <Button
+                  onClick={() => {
+                    setColorPicker(false);
+                    setshowRadius(!showRadius);
+                  }}
+                >
+                  <LineWeight />
+                </Button>
+              </Popover>
+              <Popover placement="bottom" content="Undo">
+                <Button
+                  onClick={() => {
+                    canvas.undo();
+                  }}
+                >
+                  <Undo />
+                </Button>
+              </Popover>
+              <Popover placement="bottom" content="Clear">
+                <Button
+                  onClick={() => {
+                    canvas.clear();
+                  }}
+                >
+                  <Delete />
+                </Button>
+              </Popover>
+              <Popover placement="bottom" content="Save">
+                <Button
+                  onClick={() => {
+                    let baseCanvas = canvas.canvasContainer.children[3];
+                    let baseCanvasContex = baseCanvas.getContext("2d");
+                    baseCanvasContex.drawImage(
+                      canvas.canvasContainer.children[1],
+                      0,
+                      0
+                    ); // add drawing
+                    setImage(baseCanvas.toDataURL());
+                  }}
+                >
+                  <Save />
+                </Button>
+              </Popover>
+            </div>
+
+            <div>
+              {showColorPicker ? (
+                <div>
+                  <CompactPicker
+                    color={editorColor}
+                    onChange={(color) => {
+                      seteditorColor(color.hex);
+                    }}
+                  />
+                </div>
+              ) : null}
+              {showRadius ? (
+                <div className="lineweight-container">
+                  <Slider
+                    min={1}
+                    max={10}
+                    onChange={(value: React.SetStateAction<number>) => {
+                      setbrushRadius(value);
+                    }}
+                    value={typeof brushRadius === "number" ? brushRadius : 3}
+                  />
+                </div>
+              ) : null}
+            </div>
+            
           </div>
         )}
       </div>

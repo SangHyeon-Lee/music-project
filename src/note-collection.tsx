@@ -4,12 +4,15 @@ import { Button, Tag } from "antd";
 import { LikeOutlined } from "@ant-design/icons";
 import "./note-collection.css";
 // import { LeakAddTwoTone } from "@material-ui/icons";
-import { useVideoTime } from "./VideoTimeContext";
+import { useVideoElement } from "./VideoElementContext";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "./redux/modules";
+import { setTime } from "./redux/modules/videoTime";
 import { ViewArrayOutlined } from "@material-ui/icons";
 
-const toTimeString = (seconds:number) => {
-  return (new Date(seconds * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)![0];
-}
+const toTimeString = (seconds: number) => {
+  return new Date(seconds * 1000).toUTCString().match(/(\d\d:\d\d:\d\d)/)![0];
+};
 
 const { CheckableTag } = Tag;
 var db = firebase.firestore();
@@ -31,7 +34,17 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   );
   // const [noteLayout, setNoteLayout] = useState<any[]>();
   const refList = useRef<any[]>([]);
-  const { videoTime, setVideoTime, videoElement } = useVideoTime()!;
+  const { videoElement } = useVideoElement()!;
+
+  const videoTime = useSelector(
+    (state: RootState) => state.setVideoTime.videoTime
+  );
+  const dispatch = useDispatch();
+
+  const setVideoTime = (time: number) => {
+    dispatch(setTime(time));
+  };
+
   const [prevFocusedTime, setPrevFocusedTime] = useState<number>(0);
   // var originalCollection = null;
   // console.log(videoTime)
@@ -70,9 +83,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
       <>
         <div className="notecategory">
           <div className={note.category}>{note.category}</div>
-          <div onClick={() => linkToTime(videoTime_num)}>
-            {time_str}
-          </div>
+          <div onClick={() => linkToTime(videoTime_num)}>{time_str}</div>
         </div>
         <div className="singlenote">
           <b className="noteheader">
@@ -86,7 +97,9 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
           </b>
           {note.content}
           <br />
-          {note.downloadURL && <img className="noteimg" src={note.downloadURL} alt="" />}
+          {note.downloadURL && (
+            <img className="noteimg" src={note.downloadURL} alt="" />
+          )}
         </div>
       </>
     );

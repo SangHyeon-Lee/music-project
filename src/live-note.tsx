@@ -3,7 +3,8 @@ import "./live-note.css";
 import { BulbFilled, LikeFilled } from "@ant-design/icons";
 import { ReplyRounded } from "@material-ui/icons";
 import firebase from "./firebase";
-import { useVideoTime } from "./VideoTimeContext";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from './redux/modules';
 
 var db = firebase.firestore();
 
@@ -24,15 +25,16 @@ const LiveNote: React.FC<liveNoteProps> = (props) => {
     unsubscribe = ref.onSnapshot(onCollectionUpdate);
   }, []);
 
-  // 나중에 currentTime 받아오면 여기 수정할거라 comment out된 부분 그대로 남겨놔주세요
   const Notecomponent = ({ note }: any) => {
     const videoTime_num: number = note.videoTimestamp;
     const videoNoteContent: string = note.content;
     const min_val: number = Math.floor(videoTime_num / 60);
     const sec_val: number = videoTime_num % 60;
-    const { videoTime, setVideoTime } = useVideoTime()!;
+    
     const noteShowingTime = 120;
     
+    const videoTime = useSelector((state: RootState) => state.setVideoTime.videoTime);
+
     return (
       <>
         {/* <div className='notecategory'>

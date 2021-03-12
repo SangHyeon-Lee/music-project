@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 
 import styles from "./progressBar.module.css";
 import {
-  EnvironmentTwoTone,
   EnvironmentFilled,
   BulbFilled,
   LikeFilled,
@@ -13,7 +12,9 @@ import {
 } from "@ant-design/icons";
 import { ReplyRounded } from "@material-ui/icons";
 import firebase from "./firebase";
-import { useVideoTime } from "./VideoTimeContext";
+
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from './redux/modules';
 
 var db = firebase.firestore();
 interface IProps {
@@ -35,7 +36,7 @@ const ProgressBar: React.FC<IProps> = ({
 }) => {
   const classProps = classNames(styles.default, className);
 
-  const { videoTime, setVideoTime } = useVideoTime()!;
+  const videoTime = useSelector((state: RootState) => state.setVideoTime.videoTime);
 
   const [ref, setRef] = useState(
     db
@@ -70,7 +71,7 @@ const ProgressBar: React.FC<IProps> = ({
     const videoTime_num: number = note.videoTimestamp;
 
     const notepos = (videoTime_num / max || 0) * 100;
-    const fitpos = ((50 - notepos) / 50) * 9;
+    const fitpos = ((50 - notepos) / 50) * 9; // 9 = radius of controller
     const notepospercent = `${notepos}%`;
     const fitpospx = `${fitpos}px`;
     const notecategory = note.category;
@@ -111,6 +112,7 @@ const ProgressBar: React.FC<IProps> = ({
             fontSize: size,
             color: bubblecolor,
           }}
+
         />
         {showNote && <ShowNote note={note} />}
       </div>

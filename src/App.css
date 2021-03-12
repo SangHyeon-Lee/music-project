@@ -62,19 +62,9 @@
   margin: auto;
 }
 
-
 .appbody {
   display: grid;
   grid-template-columns: 75% 20%;
   grid-gap: 1em;
-}
-
-/* Demo Specific Styles */
-.appbody {
   margin: 0 auto;
-  padding: 1em 0;
 }
-.slider {
-  max-width: 40%;
-}
-

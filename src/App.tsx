@@ -7,15 +7,8 @@ import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
 import { Menu, ChevronRight } from "@material-ui/icons";
 import Video from "./Video";
-import { VideoTimeProvider } from './VideoTimeContext';
+import { VideoElementProvider } from './VideoElementContext';
 
-const marks = {
-  0.5: "x0.5",
-  1: "x1",
-  1.5: "x1.5",
-  2: "x2",
-  4: "x4"
-};
 const drawerWidth = 360;
 
 const useStyles = makeStyles((theme) => ({
@@ -100,7 +93,7 @@ const App: React.FC<AppProps> = (props) => {
 
   return (
     <div>
-      <VideoTimeProvider>
+      <VideoElementProvider>
         <div className="appbody">
           <div
             className={clsx(classes.content, {
@@ -135,7 +128,7 @@ const App: React.FC<AppProps> = (props) => {
           </div>
           <NoteCollection />
         </Drawer>
-      </VideoTimeProvider>
+      </VideoElementProvider>
     </div>
   );
 };

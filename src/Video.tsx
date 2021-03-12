@@ -1,12 +1,14 @@
 import classNames from "classnames";
 import React, { memo, useEffect, useRef, useState } from "react";
 import NoteTaking from "./note-taking";
-import styles from "./video.module.css";
 import Controlbar from "./Controlbar";
 import { Slider } from "antd";
 import LiveNote from "./live-note";
 import "./Video.css";
-import { useVideoTime } from "./VideoTimeContext";
+import { useVideoElement } from "./VideoElementContext";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "./redux/modules";
+import { setTime } from "./redux/modules/videoTime";
 
 interface IProps {
   className?: string;
@@ -16,19 +18,26 @@ interface IProps {
 const Video: React.FC<IProps> = ({ className, src }) => {
   const [nowPlaying, setNowPlaying] = useState(false);
   const [showControl, setShowControl] = useState(false);
-  const { videoTime, setVideoTime, videoElement, setVideoElement } = useVideoTime()!;
+  const { videoElement, setVideoElement } = useVideoElement()!;
 
   //added (trying)
   const [isPaused, setIsPaused] = useState<boolean>(false);
   //const [playbackRate, setPlaybackRate] = useState<number>(1);
   //till here
 
+  const videoTime = useSelector(
+    (state: RootState) => state.setVideoTime.videoTime
+  );
+  const dispatch = useDispatch();
+
+  const setVideoTime = (time: number) => {
+    dispatch(setTime(time));
+  };
+
   const ref = useRef<HTMLVideoElement>(null);
 
   const totalTime = (ref && ref.current && ref.current.duration) || 0; //총 길이
   setVideoElement(ref && ref.current);
-
-  const classProps = classNames(styles.video, className);
 
   const videoSrc = src || "";
   const startTime = Math.floor(videoTime);
@@ -50,7 +59,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     if (videoElement) {
       videoElement.playbackRate = rate;
     }
-  }
+  };
   useEffect(() => {
     addTimeUpdate();
   }, []);
@@ -65,6 +74,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
       const playingTime = videoElement.duration * (percent / 100);
       setVideoTime(playingTime);
       videoElement.currentTime = playingTime;
+      console.log(videoTime);
     }
   };
 
@@ -95,7 +105,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     }
   };
 
-  //added (trying)
   const noteTaking = () => {
     const isPaused = true;
     setIsPaused(isPaused);
@@ -108,32 +117,23 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   };
 
   const marks = {
-    0.5: "x0.5",
-    1: "x1",
-    1.5: "x1.5",
-    2: "x2",
-    4: "x4",
+    0.5: { style: { color: 'white',}, label: 'x0.5', },
+    1: { style: { color: 'white',}, label: 'x1', },
+    1.5: { style: { color: 'white',}, label: 'x1.5', },
+    2: { style: { color: 'white',}, label: 'x2', },
+    3: { style: { color: 'white',}, label: 'x3', },
+    4: { style: { color: 'white',}, label: 'x4', },
   };
-  //till here
 
   return (
     <div>
       <div
-        className={styles.default}
+        className="video-player-container"
         onMouseEnter={setControlVisible}
         onMouseLeave={setControlInvisible}
       >
-        <Slider
-          id="playbackslider"
-          marks={marks}
-          step={null}
-          defaultValue={1}
-          max={4}
-          onChange={(value: any) => setPlaybackRate(value)}
-        />
         <video
-          id="video"
-          className={classProps}
+          className="video-container"
           loop={true}
           muted={true}
           ref={ref}
@@ -154,10 +154,19 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           videoElement={videoElement}
         />
       </div>
-      <div className="live-note-container">
-         {/* <LiveNote /> */}
-      </div>
-      <div>
+      <div className="live-note-container">{/* <LiveNote /> */}</div>
+      <div className="note-and-slider-container">
+        <div className="slider-container">
+          Video Speed
+          <Slider
+            id="playbackslider"
+            marks={marks}
+            step={null}
+            defaultValue={1}
+            max={4}
+            onChange={(value: any) => setPlaybackRate(value)}
+          />
+        </div>
         {isPaused && (
           <NoteTaking
             userId="TestUser"
