@@ -81,7 +81,7 @@ const Controlbar: React.FC<IProps> = ({
   return (
     <>
       <div className={controlBarClassProps}>
-        <span className={startTimeClassProps}>{toTimeString(videoTime)}</span>
+        <span className={startTimeClassProps}>{(videoTime!=null) ? toTimeString(videoTime) : toTimeString(0)}</span>
         <ProgressBar
           max={totalTime}
           className={styles.progressBar}
