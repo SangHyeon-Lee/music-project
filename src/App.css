@@ -68,3 +68,11 @@
   grid-gap: 1em;
   margin: 0 auto;
 }
+
+.closebutton {
+  width: 360px;
+  z-index: 1;
+  background-color: rgb(255, 255, 255);
+  position: sticky;
+  top: 0;
+}

@@ -121,7 +121,7 @@ const App: React.FC<AppProps> = (props) => {
             paper: classes.drawerPaper,
           }}
         >
-          <div>
+          <div className='closebutton'>
             <IconButton onClick={handleDrawerClose}>
               <ChevronRight />
             </IconButton>
