@@ -10,15 +10,16 @@ import { CompactPicker } from "react-color";
 import { PictureOutlined } from "@ant-design/icons";
 import { ColorLens, LineWeight, Undo, Delete, Save } from "@material-ui/icons";
 import captureVideoFrame from "capture-video-frame";
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from './redux/modules';
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "./redux/modules";
+import { useVideoElement } from "./VideoElementContext";
+import { setTime } from "./redux/modules/videoTime";
 
 var db = firebase.firestore();
 var storage = firebase.storage();
 interface noteTakingProps {
   userId: string;
-  timestamp: number;
-  player: any;
+  nowPlaying: any;
 }
 
 const NoteTaking: React.FC<noteTakingProps> = (props) => {
@@ -35,9 +36,17 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
   const [placeholder, setplaceholder] = useState<string>(
     "This is such a useful tip because..."
   );
-  const [prevVideoTime, setprevVideoTime] = useState<number>(0);
+  const [prevVideoTime, setprevVideoTime] = useState<number>(-1);
 
-  const videoTime = useSelector((state: RootState) => state.setVideoTime.videoTime);
+  const videoTime = useSelector(
+    (state: RootState) => state.setVideoTime.videoTime
+  );
+  const { videoElement, setVideoElement } = useVideoElement()!;
+  const dispatch = useDispatch();
+
+  const setVideoTime = (time: number) => {
+    dispatch(setTime(time));
+  };
 
   const handleChange = (e: EditorState) => {
     seteditorState(e);
@@ -64,7 +73,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
               content: editorState.getCurrentContent().getPlainText("\u0001"),
               //timestamp: "",
               userId: props.userId,
-              videoTimestamp: props.timestamp,
+              videoTimestamp: videoTime,
               downloadURL: downloadURL,
             });
           })
@@ -75,7 +84,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
         content: editorState.getCurrentContent().getPlainText("\u0001"),
         //timestamp: "",
         userId: props.userId,
-        videoTimestamp: props.timestamp,
+        videoTimestamp: videoTime,
         downloadURL: "",
       });
       console.log(editorState.getCurrentContent().getPlainText("\u0001"));
@@ -129,7 +138,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
           shape="round"
           icon={<PictureOutlined />}
           onClick={() => {
-            var frame = captureVideoFrame(props.player, "png", 1);
+            var frame = captureVideoFrame(videoElement, "png", 1);
             console.log("captured frame", frame);
             setImage(frame.dataUri);
             setprevVideoTime(videoTime);
@@ -142,13 +151,17 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
             editorState={editorState}
             placeholder={placeholder}
             onChange={(e) => handleChange(e)}
+            onFocus={() => {
+              videoElement.pause();
+              props.nowPlaying(false);
+            }}
           />
           <Button type="primary" onClick={submitNote}>
             Submit
           </Button>
         </div>
       </div>
-      
+
       <div className="note-taking-container">
         {videoTime === prevVideoTime && (
           <div className="screenshot-editor-container">
@@ -165,7 +178,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
                 brushRadius={brushRadius}
               />
             </div>
-            
+
             <div>
               <Popover placement="bottom" content="Brush Color">
                 <Button
@@ -247,7 +260,6 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
                 </div>
               ) : null}
             </div>
-            
           </div>
         )}
       </div>

@@ -105,24 +105,13 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     }
   };
 
-  const noteTaking = () => {
-    const isPaused = true;
-    setIsPaused(isPaused);
-    console.log("Note Taking is called");
-  };
-
-  const setPausedFalse = () => {
-    const isPaused = false;
-    setIsPaused(isPaused);
-  };
-
   const marks = {
-    0.5: { style: { color: 'white',}, label: 'x0.5', },
-    1: { style: { color: 'white',}, label: 'x1', },
-    1.5: { style: { color: 'white',}, label: 'x1.5', },
-    2: { style: { color: 'white',}, label: 'x2', },
-    3: { style: { color: 'white',}, label: 'x3', },
-    4: { style: { color: 'white',}, label: 'x4', },
+    0.5: { style: { color: "white" }, label: "x0.5" },
+    1: { style: { color: "white" }, label: "x1" },
+    1.5: { style: { color: "white" }, label: "x1.5" },
+    2: { style: { color: "white" }, label: "x2" },
+    3: { style: { color: "white" }, label: "x3" },
+    4: { style: { color: "white" }, label: "x4" },
   };
 
   return (
@@ -138,8 +127,12 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           muted={true}
           ref={ref}
           playsInline={true}
-          onPause={noteTaking}
-          onPlay={setPausedFalse}
+          onPause={() => {
+            setIsPaused(true);
+          }}
+          onPlay={() => {
+            setIsPaused(false);
+          }}
           onClick={onPlayIconClick}
         >
           <source src={videoSrc} type="video/mp4" />
@@ -167,13 +160,10 @@ const Video: React.FC<IProps> = ({ className, src }) => {
             onChange={(value: any) => setPlaybackRate(value)}
           />
         </div>
-        {isPaused && (
-          <NoteTaking
-            userId="TestUser"
-            timestamp={videoTime}
-            player={videoElement}
-          />
-        )}
+        <NoteTaking
+          userId="TestUser"
+          nowPlaying={setNowPlaying}
+        />
       </div>
     </div>
   );

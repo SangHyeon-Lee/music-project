@@ -32,11 +32,20 @@
   background-color: white;
 }
 
+.timestamp{
+  position: absolute;
+  top: -40px;
+  height: 15px;
+  width: 60px;
+  background-color: rgba(255, 255, 255, 0);
+}
+
 .stepContainer {
   display: flex;
   top: 10px;
   height: 20px;
   width: 65vw;
+  align-items: center;
   background-color: rgba(160, 160, 160, 0.616);
   /* justify-content: space-between; */
 }
