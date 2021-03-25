@@ -4,7 +4,8 @@ import styles from "./progressBar.module.css";
 import { ReplyRounded } from "@material-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
-import NoteIcon from "./NoteIcon"
+import NoteIcon from "./NoteIcon";
+import TimeProgressBar from "./TimeProgressBar";
 
 interface IProps {
   max: number;
@@ -42,14 +43,6 @@ const ProgressBar: React.FC<IProps> = ({
     return new Date(seconds * 1000).toUTCString().match(/(\d\d:\d\d:\d\d)/)![0];
   };
 
-  const ShowTime = () => {
-    return (
-      <div className={styles.timestamp} style={{ left: stampPos, color: "#FFFFFF" }}>
-        {timestamp}
-      </div>
-    );
-  };
-
   function ShowTimeStamp(
     event: React.MouseEvent<HTMLInputElement, MouseEvent>
   ) {
@@ -64,7 +57,7 @@ const ProgressBar: React.FC<IProps> = ({
 
     setmouseIsOn(true);
     settimestamp(timestamp);
-    setstampPos((event.nativeEvent.offsetX - 20)+"px");
+    setstampPos(event.nativeEvent.offsetX - 20 + "px");
   }
 
   return (
@@ -83,32 +76,17 @@ const ProgressBar: React.FC<IProps> = ({
               Second Step</span> */}
         </div>
         <div>
-          <NoteIcon max = {max} onChange={onChange}/>
+          <NoteIcon max={max} onChange={onChange} />
         </div>
       </div>
 
       <div className={styles.bgBar}>
-        <div className={styles.bar} style={{ width: percent }}>
-          {mouseIsOn && <ShowTime/>}
-          <input
-            onChange={(e) => {
-              onChange(parseFloat(e.target.value));
-            }}
-            onTouchStart={onMouseDown}
-            onTouchEnd={onMouseUp}
-            onMouseMove={(e) => {
-              ShowTimeStamp(e);
-            }}
-            onMouseLeave={(e) => setmouseIsOn(false)}
-            type="range"
-            min="0"
-            max="100"
-            step="0.000000001"
-            value={percentNum}
-            className={styles.controller}
-          />
-          <br />
-        </div>
+        <TimeProgressBar
+          max={max}
+          onChange={onChange}
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+        />
       </div>
     </div>
   );

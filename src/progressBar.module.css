@@ -34,7 +34,7 @@
 
 .timestamp{
   position: absolute;
-  top: -40px;
+  top: 12px;
   height: 15px;
   width: 60px;
   background-color: rgba(255, 255, 255, 0);
