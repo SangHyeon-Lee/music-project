@@ -20,11 +20,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const [showControl, setShowControl] = useState(false);
   const { videoElement, setVideoElement } = useVideoElement()!;
 
-  //added (trying)
-  const [isPaused, setIsPaused] = useState<boolean>(false);
-  //const [playbackRate, setPlaybackRate] = useState<number>(1);
-  //till here
-
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
   );
@@ -100,7 +95,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   };
 
   const setControlInvisible = () => {
-    if (showControl && !isPaused) {
+    if (showControl && nowPlaying) {
       setShowControl(false);
     }
   };
@@ -114,6 +109,18 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     4: { style: { color: "white" }, label: "x4" },
   };
 
+  function handleSpacebarPress(e: React.KeyboardEvent<HTMLVideoElement>) {
+    if (e.key === " ") {
+      if (nowPlaying) {
+        setNowPlaying(false);
+        videoElement.pause();
+      } else {
+        setNowPlaying(true);
+        videoElement.play();
+      }
+    }
+  }
+
   return (
     <div>
       <div
@@ -122,18 +129,14 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         onMouseLeave={setControlInvisible}
       >
         <video
+          tabIndex={0}
           className="video-container"
           loop={true}
           muted={true}
           ref={ref}
           playsInline={true}
-          onPause={() => {
-            setIsPaused(true);
-          }}
-          onPlay={() => {
-            setIsPaused(false);
-          }}
           onClick={onPlayIconClick}
+          onKeyPress={(e) => handleSpacebarPress(e)}
         >
           <source src={videoSrc} type="video/mp4" />
         </video>
@@ -160,10 +163,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
             onChange={(value: any) => setPlaybackRate(value)}
           />
         </div>
-        <NoteTaking
-          userId="TestUser"
-          nowPlaying={setNowPlaying}
-        />
+        <NoteTaking userId="TestUser" nowPlaying={setNowPlaying} />
       </div>
     </div>
   );
