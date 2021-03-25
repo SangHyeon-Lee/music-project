@@ -33,10 +33,29 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   open: {
-    position: "absolute",
-    right: "0px",
+    position: "fixed",
+    right: "-25px",
     margin: "auto",
-    top: "0px",
+    writingMode: "vertical-rl",
+    textOrientation: "mixed",
+    // position: "fixed",
+    top: "20%",
+    width: "70px",
+    height: "250px",
+    float: "right",
+    fontSize: "1.5em",
+    // fontWeight: "bold",
+    // backgroundColor: "#fcf59b",
+    // borderRadius: "0px 10px 250px / 0 200px 55px 250px",
+    borderRight: "50px solid #555",
+    borderTop: "25px solid transparent",
+    borderBottom: "25px solid transparent",
+    // WebkitBoxShadow: "-3px 5px 12px 0 rgba(0,0,0,0.3)",
+    // MozBoxShadow: "-3px 5px 12px 0 rgba(0,0,0,0.3)",
+    // boxShadow: "-3px 5px 12px 0 rgba(0,0,0,0.3)",
+    //-ms-transform: rotateZ(-4deg),
+    //-webkit-transform: rotateZ(-4deg),
+    //transform: rotateZ(-4deg),
   },
   hide: {
     display: "none",
@@ -110,7 +129,8 @@ const App: React.FC<AppProps> = (props) => {
           onClick={handleDrawerOpen}
           className={clsx(!open && classes.open, open && classes.hide)}
         >
-          <Menu />
+          {/* <Menu /> */}
+          View Notes
         </IconButton>
         <Drawer
           className={classes.drawer}

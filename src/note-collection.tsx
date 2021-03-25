@@ -170,17 +170,20 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   return (
     <div>
       <div className="collection">
-        {tagsData.map((tag) => (
-          <CheckableTag
-            key={tag}
-            checked={filter.indexOf(tag) > -1}
-            onChange={(checked) =>
-              setFilteredCollection(handleChange(tag, checked))
-            }
-          >
-            {tag}
-          </CheckableTag>
-        ))}
+        <div className="category">
+          Choose Category: 
+          {tagsData.map((tag) => (
+            <CheckableTag
+              key={tag}
+              checked={filter.indexOf(tag) > -1}
+              onChange={(checked) =>
+                setFilteredCollection(handleChange(tag, checked))
+              }
+            >
+              {tag}
+            </CheckableTag>
+          ))}
+        </div>
         {filteredCollection.map((note: any, index: any) => (
           <div key={index} ref={(el) => (refList.current[index] = el)}>
             <Notecomponent note={note} key={index} />
