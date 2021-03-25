@@ -20,11 +20,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const [showControl, setShowControl] = useState(false);
   const { videoElement, setVideoElement } = useVideoElement()!;
 
-  //added (trying)
-  const [isPaused, setIsPaused] = useState<boolean>(false);
-  //const [playbackRate, setPlaybackRate] = useState<number>(1);
-  //till here
-
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
   );
@@ -100,30 +95,31 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   };
 
   const setControlInvisible = () => {
-    if (showControl && !isPaused) {
+    if (showControl && nowPlaying) {
       setShowControl(false);
     }
   };
 
-  const noteTaking = () => {
-    const isPaused = true;
-    setIsPaused(isPaused);
-    console.log("Note Taking is called");
-  };
-
-  const setPausedFalse = () => {
-    const isPaused = false;
-    setIsPaused(isPaused);
-  };
-
   const marks = {
-    0.5: { style: { color: 'white',}, label: 'x0.5', },
-    1: { style: { color: 'white',}, label: 'x1', },
-    1.5: { style: { color: 'white',}, label: 'x1.5', },
-    2: { style: { color: 'white',}, label: 'x2', },
-    3: { style: { color: 'white',}, label: 'x3', },
-    4: { style: { color: 'white',}, label: 'x4', },
+    0.5: { style: { color: "white" }, label: "x0.5" },
+    1: { style: { color: "white" }, label: "x1" },
+    1.5: { style: { color: "white" }, label: "x1.5" },
+    2: { style: { color: "white" }, label: "x2" },
+    3: { style: { color: "white" }, label: "x3" },
+    4: { style: { color: "white" }, label: "x4" },
   };
+
+  function handleSpacebarPress(e: React.KeyboardEvent<HTMLVideoElement>) {
+    if (e.key === " ") {
+      if (nowPlaying) {
+        setNowPlaying(false);
+        videoElement.pause();
+      } else {
+        setNowPlaying(true);
+        videoElement.play();
+      }
+    }
+  }
 
   return (
     <div>
@@ -133,14 +129,14 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         onMouseLeave={setControlInvisible}
       >
         <video
+          tabIndex={0}
           className="video-container"
           loop={true}
           muted={true}
           ref={ref}
           playsInline={true}
-          onPause={noteTaking}
-          onPlay={setPausedFalse}
           onClick={onPlayIconClick}
+          onKeyPress={(e) => handleSpacebarPress(e)}
         >
           <source src={videoSrc} type="video/mp4" />
         </video>
@@ -167,13 +163,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
             onChange={(value: any) => setPlaybackRate(value)}
           />
         </div>
-        {isPaused && (
-          <NoteTaking
-            userId="TestUser"
-            timestamp={videoTime}
-            player={videoElement}
-          />
-        )}
+        <NoteTaking userId="TestUser" nowPlaying={setNowPlaying} />
       </div>
     </div>
   );

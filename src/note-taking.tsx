@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Editor, EditorState } from "draft-js";
+import { Editor, EditorState, ContentState } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "./note-taking.css";
 import { Slider, Button, Radio, Popover } from "antd";
@@ -10,23 +10,25 @@ import { CompactPicker } from "react-color";
 import { PictureOutlined } from "@ant-design/icons";
 import { ColorLens, LineWeight, Undo, Delete, Save } from "@material-ui/icons";
 import captureVideoFrame from "capture-video-frame";
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from './redux/modules';
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "./redux/modules";
+import { useVideoElement } from "./VideoElementContext";
+import { setTime } from "./redux/modules/videoTime";
 
 var db = firebase.firestore();
 var storage = firebase.storage();
 interface noteTakingProps {
   userId: string;
-  timestamp: number;
-  player: any;
+  nowPlaying: any;
 }
 
 const NoteTaking: React.FC<noteTakingProps> = (props) => {
-  const [editorState, seteditorState] = useState<any>(
+  const [editorState, seteditorState] = useState<EditorState>(
     EditorState.createEmpty()
   );
   const [image, setImage] = useState<any>(null);
   const [canvas, setCanvas] = useState<any>(null);
+  const [showCanvas, setshowCanvas] = useState<boolean>(false);
   const [showColorPicker, setColorPicker] = useState<boolean>(false);
   const [editorColor, seteditorColor] = useState<any>("#000000");
   const [showRadius, setshowRadius] = useState<boolean>(false);
@@ -35,9 +37,17 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
   const [placeholder, setplaceholder] = useState<string>(
     "This is such a useful tip because..."
   );
-  const [prevVideoTime, setprevVideoTime] = useState<number>(0);
+  const [prevVideoTime, setprevVideoTime] = useState<number>(-1);
 
-  const videoTime = useSelector((state: RootState) => state.setVideoTime.videoTime);
+  const videoTime = useSelector(
+    (state: RootState) => state.setVideoTime.videoTime
+  );
+  const { videoElement, setVideoElement } = useVideoElement()!;
+  const dispatch = useDispatch();
+
+  const setVideoTime = (time: number) => {
+    dispatch(setTime(time));
+  };
 
   const handleChange = (e: EditorState) => {
     seteditorState(e);
@@ -64,7 +74,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
               content: editorState.getCurrentContent().getPlainText("\u0001"),
               //timestamp: "",
               userId: props.userId,
-              videoTimestamp: props.timestamp,
+              videoTimestamp: videoTime,
               downloadURL: downloadURL,
             });
           })
@@ -75,11 +85,19 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
         content: editorState.getCurrentContent().getPlainText("\u0001"),
         //timestamp: "",
         userId: props.userId,
-        videoTimestamp: props.timestamp,
+        videoTimestamp: videoTime,
         downloadURL: "",
       });
-      console.log(editorState.getCurrentContent().getPlainText("\u0001"));
     }
+    seteditorState(
+      EditorState.push(
+        editorState,
+        ContentState.createFromText(""),
+        "remove-range"
+      )
+    );
+    setprevVideoTime(-1);
+    setshowCanvas(false);
     window.alert("saved!");
   };
 
@@ -129,10 +147,12 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
           shape="round"
           icon={<PictureOutlined />}
           onClick={() => {
-            var frame = captureVideoFrame(props.player, "png", 1);
+            videoElement.pause();
+            props.nowPlaying(false);
+            var frame = captureVideoFrame(videoElement, "png", 1);
             console.log("captured frame", frame);
             setImage(frame.dataUri);
-            setprevVideoTime(videoTime);
+            setshowCanvas(true);
           }}
         >
           Take a Screenshot and Draw
@@ -142,15 +162,44 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
             editorState={editorState}
             placeholder={placeholder}
             onChange={(e) => handleChange(e)}
+            onFocus={() => {
+              videoElement.pause();
+              props.nowPlaying(false);
+              setprevVideoTime(videoTime);
+              console.log(videoTime, prevVideoTime);
+
+              // if (videoElement) {
+              //   while (editorState.getCurrentContent().hasText() || showCanvas) {
+              //     if (videoTime !== prevVideoTime) {
+              //       var confirm: boolean = window.confirm(
+              //         "Do you want to discard the note and proceed?"
+              //       );
+              //       if (confirm) {
+              //         seteditorState(
+              //           EditorState.push(
+              //             editorState,
+              //             ContentState.createFromText(""),
+              //             "remove-range"
+              //           )
+              //         );
+              //         setprevVideoTime(-1);
+              //         setshowCanvas(false);
+              //       } else {
+              //         setVideoTime(prevVideoTime);
+              //       }
+              //     }
+              //   }
+              // }
+            }}
           />
           <Button type="primary" onClick={submitNote}>
             Submit
           </Button>
         </div>
       </div>
-      
+
       <div className="note-taking-container">
-        {videoTime === prevVideoTime && (
+        {showCanvas && (
           <div className="screenshot-editor-container">
             <div className="screenshot-picture-container">
               <CanvasDraw
@@ -165,7 +214,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
                 brushRadius={brushRadius}
               />
             </div>
-            
+
             <div>
               <Popover placement="bottom" content="Brush Color">
                 <Button
@@ -247,7 +296,6 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
                 </div>
               ) : null}
             </div>
-            
           </div>
         )}
       </div>
