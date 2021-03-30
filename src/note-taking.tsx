@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
 import { useVideoElement } from "./VideoElementContext";
 import { setTime } from "./redux/modules/videoTime";
+import { setCollection } from "./redux/modules/noteCollection";
 
 var db = firebase.firestore();
 var storage = firebase.storage();
@@ -41,6 +42,9 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
 
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
+  );
+  const videoDTime = useSelector(
+    (state: RootState) => state.setVideoDTime.videoDuration
   );
   const { videoElement, setVideoElement } = useVideoElement()!;
   const dispatch = useDispatch();
@@ -96,6 +100,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
         "remove-range"
       )
     );
+    dispatch(setCollection("testvideo1", videoDTime));
     setprevVideoTime(-1);
     setshowCanvas(false);
     window.alert("saved!");

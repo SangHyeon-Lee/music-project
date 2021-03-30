@@ -2,13 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
 import rootReducer from "./redux/modules";
 import "./index.css";
 import AppRouter from "./AppRouter";
 import reportWebVitals from "./reportWebVitals";
-
-const store = createStore(rootReducer);
-
+/* eslint-disable no-underscore-dangle */
+const store = createStore(rootReducer, composeWithDevTools());
+/* eslint-enable */
 ReactDOM.render(
   <Provider store={store}>
     <AppRouter />

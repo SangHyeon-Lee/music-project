@@ -7,7 +7,7 @@ import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
 import { Menu, ChevronRight } from "@material-ui/icons";
 import Video from "./Video";
-import { VideoElementProvider } from './VideoElementContext';
+import { VideoElementProvider } from "./VideoElementContext";
 
 const drawerWidth = 360;
 
@@ -89,7 +89,6 @@ const App: React.FC<AppProps> = (props) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
- 
 
   return (
     <div>
@@ -100,7 +99,7 @@ const App: React.FC<AppProps> = (props) => {
               [classes.contentShift]: open,
             })}
           >
-            <Video src="videos/bg.mp4" />
+            <Video src="videos/Full_Surgeon.mp4" />
           </div>
         </div>
         <IconButton
