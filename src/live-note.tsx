@@ -3,37 +3,32 @@ import "./live-note.css";
 import { BulbFilled, LikeFilled } from "@ant-design/icons";
 import { ReplyRounded } from "@material-ui/icons";
 import firebase from "./firebase";
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from './redux/modules';
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "./redux/modules";
 
 var db = firebase.firestore();
 
 interface liveNoteProps {}
 
 const LiveNote: React.FC<liveNoteProps> = (props) => {
-  const [ref, setRef] = useState(
-    db
-      .collection("videos")
-      .doc("testvideo1")
-      .collection("note")
-      .orderBy("videoTimestamp")
+  // var unsubscribe = null;
+  // const [collection, setCollection] = useState<any[]>([]);
+  const collection = useSelector(
+    (state: RootState) => state.setNoteCollection.noteCollection
   );
-  var unsubscribe = null;
-  const [collection, setCollection] = useState<any[]>([]);
-
-  useEffect(() => {
-    unsubscribe = ref.onSnapshot(onCollectionUpdate);
-  }, []);
+  // useEffect(() => {
+  //   // unsubscribe = ref.onSnapshot(onCollectionUpdate);
+  // }, []);
 
   const Notecomponent = ({ note }: any) => {
     const videoTime_num: number = note.videoTimestamp;
     const videoNoteContent: string = note.content;
-    const min_val: number = Math.floor(videoTime_num / 60);
-    const sec_val: number = videoTime_num % 60;
-    
+
     const noteShowingTime = 120;
-    
-    const videoTime = useSelector((state: RootState) => state.setVideoTime.videoTime);
+
+    const videoTime = useSelector(
+      (state: RootState) => state.setVideoTime.videoTime
+    );
 
     return (
       <>
@@ -53,13 +48,13 @@ const LiveNote: React.FC<liveNoteProps> = (props) => {
     );
   };
 
-  const onCollectionUpdate = (querySnapshot: any) => {
-    const collection: any = [];
-    querySnapshot.forEach((doc: any) => {
-      collection.push(doc.data());
-    });
-    setCollection(collection);
-  };
+  // const onCollectionUpdate = (querySnapshot: any) => {
+  //   const collection: any = [];
+  //   querySnapshot.forEach((doc: any) => {
+  //     collection.push(doc.data());
+  //   });
+  //   setCollection(collection);
+  // };
 
   return (
     <div className="bg">

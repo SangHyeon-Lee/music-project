@@ -9,6 +9,7 @@ import { useVideoElement } from "./VideoElementContext";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
 import { setTime } from "./redux/modules/videoTime";
+import { setDTime } from "./redux/modules/videoDuration";
 
 interface IProps {
   className?: string;
@@ -18,6 +19,7 @@ interface IProps {
 const Video: React.FC<IProps> = ({ className, src }) => {
   const [nowPlaying, setNowPlaying] = useState(false);
   const [showControl, setShowControl] = useState(false);
+  const [totalTime, setTotalTime] = useState(0);
   const { videoElement, setVideoElement } = useVideoElement()!;
 
   const videoTime = useSelector(
@@ -31,12 +33,16 @@ const Video: React.FC<IProps> = ({ className, src }) => {
 
   const ref = useRef<HTMLVideoElement>(null);
 
-  const totalTime = (ref && ref.current && ref.current.duration) || 0; //총 길이
+  // const totalTime = (ref && ref.current && ref.current.duration) || 0; //총 길이
   setVideoElement(ref && ref.current);
 
   const videoSrc = src || "";
   const startTime = Math.floor(videoTime);
-
+  const handleLoadedMDN = (e: any) => {
+    setTotalTime(e.target.duration);
+    console.log(e.target.duration);
+    dispatch(setDTime(e.target.duration));
+  };
   // 동영상 시간 업데이트 함수
   const addTimeUpdate = () => {
     
@@ -45,6 +51,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
       observedVideoElement.addEventListener("timeupdate", function () {
         setVideoTime(Math.floor(observedVideoElement.currentTime));
       });
+
       // 컴포넌트가 처음 마운트 될때 동영상 시작 안함
       setNowPlaying(false);
       // observedVideoElement.play();
@@ -137,6 +144,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           onClick={onPlayIconClick}
           tabIndex={0}
           onKeyPress={(e) => handleSpacebarPress(e)}
+          onLoadedMetadata={handleLoadedMDN}
         >
           <source src={videoSrc} type="video/mp4" />
         </video>

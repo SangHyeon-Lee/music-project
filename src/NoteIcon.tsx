@@ -26,27 +26,29 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange }) => {
     (state: RootState) => state.setVideoTime.videoTime
   );
 
-  const [ref, setRef] = useState(
-    db
-      .collection("videos")
-      .doc("testvideo1")
-      .collection("note")
-      .orderBy("videoTimestamp")
+  // const [ref, setRef] = useState(
+  //   db
+  //     .collection("videos")
+  //     .doc("testvideo1")
+  //     .collection("note")
+  //     .orderBy("videoTimestamp")
+  // );
+  // var unsubscribe = null;
+  const collection = useSelector(
+    (state: RootState) => state.setNoteCollection.noteCollection
   );
-  var unsubscribe = null;
-  const [collection, setCollection] = useState<any[]>([]);
 
   useEffect(() => {
-    unsubscribe = ref.onSnapshot(onCollectionUpdate);
+    // unsubscribe = ref.onSnapshot(onCollectionUpdate);
   }, []);
 
-  const onCollectionUpdate = (querySnapshot: any) => {
-    const collection: any = [];
-    querySnapshot.forEach((doc: any) => {
-      collection.push(doc.data());
-    });
-    setCollection(collection);
-  };
+  // const onCollectionUpdate = (querySnapshot: any) => {
+  //   const collection: any = [];
+  //   querySnapshot.forEach((doc: any) => {
+  //     collection.push(doc.data());
+  //   });
+  //   setCollection(collection);
+  // };
   const percentNum = (videoTime / max || 0) * 100;
   const percent = `${percentNum}%`;
   const firstStep = 120;
