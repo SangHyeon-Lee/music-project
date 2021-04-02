@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Editor, EditorState, ContentState } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "./note-taking.css";
-import { Slider, Button, Radio, Popover } from "antd";
+import { Slider, Button, Radio, Popover, message } from "antd";
 import firebase from "./firebase";
 import { v4 as uuid } from "uuid";
 import CanvasDraw from "react-canvas-draw";
@@ -21,6 +21,7 @@ var storage = firebase.storage();
 interface noteTakingProps {
   userId: string;
   nowPlaying: any;
+  setIsFocused: any;
 }
 
 const NoteTaking: React.FC<noteTakingProps> = (props) => {
@@ -170,8 +171,8 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
             onFocus={() => {
               videoElement.pause();
               props.nowPlaying(false);
+              props.setIsFocused(true);
               setprevVideoTime(videoTime);
-              console.log(videoTime, prevVideoTime);
 
               // if (videoElement) {
               //   while (editorState.getCurrentContent().hasText() || showCanvas) {
@@ -195,6 +196,9 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
               //     }
               //   }
               // }
+            }}
+             onBlur={() => {
+              props.setIsFocused(false);
             }}
           />
           <Button type="primary" onClick={submitNote}>

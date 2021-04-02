@@ -21,6 +21,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const [showControl, setShowControl] = useState(false);
   const [totalTime, setTotalTime] = useState(0);
   const { videoElement, setVideoElement } = useVideoElement()!;
+  const [editorIsFocused, seteditorIsFocused] = useState(false);
 
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
@@ -45,7 +46,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   };
   // 동영상 시간 업데이트 함수
   const addTimeUpdate = () => {
-    
     const observedVideoElement = ref && ref.current;
     if (observedVideoElement) {
       observedVideoElement.addEventListener("timeupdate", function () {
@@ -116,20 +116,22 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     4: { style: { color: "white" }, label: "x4" },
   };
 
-  function handleSpacebarPress(e: React.KeyboardEvent<HTMLVideoElement>) {
-    if (e.key === " ") {
-      if (nowPlaying) {
-        setNowPlaying(false);
-        videoElement.pause();
-      } else {
-        setNowPlaying(true);
-        videoElement.play();
+  window.onkeydown = (event: KeyboardEvent): any => {
+    if (event.key === " ") {
+      if (!editorIsFocused) {
+        if (nowPlaying) {
+          setNowPlaying(false);
+          videoElement.pause();
+        } else {
+          setNowPlaying(true);
+          videoElement.play();
+        }
       }
     }
-  }
+  };
 
   return (
-    <div >
+    <div>
       <div
         className="video-player-container"
         onMouseEnter={setControlVisible}
@@ -142,8 +144,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           ref={ref}
           playsInline={true}
           onClick={onPlayIconClick}
-          tabIndex={0}
-          onKeyPress={(e) => handleSpacebarPress(e)}
           onLoadedMetadata={handleLoadedMDN}
         >
           <source src={videoSrc} type="video/mp4" />
@@ -171,7 +171,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
             onChange={(value: any) => setPlaybackRate(value)}
           />
         </div>
-        <NoteTaking userId="TestUser" nowPlaying={setNowPlaying} />
+        <NoteTaking userId="TestUser" nowPlaying={setNowPlaying} setIsFocused={seteditorIsFocused} />
       </div>
     </div>
   );
