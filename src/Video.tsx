@@ -39,7 +39,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
 
   // 동영상 시간 업데이트 함수
   const addTimeUpdate = () => {
-    console.log("addtimeupdate");
+    
     const observedVideoElement = ref && ref.current;
     if (observedVideoElement) {
       observedVideoElement.addEventListener("timeupdate", function () {
@@ -122,20 +122,20 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   }
 
   return (
-    <div>
+    <div >
       <div
         className="video-player-container"
         onMouseEnter={setControlVisible}
         onMouseLeave={setControlInvisible}
       >
         <video
-          tabIndex={0}
           className="video-container"
           loop={true}
           muted={true}
           ref={ref}
           playsInline={true}
           onClick={onPlayIconClick}
+          tabIndex={0}
           onKeyPress={(e) => handleSpacebarPress(e)}
         >
           <source src={videoSrc} type="video/mp4" />
