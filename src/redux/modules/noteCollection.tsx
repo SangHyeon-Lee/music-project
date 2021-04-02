@@ -1,16 +1,35 @@
+import { Dispatch } from "react";
 import firebase from "../../firebase";
 
 var db = firebase.firestore();
 
 const SET_COLLECTION = "noteCollection/SET_COLLECTION" as const;
 
-export const setCollection = (videoName: string, videoDuration: number) => ({
+export const setCollection = (collection: any[]) => ({
   type: SET_COLLECTION,
   payload: {
-    videoName: videoName,
-    videoDuration: videoDuration,
+    collection,
   },
 });
+
+export const setCollectionFromDB = (
+  videoName: string,
+  videoDuration: number
+) => (dispatch: Dispatch<setCollectionAction>) => {
+  const collection: any = [];
+  const ref = db
+    .collection("videos")
+    .doc(videoName)
+    .collection("note")
+    .orderBy("videoTimestamp");
+  ref.get().then((snap) => {
+    snap.forEach((doc) => {
+      if (doc.data().videoTimestamp < videoDuration)
+        collection.push(doc.data());
+    });
+    dispatch(setCollection(collection));
+  });
+};
 
 type setCollectionAction = ReturnType<typeof setCollection>;
 
@@ -32,28 +51,28 @@ function setNoteCollection(
 ): noteCollectionState {
   switch (action.type) {
     case SET_COLLECTION: {
-      const collection: any = [];
-      const ref = db
-        .collection("videos")
-        .doc(action.payload.videoName)
-        .collection("note")
-        .orderBy("videoTimestamp");
-      ref.onSnapshot((snap) => {
-        snap.forEach((doc) => {
-          //   console.log(
-          //     "DATA!",
-          //     doc.data().videoTimestamp,
-          //     action.payload.videoDuration
-          //   );
-          if (doc.data().videoTimestamp < action.payload.videoDuration)
-            collection.push(doc.data());
-        });
-      });
+      // const collection: any = [];
+      // const ref = db
+      //   .collection("videos")
+      //   .doc(action.payload.videoName)
+      //   .collection("note")
+      //   .orderBy("videoTimestamp");
+      // ref.get().then((snap) => {
+      //   snap.forEach((doc) => {
+      //     //   console.log(
+      //     //     "DATA!",
+      //     //     doc.data().videoTimestamp,
+      //     //     action.payload.videoDuration
+      //     //   );
+      //     if (doc.data().videoTimestamp < action.payload.videoDuration)
+      //       collection.push(doc.data());
+      //   });
+      // });
       // setTimeout(() => {
       //   console.log()
       // }, 5000); //   console.log("Collection", collection);
       //   const collection = action.noteCollection;
-      return { ...state, noteCollection: collection };
+      return { ...state, noteCollection: action.payload.collection };
     }
     default: {
       return state;

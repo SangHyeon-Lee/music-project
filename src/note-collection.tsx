@@ -8,7 +8,7 @@ import { useVideoElement } from "./VideoElementContext";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
 import { setTime } from "./redux/modules/videoTime";
-import { setCollection } from "./redux/modules/noteCollection";
+import { setCollectionFromDB } from "./redux/modules/noteCollection";
 import { ViewArrayOutlined } from "@material-ui/icons";
 
 const toTimeString = (seconds: number) => {
@@ -16,7 +16,6 @@ const toTimeString = (seconds: number) => {
 };
 
 const { CheckableTag } = Tag;
-var db = firebase.firestore();
 interface noteCollectionProps {}
 const tagsData = ["Awesome", "What If", "What & Why", "Difficult", "Useful"];
 // const { Header, Footer, Sider, Content } = Layout;
@@ -69,7 +68,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
     //     console.log("onCollectionUpdate", _collection);
     //   }
     // });
-    dispatch(setCollection("testvideo1", videoDTime));
+    dispatch(setCollectionFromDB("testvideo1", videoDTime));
     // setFilteredCollection(collection);
 
     // console.log("inUseEffect", videoDTime);
@@ -78,6 +77,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   useEffect(() => {
     setFilteredCollection(collection);
   }, [collection]);
+
   useEffect(() => {
     if (filteredCollection) {
       refList.current = refList.current.slice(0, filteredCollection.length);
