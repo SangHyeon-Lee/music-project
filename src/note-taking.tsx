@@ -104,7 +104,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
     dispatch(setCollectionFromDB("testvideo1", videoDTime));
     setprevVideoTime(-1);
     setshowCanvas(false);
-    window.alert("saved!");
+    message.success("Note is saved!");
   };
 
   const changeplaceholder = (category: string) => {
@@ -197,7 +197,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
               //   }
               // }
             }}
-             onBlur={() => {
+            onBlur={() => {
               props.setIsFocused(false);
             }}
           />
