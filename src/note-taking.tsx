@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useImperativeHandle } from "react";
 import { Editor, EditorState, ContentState } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "./note-taking.css";
@@ -22,9 +22,14 @@ interface noteTakingProps {
   userId: string;
   nowPlaying: any;
   setIsFocused: any;
+  setonEdit: any;
 }
 
-const NoteTaking: React.FC<noteTakingProps> = (props) => {
+type CountdownHandle = {
+  clearEditor: () => void,
+}
+
+const NoteTaking = React.forwardRef((props: noteTakingProps, ref: React.Ref<CountdownHandle>) => {
   const [editorState, seteditorState] = useState<EditorState>(
     EditorState.createEmpty()
   );
@@ -39,7 +44,6 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
   const [placeholder, setplaceholder] = useState<string>(
     "This is such a useful tip because..."
   );
-  const [prevVideoTime, setprevVideoTime] = useState<number>(-1);
 
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
@@ -56,6 +60,11 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
 
   const handleChange = (e: EditorState) => {
     seteditorState(e);
+    if (e.getCurrentContent().hasText()) {
+      props.setonEdit(true);
+    } else {
+      props.setonEdit(false);
+    }
   };
   const submitNote = () => {
     const noteCollection = db
@@ -102,7 +111,7 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
       )
     );
     dispatch(setCollectionFromDB("testvideo1", videoDTime));
-    setprevVideoTime(-1);
+
     setshowCanvas(false);
     message.success("Note is saved!");
   };
@@ -126,6 +135,32 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
     setnoteCategory(e.target.value);
     changeplaceholder(e.target.value);
   };
+
+
+  useImperativeHandle(ref, () => ({
+    clearEditor() {
+      seteditorState(
+        EditorState.push(
+          editorState,
+          ContentState.createFromText(""),
+          "remove-range"
+        )
+      );
+      setshowCanvas(false);
+      props.setonEdit(false);
+    }
+  }));
+
+  // const clearEditor = () => {
+  //   seteditorState(
+  //     EditorState.push(
+  //       editorState,
+  //       ContentState.createFromText(""),
+  //       "remove-range"
+  //     )
+  //   );
+  //   setshowCanvas(false);
+  // };
 
   return (
     <div>
@@ -172,30 +207,6 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
               videoElement.pause();
               props.nowPlaying(false);
               props.setIsFocused(true);
-              setprevVideoTime(videoTime);
-
-              // if (videoElement) {
-              //   while (editorState.getCurrentContent().hasText() || showCanvas) {
-              //     if (videoTime !== prevVideoTime) {
-              //       var confirm: boolean = window.confirm(
-              //         "Do you want to discard the note and proceed?"
-              //       );
-              //       if (confirm) {
-              //         seteditorState(
-              //           EditorState.push(
-              //             editorState,
-              //             ContentState.createFromText(""),
-              //             "remove-range"
-              //           )
-              //         );
-              //         setprevVideoTime(-1);
-              //         setshowCanvas(false);
-              //       } else {
-              //         setVideoTime(prevVideoTime);
-              //       }
-              //     }
-              //   }
-              // }
             }}
             onBlur={() => {
               props.setIsFocused(false);
@@ -310,6 +321,6 @@ const NoteTaking: React.FC<noteTakingProps> = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default NoteTaking;

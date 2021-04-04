@@ -22,6 +22,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const [totalTime, setTotalTime] = useState(0);
   const { videoElement, setVideoElement } = useVideoElement()!;
   const [editorIsFocused, seteditorIsFocused] = useState(false);
+  const [onEdit, setonEdit] = useState(false);
 
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
@@ -33,6 +34,9 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   };
 
   const ref = useRef<HTMLVideoElement>(null);
+
+  type CountdownHandle = React.ElementRef<typeof NoteTaking>;
+  const noteTakingRef = useRef<CountdownHandle>(null);
 
   // const totalTime = (ref && ref.current && ref.current.duration) || 0; //총 길이
   setVideoElement(ref && ref.current);
@@ -71,12 +75,23 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     if (!showControl) {
       setShowControl(true);
     }
-    console.log("onprogress:", percent);
     if (videoElement) {
-      const playingTime = videoElement.duration * (percent / 100);
-      setVideoTime(playingTime);
-      videoElement.currentTime = playingTime;
-      console.log(videoTime);
+      if (onEdit) {
+        var confirm: boolean = window.confirm(
+          "Do you want to discard the note and proceed?"
+        );
+        if (confirm) {
+          const playingTime = videoElement.duration * (percent / 100);
+          setVideoTime(playingTime);
+          videoElement.currentTime = playingTime;
+          noteTakingRef.current!.clearEditor();
+        } else {
+        }
+      } else {
+        const playingTime = videoElement.duration * (percent / 100);
+        setVideoTime(playingTime);
+        videoElement.currentTime = playingTime;
+      }
     }
   };
 
@@ -87,8 +102,20 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         setNowPlaying(false);
         videoElement.pause();
       } else {
-        setNowPlaying(true);
-        videoElement.play();
+        if (onEdit) {
+          var confirm: boolean = window.confirm(
+            "Do you want to discard the note and proceed?"
+          );
+          if (confirm) {
+            setNowPlaying(true);
+            videoElement.play();
+            noteTakingRef.current!.clearEditor();
+          } else {
+          }
+        } else {
+          setNowPlaying(true);
+          videoElement.play();
+        }
       }
     }
   };
@@ -123,8 +150,20 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           setNowPlaying(false);
           videoElement.pause();
         } else {
-          setNowPlaying(true);
-          videoElement.play();
+          if (onEdit) {
+            var confirm: boolean = window.confirm(
+              "Do you want to discard the note and proceed?"
+            );
+            if (confirm) {
+              setNowPlaying(true);
+              videoElement.play();
+              noteTakingRef.current!.clearEditor();
+            } else {
+            }
+          } else {
+            setNowPlaying(true);
+            videoElement.play();
+          }
         }
       }
     }
@@ -171,7 +210,13 @@ const Video: React.FC<IProps> = ({ className, src }) => {
             onChange={(value: any) => setPlaybackRate(value)}
           />
         </div>
-        <NoteTaking userId="TestUser" nowPlaying={setNowPlaying} setIsFocused={seteditorIsFocused} />
+        <NoteTaking
+          ref={noteTakingRef}
+          userId="TestUser"
+          nowPlaying={setNowPlaying}
+          setIsFocused={seteditorIsFocused}
+          setonEdit={setonEdit}
+        />
       </div>
     </div>
   );
