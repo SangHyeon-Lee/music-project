@@ -77,7 +77,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     }
     if (videoElement) {
       if (onEdit) {
-        console.log("onprogress");
         var confirm: boolean = window.confirm(
           "Do you want to discard the note and proceed?"
         );
@@ -104,7 +103,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         videoElement.pause();
       } else {
         if (onEdit) {
-          console.log("play icon");
           var confirm: boolean = window.confirm(
             "Do you want to discard the note and proceed?"
           );
@@ -153,7 +151,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           videoElement.pause();
         } else {
           if (onEdit) {
-            console.log("space bar");
             var confirm: boolean = window.confirm(
               "Do you want to discard the note and proceed?"
             );

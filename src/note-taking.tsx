@@ -203,7 +203,6 @@ const NoteTaking = React.forwardRef(
               videoElement.pause();
               props.nowPlaying(false);
               var frame = captureVideoFrame(videoElement, "png", 1);
-              console.log("captured frame", frame);
               setImage(frame.dataUri);
               setshowCanvas(true);
             }}
