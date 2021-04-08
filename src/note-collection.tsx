@@ -8,6 +8,7 @@ import { useVideoElement } from "./VideoElementContext";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
 import { setTime } from "./redux/modules/videoTime";
+import { setCollectionFromDB } from "./redux/modules/noteCollection";
 import { ViewArrayOutlined } from "@material-ui/icons";
 
 const toTimeString = (seconds: number) => {
@@ -15,19 +16,22 @@ const toTimeString = (seconds: number) => {
 };
 
 const { CheckableTag } = Tag;
-var db = firebase.firestore();
 interface noteCollectionProps {}
 const tagsData = ["Awesome", "What If", "What & Why", "Difficult", "Useful"];
 // const { Header, Footer, Sider, Content } = Layout;
 const NoteCollection: React.FC<noteCollectionProps> = (props) => {
-  const ref = db
-    .collection("videos")
-    .doc("testvideo1")
-    .collection("note")
-    .orderBy("videoTimestamp");
+  // const ref = db
+  //   .collection("videos")
+  //   .doc("testvideo1")
+  //   .collection("note")
+  //   .orderBy("videoTimestamp");
   // var unsubscribe = null;
-  const [collection, setCollection] = useState<any[]>([]);
+  // const [collection, setCollection] = useState<any[]>([]);
   // const [rightOpen, setRightOpen] = useState(true);
+  const collection = useSelector(
+    (state: RootState) => state.setNoteCollection.noteCollection
+  );
+
   const [filter, setFilter] = useState<string[]>(tagsData);
   const [filteredCollection, setFilteredCollection] = useState<any[]>(
     collection
@@ -38,6 +42,9 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
 
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
+  );
+  const videoDTime = useSelector(
+    (state: RootState) => state.setVideoDTime.videoDuration
   );
   const dispatch = useDispatch();
 
@@ -50,23 +57,33 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   // console.log(videoTime)
 
   useEffect(() => {
-    const unsubscribe = ref.onSnapshot((snap) => {
-      if (collection.length === 0) {
-        const _collection: any = [];
-        snap.forEach((doc: any) => {
-          _collection.push(doc.data());
-        });
-        setCollection(_collection);
-        setFilteredCollection(_collection);
-        console.log("onCollectionUpdate", _collection);
-      }
-    });
+    // const unsubscribe = ref.onSnapshot((snap) => {
+    //   if (collection.length === 0) {
+    //     const _collection: any = [];
+    //     snap.forEach((doc: any) => {
+    //       _collection.push(doc.data());
+    //     });
+    //     setCollection(_collection);
+    //     setFilteredCollection(_collection);
+    //     console.log("onCollectionUpdate", _collection);
+    //   }
+    // });
+    dispatch(setCollectionFromDB("testvideo1", videoDTime));
+    // setFilteredCollection(collection);
+
+    // console.log("inUseEffect", videoDTime);
+  }, [dispatch, videoDTime]);
+
+  useEffect(() => {
+    setFilteredCollection(collection);
+  }, [collection]);
+
+  useEffect(() => {
     if (filteredCollection) {
       refList.current = refList.current.slice(0, filteredCollection.length);
+      console.log(refList, filteredCollection);
     }
-    // console.log("inUseEffect", filteredCollection, collection);
-    return () => unsubscribe();
-  }, [collection, filteredCollection, ref]);
+  }, [collection, filteredCollection]);
 
   const linkToTime = (time: number) => {
     setVideoTime(time);
@@ -76,8 +93,6 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   };
   const Notecomponent = ({ note }: any) => {
     const videoTime_num: number = note.videoTimestamp;
-    const min_val: number = Math.floor(videoTime_num / 60);
-    const sec_val: number = videoTime_num % 60;
     const time_str: string = toTimeString(videoTime_num);
     return (
       <>
@@ -138,21 +153,21 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
     setPrevFocusedTime(videoTime);
   }
 
-  const onCollectionUpdate = (querySnapshot: any) => {
-    const _collection: any = [];
-    querySnapshot.forEach((doc: any) => {
-      _collection.push(doc.data());
-    });
-    setCollection(_collection);
-    console.log("onCollectionUpdate", _collection);
-  };
+  // const onCollectionUpdate = (querySnapshot: any) => {
+  //   const _collection: any = [];
+  //   querySnapshot.forEach((doc: any) => {
+  //     _collection.push(doc.data());
+  //   });
+  //   setCollection(_collection);
+  //   console.log("onCollectionUpdate", _collection);
+  // };
 
   const handleChange = (tag: string, checked: boolean) => {
     const nextSelectedTags = checked
       ? [...filter, tag]
       : filter.filter((t) => t !== tag);
     setFilter(nextSelectedTags);
-    let _filteredCollection = collection.filter((item) => {
+    let _filteredCollection = collection.filter((item: any) => {
       if (
         nextSelectedTags.length > 0 &&
         nextSelectedTags.indexOf(item.category) > -1
@@ -163,32 +178,35 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
       }
     });
     // setFilteredCollection(_filteredCollection);
-    // console.log("FILT ;", nextSelectedTags, _filteredCollection);
+    console.log("FILT ;", nextSelectedTags, _filteredCollection);
     return _filteredCollection;
   };
 
   return (
     <div>
       <div className="collection">
-        <div className="category">
-          Choose Category: 
-          {tagsData.map((tag) => (
-            <CheckableTag
-              key={tag}
-              checked={filter.indexOf(tag) > -1}
-              onChange={(checked) =>
-                setFilteredCollection(handleChange(tag, checked))
-              }
-            >
-              {tag}
-            </CheckableTag>
-          ))}
-        </div>
-        {filteredCollection.map((note: any, index: any) => (
-          <div key={index} ref={(el) => (refList.current[index] = el)}>
-            <Notecomponent note={note} key={index} />
-          </div>
+        {tagsData.map((tag) => (
+          <CheckableTag
+            key={tag}
+            checked={filter.indexOf(tag) > -1}
+            onChange={(checked) =>
+              setFilteredCollection(handleChange(tag, checked))
+            }
+          >
+            {tag}
+          </CheckableTag>
         ))}
+        {tagsData === filter
+          ? collection.map((note: any, index: any) => (
+              <div key={index} ref={(el) => (refList.current[index] = el)}>
+                <Notecomponent note={note} key={index} />
+              </div>
+            ))
+          : filteredCollection.map((note: any, index: any) => (
+              <div key={index} ref={(el) => (refList.current[index] = el)}>
+                <Notecomponent note={note} key={index} />
+              </div>
+            ))}
       </div>
     </div>
   );

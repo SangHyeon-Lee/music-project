@@ -19,7 +19,14 @@ function setVideoTime(
   state: videoTimeState = initialState,
   action: setTimeAction
 ): videoTimeState {
-  return { videoTime: action.videoTime };
+  switch (action.type) {
+    case SET_TIME: {
+      return { videoTime: action.videoTime };
+    }
+    default: {
+      return state;
+    }
+  }
 }
 
 export default setVideoTime;
