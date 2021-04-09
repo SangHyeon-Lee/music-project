@@ -21,6 +21,8 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const [showControl, setShowControl] = useState(false);
   const [totalTime, setTotalTime] = useState(0);
   const { videoElement, setVideoElement } = useVideoElement()!;
+  const [editorIsFocused, seteditorIsFocused] = useState(false);
+  const [onEdit, setonEdit] = useState(false);
 
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
@@ -32,6 +34,9 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   };
 
   const ref = useRef<HTMLVideoElement>(null);
+
+  type CountdownHandle = React.ElementRef<typeof NoteTaking>;
+  const noteTakingRef = useRef<CountdownHandle>(null);
 
   // const totalTime = (ref && ref.current && ref.current.duration) || 0; //총 길이
   setVideoElement(ref && ref.current);
@@ -45,7 +50,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   };
   // 동영상 시간 업데이트 함수
   const addTimeUpdate = () => {
-    console.log("addtimeupdate");
     const observedVideoElement = ref && ref.current;
     if (observedVideoElement) {
       observedVideoElement.addEventListener("timeupdate", function () {
@@ -71,12 +75,23 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     if (!showControl) {
       setShowControl(true);
     }
-    console.log("onprogress:", percent);
     if (videoElement) {
-      const playingTime = videoElement.duration * (percent / 100);
-      setVideoTime(playingTime);
-      videoElement.currentTime = playingTime;
-      console.log(videoTime);
+      if (onEdit) {
+        var confirm: boolean = window.confirm(
+          "Do you want to discard the note and proceed?"
+        );
+        if (confirm) {
+          const playingTime = videoElement.duration * (percent / 100);
+          setVideoTime(playingTime);
+          videoElement.currentTime = playingTime;
+          noteTakingRef.current!.clearEditor();
+        } else {
+        }
+      } else {
+        const playingTime = videoElement.duration * (percent / 100);
+        setVideoTime(playingTime);
+        videoElement.currentTime = playingTime;
+      }
     }
   };
 
@@ -87,8 +102,20 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         setNowPlaying(false);
         videoElement.pause();
       } else {
-        setNowPlaying(true);
-        videoElement.play();
+        if (onEdit) {
+          var confirm: boolean = window.confirm(
+            "Do you want to discard the note and proceed?"
+          );
+          if (confirm) {
+            setNowPlaying(true);
+            videoElement.play();
+            noteTakingRef.current!.clearEditor();
+          } else {
+          }
+        } else {
+          setNowPlaying(true);
+          videoElement.play();
+        }
       }
     }
   };
@@ -116,17 +143,31 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     4: { style: { color: "white" }, label: "x4" },
   };
 
-  function handleSpacebarPress(e: React.KeyboardEvent<HTMLVideoElement>) {
-    if (e.key === " ") {
-      if (nowPlaying) {
-        setNowPlaying(false);
-        videoElement.pause();
-      } else {
-        setNowPlaying(true);
-        videoElement.play();
+  window.onkeydown = (event: KeyboardEvent): any => {
+    if (event.key === " ") {
+      if (!editorIsFocused) {
+        if (nowPlaying) {
+          setNowPlaying(false);
+          videoElement.pause();
+        } else {
+          if (onEdit) {
+            var confirm: boolean = window.confirm(
+              "Do you want to discard the note and proceed?"
+            );
+            if (confirm) {
+              setNowPlaying(true);
+              videoElement.play();
+              noteTakingRef.current!.clearEditor();
+            } else {
+            }
+          } else {
+            setNowPlaying(true);
+            videoElement.play();
+          }
+        }
       }
     }
-  }
+  };
 
   return (
     <div>
@@ -136,14 +177,12 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         onMouseLeave={setControlInvisible}
       >
         <video
-          tabIndex={0}
           className="video-container"
           loop={true}
           muted={true}
           ref={ref}
           playsInline={true}
           onClick={onPlayIconClick}
-          onKeyPress={(e) => handleSpacebarPress(e)}
           onLoadedMetadata={handleLoadedMDN}
         >
           <source src={videoSrc} type="video/mp4" />
@@ -171,7 +210,13 @@ const Video: React.FC<IProps> = ({ className, src }) => {
             onChange={(value: any) => setPlaybackRate(value)}
           />
         </div>
-        <NoteTaking userId="TestUser" nowPlaying={setNowPlaying} />
+        <NoteTaking
+          ref={noteTakingRef}
+          userId="TestUser"
+          nowPlaying={setNowPlaying}
+          setIsFocused={seteditorIsFocused}
+          setonEdit={setonEdit}
+        />
       </div>
     </div>
   );
