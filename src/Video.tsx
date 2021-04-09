@@ -184,6 +184,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           playsInline={true}
           onClick={onPlayIconClick}
           onLoadedMetadata={handleLoadedMDN}
+          crossOrigin="Anonymous"
         >
           <source src={videoSrc} type="video/mp4" />
         </video>
