@@ -3,9 +3,8 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import "./App.css";
 import NoteCollection from "./note-collection";
-import Drawer from "@material-ui/core/Drawer";
-import IconButton from "@material-ui/core/IconButton";
-import { Menu, ChevronRight } from "@material-ui/icons";
+import { Button, Drawer, IconButton } from "@material-ui/core";
+import { Menu, ChevronRight, ChevronLeft } from "@material-ui/icons";
 import Video from "./Video";
 import { VideoElementProvider } from "./VideoElementContext";
 
@@ -42,14 +41,14 @@ const useStyles = makeStyles((theme) => ({
     top: "20%",
     width: "70px",
     height: "250px",
-    float: "right",
+    float: "left",
     fontSize: "1.5em",
     // fontWeight: "bold",
     // backgroundColor: "#fcf59b",
-    // borderRadius: "0px 10px 250px / 0 200px 55px 250px",
-    borderRight: "50px solid #555",
-    borderTop: "25px solid transparent",
-    borderBottom: "25px solid transparent",
+    // // borderRadius: "0px 10px 250px / 0 200px 55px 250px",
+    // borderRight: "50px solid #555",
+    // borderTop: "25px solid transparent",
+    // borderBottom: "25px solid transparent",
     // WebkitBoxShadow: "-3px 5px 12px 0 rgba(0,0,0,0.3)",
     // MozBoxShadow: "-3px 5px 12px 0 rgba(0,0,0,0.3)",
     // boxShadow: "-3px 5px 12px 0 rgba(0,0,0,0.3)",
@@ -91,6 +90,19 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginRight: 0,
   },
+  viewNotes: {
+    position: "fixed",
+    right: "18px",
+    margin: "auto",
+    writingMode: "vertical-rl",
+    textOrientation: "mixed",
+    // position: "fixed",
+    top: "20%",
+    width: "70px",
+    height: "250px",
+    float: "left",
+    fontSize: "1em",
+  }
 }));
 
 interface AppProps {
@@ -128,8 +140,10 @@ const App: React.FC<AppProps> = (props) => {
           onClick={handleDrawerOpen}
           className={clsx(!open && classes.open, open && classes.hide)}
         >
+          <div className={clsx(classes.viewNotes)}>View Notes</div>
+          <ChevronLeft style={{fontSize: 40}} />
+          {/* View Notes */}
           {/* <Menu /> */}
-          View Notes
         </IconButton>
         <Drawer
           className={classes.drawer}

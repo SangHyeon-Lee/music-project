@@ -12,6 +12,31 @@
     display: flex;
 }
 
+.awesome {
+    color: rgb(226, 204, 0);
+    font-weight: bold;
+}
+
+.if {
+    color: rgb(66, 119, 59);
+    font-weight: bold;
+}
+
+.why {
+    color: rgb(19, 109, 212);
+    font-weight: bold;
+}
+
+.difficult {
+    color: rgb(201, 94, 67);
+    font-weight: bold;
+}
+
+.useful {
+    color: rgb(64, 45, 88);
+    font-weight: bold;
+}
+
 .collection {
 	padding-left: 20px;
 	padding-right: 20px;

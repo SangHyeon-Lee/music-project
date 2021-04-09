@@ -92,22 +92,32 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
     videoElement.currentTime = time;
   };
   const Notecomponent = ({ note }: any) => {
+    const [likes, setLikes] = useState(0);
     const videoTime_num: number = note.videoTimestamp;
+    const noteCategory: string = note.category;
+    const noteCategoryList: string[] = noteCategory.split(" ");
+    const noteCategoryClassName: string = noteCategoryList[noteCategoryList.length-1].toLowerCase();
     const time_str: string = toTimeString(videoTime_num);
+
+    const onClickLikeButton = () => {
+      setLikes(prev=>prev+1);
+    }
     return (
       <>
         <div className="notecategory">
-          <div className={note.category}>{note.category}</div>
-          <div onClick={() => linkToTime(videoTime_num)}>{time_str}</div>
+          <div className={noteCategoryClassName}>{noteCategory}</div>
+          <div onClick={() => linkToTime(videoTime_num)}>({time_str})</div>
         </div>
         <div className="singlenote">
           <b className="noteheader">
             {note.userId}
+            <div style={{fontWeight: "normal", color: "rgb(4, 22, 54)", position: "relative", marginLeft: "180px"}}>{likes}</div>
             <Button
               type="primary"
               shape="round"
               icon={<LikeOutlined />}
               size="small"
+              onClick={onClickLikeButton}
             />
           </b>
           {note.content}
@@ -185,6 +195,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   return (
     <div>
       <div className="collection">
+        <div style={{margin: "10px"}}>
         {tagsData.map((tag) => (
           <CheckableTag
             key={tag}
@@ -196,6 +207,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
             {tag}
           </CheckableTag>
         ))}
+        </div>
         {tagsData === filter
           ? collection.map((note: any, index: any) => (
               <div key={index} ref={(el) => (refList.current[index] = el)}>
