@@ -10,6 +10,24 @@ import { RootState } from "./redux/modules";
 import { setTime } from "./redux/modules/videoTime";
 import { setCollectionFromDB } from "./redux/modules/noteCollection";
 import { ViewArrayOutlined } from "@material-ui/icons";
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import StarBorderSharpIcon from '@material-ui/icons/StarBorderSharp';
+import StarIcon from '@material-ui/icons/Star';
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+import WarningIcon from '@material-ui/icons/Warning';
+import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
+import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
+import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
+import FlagIcon from '@material-ui/icons/Flag';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import HelpIcon from '@material-ui/icons/Help';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { purple } from '@material-ui/core/colors';
 
 const toTimeString = (seconds: number) => {
   return new Date(seconds * 1000).toUTCString().match(/(\d\d:\d\d:\d\d)/)![0];
@@ -18,7 +36,25 @@ const toTimeString = (seconds: number) => {
 const { CheckableTag } = Tag;
 interface noteCollectionProps {}
 const tagsData = ["Awesome", "What If", "What & Why", "Difficult", "Useful"];
+const tagsCheckedIcon = [<FlagIcon />, <StarIcon />, <EmojiObjectsIcon />, <WarningIcon />, <HelpIcon />];
+const tagsIcon = [<FlagOutlinedIcon />, <StarBorderSharpIcon />, <EmojiObjectsOutlinedIcon />, <ReportProblemOutlinedIcon />, <HelpOutlineIcon />];
+const tagsColor = ["primary","secondary","error","warning","success"]
 // const { Header, Footer, Sider, Content } = Layout;
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      // Purple and green play nicely together.
+      main: purple[500],
+    },
+    secondary: {
+      // This is green.A700 as hex.
+      main: '#11cb5f',
+    },
+  },
+});
+
+
 const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   // const ref = db
   //   .collection("videos")
@@ -194,20 +230,31 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
 
   return (
     <div>
+      <div className="coll-category">
+        <ThemeProvider theme={theme}>
+          <FormGroup row>
+          {tagsData.map((tag) => (
+            <FormControlLabel
+              className="category-entry"
+              control={
+                <Checkbox
+                  icon={tagsIcon[tagsData.indexOf(tag)]}
+                  checkedIcon={tagsCheckedIcon[tagsData.indexOf(tag)]}
+                  checked={filter.indexOf(tag) > -1}
+                  onChange={(checked) => {
+                    setFilteredCollection(handleChange(tag, checked.target.checked))
+                  }}
+                  // color={tagsColor[tagsData.indexOf(tag)]}
+                  // color={"primary"}
+                  name={tag}
+                />}
+              label={tag}
+            />
+          ))}
+          </FormGroup>
+        </ThemeProvider>
+      </div>
       <div className="collection">
-        <div style={{margin: "10px"}}>
-        {tagsData.map((tag) => (
-          <CheckableTag
-            key={tag}
-            checked={filter.indexOf(tag) > -1}
-            onChange={(checked) =>
-              setFilteredCollection(handleChange(tag, checked))
-            }
-          >
-            {tag}
-          </CheckableTag>
-        ))}
-        </div>
         {tagsData === filter
           ? collection.map((note: any, index: any) => (
               <div key={index} ref={(el) => (refList.current[index] = el)}>

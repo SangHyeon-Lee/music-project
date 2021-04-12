@@ -56,3 +56,14 @@
     justify-content: space-between;
     display: flex;
 }
+
+.coll-category {
+    z-index: 1;
+    background-color: rgb(255, 255, 255);
+    position: sticky;
+    top: 48px;
+}
+
+.ant-tag-checkable-checked {
+    background-color:rgb(172, 92, 92);
+}
