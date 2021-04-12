@@ -142,7 +142,9 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
       <>
         <div className="notecategory">
           <div className={noteCategoryClassName}>{noteCategory}</div>
-          <div onClick={() => linkToTime(videoTime_num)}>({time_str})</div>
+          <div onClick={() => linkToTime(videoTime_num)}>
+            <a href="#">({time_str})</a>
+          </div>
         </div>
         <div className="singlenote">
           <b className="noteheader">
@@ -248,7 +250,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
                   // color={"primary"}
                   name={tag}
                 />}
-              label={tag}
+              label={<span style={{ fontSize: '0.9rem' }}>{tag}</span>}
             />
           ))}
           </FormGroup>

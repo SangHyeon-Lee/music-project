@@ -64,6 +64,10 @@
     top: 48px;
 }
 
-.ant-tag-checkable-checked {
-    background-color:rgb(172, 92, 92);
+.MuiFormGroup-root {
+    padding: 0 0 0 13px;
+}
+
+.category-entry {
+    font-size: 0.9rem;
 }
