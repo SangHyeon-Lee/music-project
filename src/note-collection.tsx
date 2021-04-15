@@ -28,6 +28,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { purple } from '@material-ui/core/colors';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const toTimeString = (seconds: number) => {
   return new Date(seconds * 1000).toUTCString().match(/(\d\d:\d\d:\d\d)/)![0];
@@ -35,24 +36,40 @@ const toTimeString = (seconds: number) => {
 
 const { CheckableTag } = Tag;
 interface noteCollectionProps {}
-const tagsData = ["Awesome", "What If", "What & Why", "Difficult", "Useful"];
-const tagsCheckedIcon = [<FlagIcon />, <StarIcon />, <EmojiObjectsIcon />, <WarningIcon />, <HelpIcon />];
+const tagsData = ["Challenging", "Skill", "Distinctive", "Opportunity", "Others"];
+const tagsCheckedIcon = [<FlagIcon style={{ color: '#f44336' }}/>,
+                         <StarIcon style={{ color: '#4791db' }}/>,
+                         <EmojiObjectsIcon style={{ color: '#ffc107' }}/>,
+                         <WarningIcon style={{ color: '#f57c00' }}/>,
+                         <HelpIcon style={{ color: '#bdbdbd' }}/>];
 const tagsIcon = [<FlagOutlinedIcon />, <StarBorderSharpIcon />, <EmojiObjectsOutlinedIcon />, <ReportProblemOutlinedIcon />, <HelpOutlineIcon />];
-const tagsColor = ["primary","secondary","error","warning","success"]
+const tagsColor:Array<any> = ["primary","secondary","error","warning","success"]
 // const { Header, Footer, Sider, Content } = Layout;
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      // Purple and green play nicely together.
-      main: purple[500],
-    },
-    secondary: {
-      // This is green.A700 as hex.
-      main: '#11cb5f',
-    },
-  },
-});
+// const theme = createMuiTheme({
+//   palette: {
+//     primary: {
+//       // Purple and green play nicely together.
+//       main: '#e33371',
+//     },
+//     secondary: {
+//       // This is green.A700 as hex.
+//       main: '#4791db',
+//     },
+//     error: {
+//       // This is green.A700 as hex.
+//       main: '#ffb74d',
+//     },
+//     warning: {
+//       // This is green.A700 as hex.
+//       main: '#11cb5f',
+//     },
+//     success: {
+//       // This is green.A700 as hex.
+//       main: '#11cb5f',
+//     },
+//   },
+// });
 
 
 const NoteCollection: React.FC<noteCollectionProps> = (props) => {
@@ -233,28 +250,29 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   return (
     <div>
       <div className="coll-category">
-        <ThemeProvider theme={theme}>
-          <FormGroup row>
-          {tagsData.map((tag) => (
-            <FormControlLabel
-              className="category-entry"
-              control={
-                <Checkbox
-                  icon={tagsIcon[tagsData.indexOf(tag)]}
-                  checkedIcon={tagsCheckedIcon[tagsData.indexOf(tag)]}
-                  checked={filter.indexOf(tag) > -1}
-                  onChange={(checked) => {
-                    setFilteredCollection(handleChange(tag, checked.target.checked))
-                  }}
-                  // color={tagsColor[tagsData.indexOf(tag)]}
-                  // color={"primary"}
-                  name={tag}
-                />}
-              label={<span style={{ fontSize: '0.9rem' }}>{tag}</span>}
-            />
-          ))}
-          </FormGroup>
-        </ThemeProvider>
+        <FormGroup row>
+        {tagsData.map((tag) => (
+          <Tooltip title={<h2 style={{ color: "white" }}>{tag}</h2>} arrow>
+          <FormControlLabel
+            className="category-entry"
+            control={
+              <Checkbox
+                icon={tagsIcon[tagsData.indexOf(tag)]}
+                checkedIcon={tagsCheckedIcon[tagsData.indexOf(tag)]}
+                checked={filter.indexOf(tag) > -1}
+                onChange={(checked) => {
+                  setFilteredCollection(handleChange(tag, checked.target.checked))
+                }}
+                
+                // color={"primary"}
+                //{<span style={{ fontSize: '0.9rem' }}>{tag}</span>}
+                name={tag}
+              />}
+            label=""
+          />
+          </Tooltip>
+        ))}
+        </FormGroup>
       </div>
       <div className="collection">
         {tagsData === filter
