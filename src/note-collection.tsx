@@ -40,7 +40,7 @@ const tagsData = ["Challenging", "Skill", "Distinctive", "Opportunity", "Others"
 const tagsCheckedIcon = [<FlagIcon style={{ color: '#f44336' }}/>,
                          <StarIcon style={{ color: '#4791db' }}/>,
                          <EmojiObjectsIcon style={{ color: '#ffc107' }}/>,
-                         <WarningIcon style={{ color: '#f57c00' }}/>,
+                         <WarningIcon style={{ color: '#59af28' }}/>,
                          <HelpIcon style={{ color: '#bdbdbd' }}/>];
 const tagsIcon = [<FlagOutlinedIcon />, <StarBorderSharpIcon />, <EmojiObjectsOutlinedIcon />, <ReportProblemOutlinedIcon />, <HelpOutlineIcon />];
 const tagsColor:Array<any> = ["primary","secondary","error","warning","success"]
@@ -166,14 +166,14 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
         <div className="singlenote">
           <b className="noteheader">
             {note.userId}
-            <div style={{fontWeight: "normal", color: "rgb(4, 22, 54)", position: "relative", marginLeft: "180px"}}>{likes}</div>
+            {/* <div style={{fontWeight: "normal", color: "rgb(4, 22, 54)", position: "relative", marginLeft: "180px"}}>{likes}</div>
             <Button
               type="primary"
               shape="round"
               icon={<LikeOutlined />}
               size="small"
               onClick={onClickLikeButton}
-            />
+            /> */}
           </b>
           {note.content}
           <br />
