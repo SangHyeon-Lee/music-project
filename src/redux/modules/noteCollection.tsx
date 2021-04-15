@@ -17,6 +17,7 @@ export const setCollectionFromDB = (
   videoDuration: number
 ) => (dispatch: Dispatch<setCollectionAction>) => {
   const collection: any = [];
+  const category: any = ["Challenging", "Skill", "Distinctive", "Opportunity", "Others"];
   const ref = db
     .collection("videos")
     .doc(videoName)
@@ -24,7 +25,7 @@ export const setCollectionFromDB = (
     .orderBy("videoTimestamp");
   ref.get().then((snap) => {
     snap.forEach((doc) => {
-      if (doc.data().videoTimestamp < videoDuration)
+      if ((doc.data().videoTimestamp < videoDuration) && (category.indexOf(doc.data().category) > -1))
         collection.push(doc.data());
     });
     dispatch(setCollection(collection));
