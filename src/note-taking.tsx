@@ -88,12 +88,6 @@ const NoteTaking = React.forwardRef(
       }
     };
 
-    const saveDrawing = () => {
-      const baseCanvas = canvas.canvasContainer.children[3];
-      const baseCanvasContex = baseCanvas.getContext("2d");
-      baseCanvasContex.drawImage(canvas.canvasContainer.children[1], 0, 0); // add drawing
-      setImage(baseCanvas.toDataURL());
-    };
     const submitNote = () => {
       const noteCollection = db
         .collection("videos")
@@ -105,9 +99,13 @@ const NoteTaking = React.forwardRef(
       const ref: string = "screenshots/" + id + ".png";
       props.setonEdit(false);
       if (image != null) {
+        const baseCanvas = canvas.canvasContainer.children[3];
+        const baseCanvasContex = baseCanvas.getContext("2d");
+        baseCanvasContex.drawImage(canvas.canvasContainer.children[1], 0, 0); // add drawing
+        // add drawing on screenshot
         storage
           .ref(ref)
-          .putString(image, "data_url")
+          .putString(baseCanvas.toDataURL(), "data_url")
           .then((snapshot) =>
             snapshot.ref.getDownloadURL().then((downloadURL) => {
               console.log("download:    ", downloadURL);
@@ -207,7 +205,7 @@ const NoteTaking = React.forwardRef(
               Opportunity
             </Radio.Button>
             <Radio.Button className="category-entry" value="Others">
-              Other
+              Others
             </Radio.Button>
           </Radio.Group>
           <Button
@@ -242,9 +240,6 @@ const NoteTaking = React.forwardRef(
             <Button
               type="primary"
               onClick={() => {
-                // if (image != null) {
-                //   saveDrawing();
-                // }
                 submitNote();
               }}
             >
@@ -309,7 +304,7 @@ const NoteTaking = React.forwardRef(
                     <Delete />
                   </Button>
                 </Popover>
-                <Popover placement="bottom" content="Save">
+                {/* <Popover placement="bottom" content="Save">
                   <Button
                     onClick={() => {
                       let baseCanvas = canvas.canvasContainer.children[3];
@@ -324,7 +319,7 @@ const NoteTaking = React.forwardRef(
                   >
                     <Save />
                   </Button>
-                </Popover>
+                </Popover> */}
                 <Popover placement="bottom" content="Discard">
                   <Button
                     type="primary"
