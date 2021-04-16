@@ -182,6 +182,7 @@ const NoteTaking = React.forwardRef(
         );
         setshowCanvas(false);
         props.setonEdit(false);
+        setImage(null);
       },
     }));
 
