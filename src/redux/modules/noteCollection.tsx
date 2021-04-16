@@ -25,7 +25,10 @@ export const setCollectionFromDB = (
     .orderBy("videoTimestamp");
   ref.get().then((snap) => {
     snap.forEach((doc) => {
-      if ((doc.data().videoTimestamp < videoDuration) && (category.indexOf(doc.data().category) > -1) && (doc.data().userId===firebase.auth().currentUser?.email?.split("@")[0]! ))
+      if ((doc.data().videoTimestamp < videoDuration) &&
+          (category.indexOf(doc.data().category) > -1) &&
+          ((doc.data().userId===firebase.auth().currentUser?.email?.split("@")[0]! ||
+           firebase.auth().currentUser?.email?.split("@")[0] === "dummy_example" )))
         collection.push(doc.data());
     });
     dispatch(setCollection(collection));
