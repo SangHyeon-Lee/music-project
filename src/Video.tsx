@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
 import { setTime } from "./redux/modules/videoTime";
 import { setDTime } from "./redux/modules/videoDuration";
+import firebase from "firebase";
 
 interface IProps {
   className?: string;
@@ -213,7 +214,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         </div>
         <NoteTaking
           ref={noteTakingRef}
-          userId="TestUser"
+          userId={firebase.auth().currentUser? firebase.auth().currentUser?.email!.split("@")[0]!:"TestUser"}
           nowPlaying={setNowPlaying}
           setIsFocused={seteditorIsFocused}
           setonEdit={setonEdit}

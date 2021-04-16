@@ -12,28 +12,28 @@
     display: flex;
 }
 
-.awesome {
-    color: rgb(226, 204, 0);
+.challenging {
+    color: rgb(218, 68, 31);
     font-weight: bold;
 }
 
-.if {
-    color: rgb(66, 119, 59);
+.skill {
+    color: rgb(51, 83, 172);
     font-weight: bold;
 }
 
-.why {
-    color: rgb(19, 109, 212);
+.distinctive {
+    color: rgb(194, 164, 31);
     font-weight: bold;
 }
 
-.difficult {
-    color: rgb(201, 94, 67);
+.opportunity {
+    color: rgb(89, 175, 40);
     font-weight: bold;
 }
 
-.useful {
-    color: rgb(64, 45, 88);
+.others {
+    color: rgb(66, 66, 66);
     font-weight: bold;
 }
 
@@ -55,4 +55,19 @@
 .noteheader {
     justify-content: space-between;
     display: flex;
+}
+
+.coll-category {
+    z-index: 1;
+    background-color: rgb(255, 255, 255);
+    position: sticky;
+    top: 48px;
+}
+
+.MuiFormGroup-root {
+    padding: 0 0 0 13px;
+}
+
+.category-entry {
+    font-size: 0.9rem;
 }

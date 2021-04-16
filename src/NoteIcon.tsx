@@ -66,17 +66,20 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange }) => {
     const notecategory = note.category;
     var bubblecolor = "#FFFFFF";
     switch (notecategory) {
-      case "Awesome":
+      case "Challenging":
         bubblecolor = "#fff566";
         break;
-      case "What If":
+      case "Skill":
         bubblecolor = "#91d5ff";
         break;
-      case "Difficult":
+      case "Distinctive":
         bubblecolor = "#ff7875";
         break;
-      case "What & Why":
+      case "Opportunity":
         bubblecolor = "#95de64";
+        break;
+      case "Others":
+        bubblecolor = "#324232";
         break;
     }
     return (
@@ -107,17 +110,17 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange }) => {
   };
   function Icon(category: any) {
     switch (category.category) {
-      case "Awesome":
+      case "Challenging":
         return <BulbFilled style={{ fontSize: "20px", color: "#F2C94C" }} />;
 
-      case "What If":
+      case "Skill":
         return (
           <PlusCircleFilled style={{ fontSize: "20px", color: "#40a9ff" }} />
         );
 
-      case "Difficult":
+      case "Distinctive":
         return <AlertFilled style={{ fontSize: "20px", color: "#ff4d4f" }} />;
-      case "What & Why":
+      case "Opportunity":
         return (
           <QuestionCircleFilled
             style={{ fontSize: "20px", color: "#69c0ff" }}

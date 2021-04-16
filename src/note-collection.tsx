@@ -10,6 +10,25 @@ import { RootState } from "./redux/modules";
 import { setTime } from "./redux/modules/videoTime";
 import { setCollectionFromDB } from "./redux/modules/noteCollection";
 import { ViewArrayOutlined } from "@material-ui/icons";
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import StarBorderSharpIcon from '@material-ui/icons/StarBorderSharp';
+import StarIcon from '@material-ui/icons/Star';
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+import WarningIcon from '@material-ui/icons/Warning';
+import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
+import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
+import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
+import FlagIcon from '@material-ui/icons/Flag';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import HelpIcon from '@material-ui/icons/Help';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { purple } from '@material-ui/core/colors';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const toTimeString = (seconds: number) => {
   return new Date(seconds * 1000).toUTCString().match(/(\d\d:\d\d:\d\d)/)![0];
@@ -17,8 +36,42 @@ const toTimeString = (seconds: number) => {
 
 const { CheckableTag } = Tag;
 interface noteCollectionProps {}
-const tagsData = ["Awesome", "What If", "What & Why", "Difficult", "Useful"];
+const tagsData = ["Challenging", "Skill", "Distinctive", "Opportunity", "Others"];
+const tagsCheckedIcon = [<FlagIcon style={{ color: '#f44336' }}/>,
+                         <StarIcon style={{ color: '#4791db' }}/>,
+                         <EmojiObjectsIcon style={{ color: '#ffc107' }}/>,
+                         <WarningIcon style={{ color: '#59af28' }}/>,
+                         <HelpIcon style={{ color: '#bdbdbd' }}/>];
+const tagsIcon = [<FlagOutlinedIcon />, <StarBorderSharpIcon />, <EmojiObjectsOutlinedIcon />, <ReportProblemOutlinedIcon />, <HelpOutlineIcon />];
+const tagsColor:Array<any> = ["primary","secondary","error","warning","success"]
 // const { Header, Footer, Sider, Content } = Layout;
+
+// const theme = createMuiTheme({
+//   palette: {
+//     primary: {
+//       // Purple and green play nicely together.
+//       main: '#e33371',
+//     },
+//     secondary: {
+//       // This is green.A700 as hex.
+//       main: '#4791db',
+//     },
+//     error: {
+//       // This is green.A700 as hex.
+//       main: '#ffb74d',
+//     },
+//     warning: {
+//       // This is green.A700 as hex.
+//       main: '#11cb5f',
+//     },
+//     success: {
+//       // This is green.A700 as hex.
+//       main: '#11cb5f',
+//     },
+//   },
+// });
+
+
 const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   // const ref = db
   //   .collection("videos")
@@ -106,19 +159,21 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
       <>
         <div className="notecategory">
           <div className={noteCategoryClassName}>{noteCategory}</div>
-          <div onClick={() => linkToTime(videoTime_num)}>({time_str})</div>
+          <div onClick={() => linkToTime(videoTime_num)}>
+            <a href="#">({time_str})</a>
+          </div>
         </div>
         <div className="singlenote">
           <b className="noteheader">
             {note.userId}
-            <div style={{fontWeight: "normal", color: "rgb(4, 22, 54)", position: "relative", marginLeft: "180px"}}>{likes}</div>
+            {/* <div style={{fontWeight: "normal", color: "rgb(4, 22, 54)", position: "relative", marginLeft: "180px"}}>{likes}</div>
             <Button
               type="primary"
               shape="round"
               icon={<LikeOutlined />}
               size="small"
               onClick={onClickLikeButton}
-            />
+            /> */}
           </b>
           {note.content}
           <br />
@@ -194,20 +249,32 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
 
   return (
     <div>
-      <div className="collection">
-        <div style={{margin: "10px"}}>
+      <div className="coll-category">
+        <FormGroup row>
         {tagsData.map((tag) => (
-          <CheckableTag
-            key={tag}
-            checked={filter.indexOf(tag) > -1}
-            onChange={(checked) =>
-              setFilteredCollection(handleChange(tag, checked))
-            }
-          >
-            {tag}
-          </CheckableTag>
+          <Tooltip title={<h2 style={{ color: "white" }}>{tag}</h2>} arrow>
+          <FormControlLabel
+            className="category-entry"
+            control={
+              <Checkbox
+                icon={tagsIcon[tagsData.indexOf(tag)]}
+                checkedIcon={tagsCheckedIcon[tagsData.indexOf(tag)]}
+                checked={filter.indexOf(tag) > -1}
+                onChange={(checked) => {
+                  setFilteredCollection(handleChange(tag, checked.target.checked))
+                }}
+                
+                // color={"primary"}
+                //{<span style={{ fontSize: '0.9rem' }}>{tag}</span>}
+                name={tag}
+              />}
+            label=""
+          />
+          </Tooltip>
         ))}
-        </div>
+        </FormGroup>
+      </div>
+      <div className="collection">
         {tagsData === filter
           ? collection.map((note: any, index: any) => (
               <div key={index} ref={(el) => (refList.current[index] = el)}>
