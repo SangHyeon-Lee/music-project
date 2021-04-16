@@ -15,6 +15,7 @@ import {
   Delete,
   Save,
   Clear,
+  Refresh,
 } from "@material-ui/icons";
 import captureVideoFrame from "capture-video-frame";
 import { useSelector, useDispatch } from "react-redux";
@@ -35,6 +36,9 @@ interface noteTakingProps {
 type CountdownHandle = {
   clearEditor: () => void;
 };
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 const NoteTaking = React.forwardRef(
   (props: noteTakingProps, ref: React.Ref<CountdownHandle>) => {
@@ -65,6 +69,11 @@ const NoteTaking = React.forwardRef(
     const setVideoTime = (time: number) => {
       dispatch(setTime(time));
     };
+    const toTimeString = (seconds: number) => {
+      return new Date(seconds * 1000)
+        .toUTCString()
+        .match(/(\d\d:\d\d:\d\d)/)![0];
+    };
 
     const handleChange = (e: EditorState) => {
       seteditorState(e);
@@ -78,6 +87,13 @@ const NoteTaking = React.forwardRef(
         }
       }
     };
+
+    const saveDrawing = () => {
+      const baseCanvas = canvas.canvasContainer.children[3];
+      const baseCanvasContex = baseCanvas.getContext("2d");
+      baseCanvasContex.drawImage(canvas.canvasContainer.children[1], 0, 0); // add drawing
+      setImage(baseCanvas.toDataURL());
+    };
     const submitNote = () => {
       const noteCollection = db
         .collection("videos")
@@ -87,7 +103,7 @@ const NoteTaking = React.forwardRef(
 
       const id: string = uuid();
       const ref: string = "screenshots/" + id + ".png";
-
+      props.setonEdit(false);
       if (image != null) {
         storage
           .ref(ref)
@@ -105,6 +121,12 @@ const NoteTaking = React.forwardRef(
               });
             })
           );
+
+        message.success(
+          "The note is saved at " +
+            toTimeString(videoTime) +
+            " along with the screenshot."
+        );
       } else {
         noteCollection.add({
           category: noteCategory,
@@ -114,6 +136,7 @@ const NoteTaking = React.forwardRef(
           videoTimestamp: videoTime,
           downloadURL: "",
         });
+        message.success("The note is saved at " + toTimeString(videoTime));
       }
       seteditorState(
         EditorState.push(
@@ -125,7 +148,7 @@ const NoteTaking = React.forwardRef(
       dispatch(setCollectionFromDB("testvideo1", videoDTime));
 
       setshowCanvas(false);
-      message.success("Note is saved!");
+      setImage(null);
     };
 
     const changeplaceholder = (category: string) => {
@@ -161,17 +184,6 @@ const NoteTaking = React.forwardRef(
         props.setonEdit(false);
       },
     }));
-
-    // const clearEditor = () => {
-    //   seteditorState(
-    //     EditorState.push(
-    //       editorState,
-    //       ContentState.createFromText(""),
-    //       "remove-range"
-    //     )
-    //   );
-    //   setshowCanvas(false);
-    // };
 
     return (
       <div>
@@ -223,7 +235,15 @@ const NoteTaking = React.forwardRef(
                 props.setIsFocused(false);
               }}
             />
-            <Button type="primary" onClick={submitNote}>
+            <Button
+              type="primary"
+              onClick={() => {
+                // if (image != null) {
+                //   saveDrawing();
+                // }
+                submitNote();
+              }}
+            >
               Submit
             </Button>
           </div>
@@ -303,6 +323,8 @@ const NoteTaking = React.forwardRef(
                 </Popover>
                 <Popover placement="bottom" content="Discard">
                   <Button
+                    type="primary"
+                    danger
                     onClick={() => {
                       var confirm: boolean = window.confirm(
                         "Do you want to discard the screenshot?"
@@ -317,7 +339,7 @@ const NoteTaking = React.forwardRef(
                       }
                     }}
                   >
-                    <Clear />
+                    <Clear style={{ color: "#FFFFFF" }} />
                   </Button>
                 </Popover>
               </div>

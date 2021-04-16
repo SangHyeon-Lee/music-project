@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
 import NoteIcon from "./NoteIcon";
 import TimeProgressBar from "./TimeProgressBar";
+import LiveNote from "./live-note";
 
 interface IProps {
   max: number;
@@ -32,6 +33,7 @@ const ProgressBar: React.FC<IProps> = ({
 
   const firstStep = 120;
   const secondStep = 90;
+ 
 
   return (
     <div className={classProps}>
@@ -49,7 +51,7 @@ const ProgressBar: React.FC<IProps> = ({
               Second Step</span> */}
         </div>
         <div>
-          <NoteIcon max={max} onChange={onChange} />
+          <NoteIcon max={max} onChange={onChange}/>
         </div>
       </div>
 

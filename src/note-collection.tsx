@@ -96,12 +96,14 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
     const videoTime_num: number = note.videoTimestamp;
     const noteCategory: string = note.category;
     const noteCategoryList: string[] = noteCategory.split(" ");
-    const noteCategoryClassName: string = noteCategoryList[noteCategoryList.length-1].toLowerCase();
+    const noteCategoryClassName: string = noteCategoryList[
+      noteCategoryList.length - 1
+    ].toLowerCase();
     const time_str: string = toTimeString(videoTime_num);
 
     const onClickLikeButton = () => {
-      setLikes(prev=>prev+1);
-    }
+      setLikes((prev) => prev + 1);
+    };
     return (
       <>
         <div className="notecategory">
@@ -111,14 +113,23 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
         <div className="singlenote">
           <b className="noteheader">
             {note.userId}
-            <div style={{fontWeight: "normal", color: "rgb(4, 22, 54)", position: "relative", marginLeft: "180px"}}>{likes}</div>
+            {/* <div
+              style={{
+                fontWeight: "normal",
+                color: "rgb(4, 22, 54)",
+                position: "relative",
+                marginLeft: "180px",
+              }}
+            >
+              {likes}
+            </div>
             <Button
               type="primary"
               shape="round"
               icon={<LikeOutlined />}
               size="small"
               onClick={onClickLikeButton}
-            />
+            /> */}
           </b>
           {note.content}
           <br />
@@ -195,18 +206,18 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   return (
     <div>
       <div className="collection">
-        <div style={{margin: "10px"}}>
-        {tagsData.map((tag) => (
-          <CheckableTag
-            key={tag}
-            checked={filter.indexOf(tag) > -1}
-            onChange={(checked) =>
-              setFilteredCollection(handleChange(tag, checked))
-            }
-          >
-            {tag}
-          </CheckableTag>
-        ))}
+        <div style={{ margin: "10px" }}>
+          {tagsData.map((tag) => (
+            <CheckableTag
+              key={tag}
+              checked={filter.indexOf(tag) > -1}
+              onChange={(checked) =>
+                setFilteredCollection(handleChange(tag, checked))
+              }
+            >
+              {tag}
+            </CheckableTag>
+          ))}
         </div>
         {tagsData === filter
           ? collection.map((note: any, index: any) => (

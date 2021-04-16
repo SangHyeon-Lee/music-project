@@ -178,7 +178,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
       >
         <video
           className="video-container"
-          loop={true}
+          loop={false}
           muted={true}
           ref={ref}
           playsInline={true}
