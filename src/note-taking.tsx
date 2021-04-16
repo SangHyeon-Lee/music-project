@@ -52,9 +52,9 @@ const NoteTaking = React.forwardRef(
     const [editorColor, seteditorColor] = useState<any>("#000000");
     const [showRadius, setshowRadius] = useState<boolean>(false);
     const [brushRadius, setbrushRadius] = useState<number>(3);
-    const [noteCategory, setnoteCategory] = useState<string>("Awesome");
+    const [noteCategory, setnoteCategory] = useState<string>("Challenging");
     const [placeholder, setplaceholder] = useState<string>(
-      "This is such a useful tip because..."
+      "This part is difficult because..."
     );
 
     const videoTime = useSelector(
@@ -152,14 +152,14 @@ const NoteTaking = React.forwardRef(
     };
 
     const changeplaceholder = (category: string) => {
-      if (category === "Awesome") {
+      if (category === "Challenging ") {
+        setplaceholder("This part is difficult because...");
+      } else if (category === "Skill") {
+        setplaceholder("Doing … is exceptional because...");
+      } else if (category === "Distinctive") {
         setplaceholder("This is such a useful tip because...");
-      } else if (category === "Difficult") {
-        setplaceholder("Watch out doing this part because...");
-      } else if (category === "What If") {
-        setplaceholder("Instead of ..., How about ...?");
-      } else if (category === "What & Why") {
-        setplaceholder("Why in this part ...?");
+      } else if (category === "Opportunity") {
+        setplaceholder("Instead of ..., how about…?");
       } else {
         setplaceholder("");
       }
@@ -191,19 +191,22 @@ const NoteTaking = React.forwardRef(
           <Radio.Group
             className="category-group"
             onChange={onChange}
-            defaultValue="Awesome"
+            defaultValue="Challenging"
           >
-            <Radio.Button className="category-entry" value="Awesome">
-              Awesome
+            <Radio.Button className="category-entry" value="Challenging">
+              Challenging
             </Radio.Button>
-            <Radio.Button className="category-entry" value="What If">
-              What If
+            <Radio.Button className="category-entry" value="Skill">
+              Skill
             </Radio.Button>
-            <Radio.Button className="category-entry" value="What & Why">
-              What & Why
+            <Radio.Button className="category-entry" value="Distinctive">
+              Distinctive
             </Radio.Button>
-            <Radio.Button className="category-entry" value="Difficult">
-              Difficult
+            <Radio.Button className="category-entry" value="Opportunity">
+              Opportunity
+            </Radio.Button>
+            <Radio.Button className="category-entry" value="Other">
+              Other
             </Radio.Button>
           </Radio.Group>
           <Button
