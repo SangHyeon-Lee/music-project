@@ -149,12 +149,14 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
     const videoTime_num: number = note.videoTimestamp;
     const noteCategory: string = note.category;
     const noteCategoryList: string[] = noteCategory.split(" ");
-    const noteCategoryClassName: string = noteCategoryList[noteCategoryList.length-1].toLowerCase();
+    const noteCategoryClassName: string = noteCategoryList[
+      noteCategoryList.length - 1
+    ].toLowerCase();
     const time_str: string = toTimeString(videoTime_num);
 
     const onClickLikeButton = () => {
-      setLikes(prev=>prev+1);
-    }
+      setLikes((prev) => prev + 1);
+    };
     return (
       <>
         <div className="notecategory">

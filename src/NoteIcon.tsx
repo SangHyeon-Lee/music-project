@@ -13,15 +13,17 @@ import { ReplyRounded } from "@material-ui/icons";
 import firebase from "./firebase";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
+import LiveNote from "./live-note"
 
 var db = firebase.firestore();
 
 interface NoteIconProps {
   max: number;
   onChange: (progress: number) => void;
+
 }
 
-const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange }) => {
+const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange}) => {
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
   );
@@ -54,11 +56,13 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange }) => {
   const firstStep = 120;
   const secondStep = 90;
 
+  const [showLiveNote, setshowLiveNote] = useState(true);
+
   const NoteBubble = ({ note }: any) => {
-    const [showNote, setshowNote] = useState(false);
+    
     const [size, setsize] = useState("20px");
     const videoTime_num: number = note.videoTimestamp;
-
+    const [showNote, setshowNote] = useState(false);
     const notepos = (videoTime_num / max || 0) * 100;
     const fitpos = ((50 - notepos) / 50) * 9; // 9 = radius of controller
     const notepospercent = `${notepos}%`;
@@ -87,10 +91,12 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange }) => {
         <EnvironmentFilled
           onMouseOver={() => {
             setshowNote(true);
+            setshowLiveNote(false);
             setsize("25px");
           }}
           onMouseOut={() => {
             setshowNote(false);
+            setshowLiveNote(true);
             setsize("20px");
           }}
           onClick={() => {
@@ -123,7 +129,7 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange }) => {
       case "Opportunity":
         return (
           <QuestionCircleFilled
-            style={{ fontSize: "20px", color: "#69c0ff" }}
+            style={{ fontSize: "20px", color: "#95de64 " }}
           />
         );
 
@@ -146,14 +152,7 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange }) => {
         <div className={styles.livenotecontent}>
           <div>{note.content}</div>
         </div>
-        <div className={styles.reactionscontainer}>
-          <div className={styles.reaction}>
-            <LikeFilled />
-          </div>
-          <div className={styles.rotate180}>
-            <ReplyRounded />
-          </div>
-        </div>
+        
       </div>
     );
   };
@@ -168,6 +167,7 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange }) => {
           />
         </div>
       ))}
+      {/* {showLiveNote && <LiveNote/>} */}
     </div>
   );
 };
