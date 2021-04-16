@@ -206,7 +206,7 @@ const NoteTaking = React.forwardRef(
             <Radio.Button className="category-entry" value="Opportunity">
               Opportunity
             </Radio.Button>
-            <Radio.Button className="category-entry" value="Other">
+            <Radio.Button className="category-entry" value="Others">
               Other
             </Radio.Button>
           </Radio.Group>
