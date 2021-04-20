@@ -31,8 +31,8 @@ import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
 import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
 import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
 import FlagIcon from '@material-ui/icons/Flag';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import HelpIcon from '@material-ui/icons/Help';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+
 var db = firebase.firestore();
 var storage = firebase.storage();
 interface noteTakingProps {
@@ -45,7 +45,7 @@ const tagsCheckedIcon = [<FlagIcon style={{ color: '#f44336' }}/>,
                          <StarIcon style={{ color: '#4791db' }}/>,
                          <EmojiObjectsIcon style={{ color: '#ffc107' }}/>,
                          <WarningIcon style={{ color: '#59af28' }}/>,
-                         <HelpIcon style={{ color: '#bdbdbd' }}/>];
+                         <MoreHorizIcon style={{ color: '#bdbdbd' }}/>];
 
 const tagsData = ["Challenging", "Skill", "Distinctive", "Opportunity", "Others"];
 
@@ -177,11 +177,11 @@ const NoteTaking = React.forwardRef(
       if (category === "Challenging ") {
         setplaceholder("This part is difficult because...");
       } else if (category === "Skill") {
-        setplaceholder("Doing … is exceptional because...");
+        setplaceholder("Doing ... is exceptional because...");
       } else if (category === "Distinctive") {
         setplaceholder("This is such a useful tip because...");
       } else if (category === "Opportunity") {
-        setplaceholder("Instead of ..., how about…?");
+        setplaceholder("Instead of ..., how about...?");
       } else {
         setplaceholder("");
       }
@@ -211,57 +211,59 @@ const NoteTaking = React.forwardRef(
     return (
       <div>
         <div>
-          <Radio.Group
-            className="category-group"
-            onChange={onChange}
-            defaultValue="Challenging"
-          >
-            <Radio.Button className="category-entry" value="Challenging">
-              <Space align="center" >
-                <FlagIcon style={{ color: '#f44336' }}/>
-                Challenging
-              </Space>
-            </Radio.Button>
-            <Radio.Button className="category-entry" value="Skill">
-              <Space align="center" >
-                <StarIcon style={{ color: '#4791db' }}/>
-                Skill
-              </Space>
-            </Radio.Button>
-            <Radio.Button className="category-entry" value="Distinctive">
-              <Space align="center" >
-                <EmojiObjectsIcon style={{ color: '#ffc107' }}/>
-                Distinctive
-              </Space>
-            </Radio.Button>
-            <Radio.Button className="category-entry" value="Opportunity">
-              <Space align="center" >
-                <WarningIcon style={{ color: '#59af28' }}/>
-                Opportunity
-              </Space>
-            </Radio.Button>
-            <Radio.Button className="category-entry" value="Others">
-              <Space align="center" >
-                <HelpIcon style={{ color: '#bdbdbd' }}/>
-                <span>Others</span>
-              </Space>
-            </Radio.Button>
-          </Radio.Group>
-          <Button
-            type="primary"
-            shape="round"
-            icon={<PictureOutlined />}
-            onClick={() => {
-              props.setonEdit(true);
-              videoElement.pause();
-              props.nowPlaying(false);
-              var frame = captureVideoFrame(videoElement, "png", 1);
-              setImage(frame.dataUri);
-              setshowCanvas(true);
-            }}
-          >
-            Take a Screenshot and Draw
-          </Button>
+          <div className="note-header">
+            <Radio.Group
+              className="category-group"
+              onChange={onChange}
+              defaultValue="Challenging"
+            >
+              <Radio.Button className="category-entry" value="Challenging">
+                <Space align="center" >
+                  <FlagIcon style={{ color: '#f44336' }}/>
+                  Challenging
+                </Space>
+              </Radio.Button>
+              <Radio.Button className="category-entry" value="Skill">
+                <Space align="center" >
+                  <StarIcon style={{ color: '#4791db' }}/>
+                  Skill
+                </Space>
+              </Radio.Button>
+              <Radio.Button className="category-entry" value="Distinctive">
+                <Space align="center" >
+                  <EmojiObjectsIcon style={{ color: '#ffc107' }}/>
+                  Distinctive
+                </Space>
+              </Radio.Button>
+              <Radio.Button className="category-entry" value="Opportunity">
+                <Space align="center" >
+                  <WarningIcon style={{ color: '#59af28' }}/>
+                  Opportunity
+                </Space>
+              </Radio.Button>
+              <Radio.Button className="category-entry" value="Others">
+                <Space align="center" >
+                  <MoreHorizIcon style={{ color: '#bdbdbd' }}/>
+                  <span>Others</span>
+                </Space>
+              </Radio.Button>
+            </Radio.Group>
+            <Button
+              type="primary"
+              shape="round"
+              icon={<PictureOutlined />}
+              onClick={() => {
+                props.setonEdit(true);
+                videoElement.pause();
+                props.nowPlaying(false);
+                var frame = captureVideoFrame(videoElement, "png", 1);
+                setImage(frame.dataUri);
+                setshowCanvas(true);
+              }}
+            >
+              Capture and Draw
+            </Button>
+          </div>
           <div className="draft-root">
             <Editor
               editorState={editorState}

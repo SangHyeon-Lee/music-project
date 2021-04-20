@@ -7,14 +7,14 @@
 }
 
 .video-container {
-    height: 80vh;
+    height: 75vh;
 }
 
 .note-and-slider-container {
     display: flex;
     width: 90vw;
     align-items: flex-start;
-    padding-top: 10px;
+    padding-top: 8px;
 }
 
 .slider-container {
