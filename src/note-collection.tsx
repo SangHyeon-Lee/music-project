@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, createRef } from "react";
 import firebase from "./firebase";
-import { Button, Tag } from "antd";
+import { Button, Tag, Space } from "antd";
 import { LikeOutlined } from "@ant-design/icons";
 import "./note-collection.css";
 // import { LeakAddTwoTone } from "@material-ui/icons";
@@ -252,6 +252,8 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   return (
     <div>
       <div className="coll-category">
+        <Space align="center" size="small">
+        &nbsp;{"Only shows"}
         <FormGroup row>
         {tagsData.map((tag) => (
           <Tooltip title={<h2 style={{ color: "white" }}>{tag}</h2>} arrow>
@@ -275,6 +277,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
           </Tooltip>
         ))}
         </FormGroup>
+        </Space>
       </div>
       <div className="collection">
         {tagsData === filter

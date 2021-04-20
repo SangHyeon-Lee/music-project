@@ -2,7 +2,7 @@ import React, { useState, useImperativeHandle } from "react";
 import { Editor, EditorState, ContentState } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "./note-taking.css";
-import { Slider, Button, Radio, Popover, message } from "antd";
+import { Slider, Button, Radio, Popover, message, Space } from "antd";
 import firebase from "./firebase";
 import { v4 as uuid } from "uuid";
 import CanvasDraw from "react-canvas-draw";
@@ -23,7 +23,16 @@ import { RootState } from "./redux/modules";
 import { useVideoElement } from "./VideoElementContext";
 import { setTime } from "./redux/modules/videoTime";
 import { setCollectionFromDB } from "./redux/modules/noteCollection";
-
+import StarBorderSharpIcon from '@material-ui/icons/StarBorderSharp';
+import StarIcon from '@material-ui/icons/Star';
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+import WarningIcon from '@material-ui/icons/Warning';
+import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
+import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
+import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
+import FlagIcon from '@material-ui/icons/Flag';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import HelpIcon from '@material-ui/icons/Help';
 var db = firebase.firestore();
 var storage = firebase.storage();
 interface noteTakingProps {
@@ -32,6 +41,13 @@ interface noteTakingProps {
   setIsFocused: any;
   setonEdit: any;
 }
+const tagsCheckedIcon = [<FlagIcon style={{ color: '#f44336' }}/>,
+                         <StarIcon style={{ color: '#4791db' }}/>,
+                         <EmojiObjectsIcon style={{ color: '#ffc107' }}/>,
+                         <WarningIcon style={{ color: '#59af28' }}/>,
+                         <HelpIcon style={{ color: '#bdbdbd' }}/>];
+
+const tagsData = ["Challenging", "Skill", "Distinctive", "Opportunity", "Others"];
 
 type CountdownHandle = {
   clearEditor: () => void;
@@ -118,6 +134,10 @@ const NoteTaking = React.forwardRef(
                 downloadURL: downloadURL,
               });
             })
+          ).then(
+            () => {
+              dispatch(setCollectionFromDB("testvideo1", videoDTime))
+            }
           );
 
         message.success(
@@ -133,7 +153,11 @@ const NoteTaking = React.forwardRef(
           userId: props.userId,
           videoTimestamp: videoTime,
           downloadURL: "",
-        });
+        }).then(
+          () => {
+            dispatch(setCollectionFromDB("testvideo1", videoDTime))
+          }
+        );;
         message.success("The note is saved at " + toTimeString(videoTime));
       }
       seteditorState(
@@ -143,7 +167,7 @@ const NoteTaking = React.forwardRef(
           "remove-range"
         )
       );
-      dispatch(setCollectionFromDB("testvideo1", videoDTime));
+      // dispatch(setCollectionFromDB("testvideo1", videoDTime));
 
       setshowCanvas(false);
       setImage(null);
@@ -193,19 +217,34 @@ const NoteTaking = React.forwardRef(
             defaultValue="Challenging"
           >
             <Radio.Button className="category-entry" value="Challenging">
-              Challenging
+              <Space align="center" >
+                <FlagIcon style={{ color: '#f44336' }}/>
+                Challenging
+              </Space>
             </Radio.Button>
             <Radio.Button className="category-entry" value="Skill">
-              Skill
+              <Space align="center" >
+                <StarIcon style={{ color: '#4791db' }}/>
+                Skill
+              </Space>
             </Radio.Button>
             <Radio.Button className="category-entry" value="Distinctive">
-              Distinctive
+              <Space align="center" >
+                <EmojiObjectsIcon style={{ color: '#ffc107' }}/>
+                Distinctive
+              </Space>
             </Radio.Button>
             <Radio.Button className="category-entry" value="Opportunity">
-              Opportunity
+              <Space align="center" >
+                <WarningIcon style={{ color: '#59af28' }}/>
+                Opportunity
+              </Space>
             </Radio.Button>
             <Radio.Button className="category-entry" value="Others">
-              Others
+              <Space align="center" >
+                <HelpIcon style={{ color: '#bdbdbd' }}/>
+                <span>Others</span>
+              </Space>
             </Radio.Button>
           </Radio.Group>
           <Button
