@@ -130,7 +130,7 @@ const App: React.FC<AppProps> = (props) => {
               [classes.contentShift]: open,
             })}
           >
-            <Video src="http://d18d5vs125fp3l.cloudfront.net/sample.mp4" />
+            <Video src="http://dg1fmc8qbela5.cloudfront.net/Surgeon+093+%E2%80%93+Difficult+RP+-+MUSIC+Urology.mp4" />
           </div>
         </div>
         <IconButton
