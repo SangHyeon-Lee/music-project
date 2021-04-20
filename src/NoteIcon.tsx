@@ -9,6 +9,20 @@ import {
   QuestionCircleFilled,
   PlusCircleFilled,
 } from "@ant-design/icons";
+
+import StarBorderSharpIcon from '@material-ui/icons/StarBorderSharp';
+import StarIcon from '@material-ui/icons/Star';
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+import WarningIcon from '@material-ui/icons/Warning';
+import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
+import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
+import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
+import FlagIcon from '@material-ui/icons/Flag';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import HelpIcon from '@material-ui/icons/Help';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+
 import { ReplyRounded } from "@material-ui/icons";
 import firebase from "./firebase";
 import { useSelector, useDispatch } from "react-redux";
@@ -64,7 +78,7 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange}) => {
     const videoTime_num: number = note.videoTimestamp;
     const [showNote, setshowNote] = useState(false);
     const notepos = (videoTime_num / max || 0) * 100;
-    const fitpos = ((50 - notepos) / 50) * 9; // 9 = radius of controller
+    const fitpos = ((50 - notepos) / 50) * 9 + 6; // 9 = radius of controller
     const notepospercent = `${notepos}%`;
     const fitpospx = `${fitpos}px`;
     const notecategory = note.category;
@@ -88,7 +102,7 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange}) => {
     }
     return (
       <div>
-        <EnvironmentFilled
+        <ChatBubbleIcon
           onMouseOver={() => {
             setshowNote(true);
             setshowLiveNote(false);
@@ -117,28 +131,15 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange}) => {
   function Icon(category: any) {
     switch (category.category) {
       case "Challenging":
-        return <BulbFilled style={{ fontSize: "20px", color: "#F2C94C" }} />;
-
+        return <FlagIcon style={{ color: '#f44336' }}/>;
       case "Skill":
-        return (
-          <PlusCircleFilled style={{ fontSize: "20px", color: "#40a9ff" }} />
-        );
-
+        return <StarIcon style={{ color: '#4791db' }}/>;
       case "Distinctive":
-        return <AlertFilled style={{ fontSize: "20px", color: "#ff4d4f" }} />;
+        return <EmojiObjectsIcon style={{ color: '#ffc107' }}/>;
       case "Opportunity":
-        return (
-          <QuestionCircleFilled
-            style={{ fontSize: "20px", color: "#95de64 " }}
-          />
-        );
-
+        return <WarningIcon style={{ color: '#59af28' }}/>;
       default:
-        return (
-          <QuestionCircleFilled
-            style={{ fontSize: "20px", color: "#F2C94C" }}
-          />
-        );
+        return <MoreHorizIcon style={{ fontSize: "20px", color: "#F2C94C" }} />;
     }
   }
 
