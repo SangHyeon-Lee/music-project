@@ -66,6 +66,9 @@ const TimeProgressBar: React.FC<TimeProps> = ({
         step="0.000000001"
         value={percentNum}
         className={styles.controller}
+        style={{
+          cursor: "pointer"
+        }}
       />
       <br />
     </div>
