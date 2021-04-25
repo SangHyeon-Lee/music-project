@@ -61,6 +61,7 @@ const ProgressBar: React.FC<IProps> = ({
           onChange={onChange}
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
+          
         />
       </div>
     </div>

@@ -253,7 +253,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
     <div>
       <div className="coll-category">
         <Space align="center" size="small">
-        &nbsp;{"Only shows"}
+        &nbsp;{"Show only"}
         <FormGroup row>
         {tagsData.map((tag) => (
           <Tooltip title={<h2 style={{ color: "white" }}>{tag}</h2>} arrow>
