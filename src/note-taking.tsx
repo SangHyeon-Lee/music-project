@@ -65,7 +65,7 @@ const NoteTaking = React.forwardRef(
     const [canvas, setCanvas] = useState<any>(null);
     const [showCanvas, setshowCanvas] = useState<boolean>(false);
     const [showColorPicker, setColorPicker] = useState<boolean>(false);
-    const [editorColor, seteditorColor] = useState<any>("#000000");
+    const [editorColor, seteditorColor] = useState<any>("#FCDC00");
     const [showRadius, setshowRadius] = useState<boolean>(false);
     const [brushRadius, setbrushRadius] = useState<number>(3);
     const [noteCategory, setnoteCategory] = useState<string>("Challenging");
@@ -174,7 +174,7 @@ const NoteTaking = React.forwardRef(
     };
 
     const changeplaceholder = (category: string) => {
-      if (category === "Challenging ") {
+      if (category === "Challenging") {
         setplaceholder("This part is difficult because...");
       } else if (category === "Skill") {
         setplaceholder("Doing ... is exceptional because...");
@@ -342,25 +342,10 @@ const NoteTaking = React.forwardRef(
                       canvas.clear();
                     }}
                   >
-                    <Delete />
+                    <Refresh />
                   </Button>
                 </Popover>
-                {/* <Popover placement="bottom" content="Save">
-                  <Button
-                    onClick={() => {
-                      let baseCanvas = canvas.canvasContainer.children[3];
-                      let baseCanvasContex = baseCanvas.getContext("2d");
-                      baseCanvasContex.drawImage(
-                        canvas.canvasContainer.children[1],
-                        0,
-                        0
-                      ); // add drawing
-                      setImage(baseCanvas.toDataURL());
-                    }}
-                  >
-                    <Save />
-                  </Button>
-                </Popover> */}
+
                 <Popover placement="bottom" content="Discard">
                   <Button
                     type="primary"

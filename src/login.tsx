@@ -48,7 +48,7 @@ const Login: React.FC<LoginProps> = props => {
 
     return (
         <div className="auth--container" style={styles.fixSize}>
-            <h2 style={styles.margin}>Login your account</h2>
+            <h2 style={styles.margin}>Login to your account</h2>
             {error && <p className="error-message">{error.message}</p>}
             <form onSubmit={handleSubmit}>
                 {/* <label htmlFor="username">Username</label> */}

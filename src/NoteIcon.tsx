@@ -85,19 +85,19 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange}) => {
     var bubblecolor = "#FFFFFF";
     switch (notecategory) {
       case "Challenging":
-        bubblecolor = "#fff566";
+        bubblecolor = "#ff7875";
         break;
       case "Skill":
         bubblecolor = "#91d5ff";
         break;
       case "Distinctive":
-        bubblecolor = "#ff7875";
+        bubblecolor = "#fff566";
         break;
       case "Opportunity":
         bubblecolor = "#95de64";
         break;
       case "Others":
-        bubblecolor = "#324232";
+        bubblecolor = "#FFFFFF";
         break;
     }
     return (
@@ -122,6 +122,7 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange}) => {
             bottom: "10px",
             fontSize: size,
             color: bubblecolor,
+            cursor: "pointer"
           }}
         />
         {showNote && <ShowNote note={note} />}
@@ -139,7 +140,7 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange}) => {
       case "Opportunity":
         return <WarningIcon style={{ color: '#59af28' }}/>;
       default:
-        return <MoreHorizIcon style={{ fontSize: "20px", color: "#F2C94C" }} />;
+        return <MoreHorizIcon style={{ fontSize: "20px", color: "#FFFFFF" }} />;
     }
   }
 

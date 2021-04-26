@@ -1,7 +1,7 @@
 import React, { useState, memo } from "react";
 import classNames from "classnames";
 
-import toTimeString from "./totimeString";
+
 import ProgressBar from "./ProgressBar";
 
 import styles from "./controlbar.module.css";
@@ -78,6 +78,10 @@ const Controlbar: React.FC<IProps> = ({
     }
   };
 
+  const toTimeString = (seconds: number) => {
+    return new Date(seconds * 1000).toUTCString().match(/(\d\d:\d\d:\d\d)/)![0];
+  };
+
   return (
     <>
       <div className={controlBarClassProps}>
@@ -91,11 +95,15 @@ const Controlbar: React.FC<IProps> = ({
           videoElement={videoElement}
         />
         <span className={endTimeClassProps}>{toTimeString(totalTime)}</span>
+        &nbsp;
         <img
           className={styles.volume}
           src={volumeClicked ? volumeIcon : muteIcon}
           onClick={handleVolume}
           alt={""}
+          style={{
+            cursor: "pointer"
+          }}
         />
       </div>
       <div className={playControlClassProps}>
