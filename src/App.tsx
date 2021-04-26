@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
     height: "250px",
     float: "left",
     fontSize: "1em",
-  }
+  },
 }));
 
 interface AppProps {
@@ -130,7 +130,7 @@ const App: React.FC<AppProps> = (props) => {
               [classes.contentShift]: open,
             })}
           >
-            <Video src="http://d18d5vs125fp3l.cloudfront.net/sample.mp4" />
+            <Video src="http://dg1fmc8qbela5.cloudfront.net/study_video_1.mp4" />
           </div>
         </div>
         <IconButton
@@ -141,7 +141,7 @@ const App: React.FC<AppProps> = (props) => {
           className={clsx(!open && classes.open, open && classes.hide)}
         >
           <div className={clsx(classes.viewNotes)}>View Notes</div>
-          <ChevronLeft style={{fontSize: 40}} />
+          <ChevronLeft style={{ fontSize: 40 }} />
           {/* View Notes */}
           {/* <Menu /> */}
         </IconButton>
@@ -154,7 +154,7 @@ const App: React.FC<AppProps> = (props) => {
             paper: classes.drawerPaper,
           }}
         >
-          <div className='closebutton'>
+          <div className="closebutton">
             <IconButton onClick={handleDrawerClose}>
               <ChevronRight />
             </IconButton>
