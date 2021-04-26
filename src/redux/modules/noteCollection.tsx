@@ -28,7 +28,7 @@ export const setCollectionFromDB = (
       if ((doc.data().videoTimestamp < videoDuration) &&
           (category.indexOf(doc.data().category) > -1) &&
           ((doc.data().userId===firebase.auth().currentUser?.email?.split("@")[0]! ||
-           firebase.auth().currentUser?.email?.split("@")[0] === "dummy_example" )))
+          doc.data().userId === "dummy_example" )))
         collection.push(doc.data());
     });
     dispatch(setCollection(collection));
