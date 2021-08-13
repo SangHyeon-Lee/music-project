@@ -3,6 +3,8 @@ import React, { memo, useEffect, useRef, useState } from "react";
 import NoteTaking from "./note-taking";
 import Controlbar from "./Controlbar";
 import { Slider } from "antd";
+import { Select } from "antd";
+import { Radio, Space, Button } from "antd";
 import LiveNote from "./live-note";
 import "./Video.css";
 import { useVideoElement } from "./VideoElementContext";
@@ -11,11 +13,20 @@ import { RootState } from "./redux/modules";
 import { setTime } from "./redux/modules/videoTime";
 import { setDTime } from "./redux/modules/videoDuration";
 import firebase from "firebase";
+import clipicon from "./assets/icons/clip.png";
+import energyicon from "./assets/icons/energy.png";
+import suctionicon from "./assets/icons/suction.png";
+import stitchicon from "./assets/icons/stitch.png";
+import { borderColor } from "@material-ui/system";
+import ActionIcon from "./actionIcon";
 
 interface IProps {
   className?: string;
   src: string;
 }
+
+var actions: string[] = [];
+var actionTime: number[] = [];
 
 const Video: React.FC<IProps> = ({ className, src }) => {
   const [nowPlaying, setNowPlaying] = useState(false);
@@ -24,6 +35,10 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const { videoElement, setVideoElement } = useVideoElement()!;
   const [editorIsFocused, seteditorIsFocused] = useState(false);
   const [onEdit, setonEdit] = useState(false);
+  const [action, setaction] = React.useState("Incise / Separate");
+  const [startstop, setstartstop] = useState(false);
+  const [actionlist, setactionlist] = useState(["start"]);
+  const [actiontimelist, setactiontimelist] = useState([0]);
 
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
@@ -135,15 +150,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     }
   };
 
-  const marks = {
-    0.5: { style: { color: "white" }, label: "x0.5" },
-    1: { style: { color: "white" }, label: "x1" },
-    1.5: { style: { color: "white" }, label: "x1.5" },
-    2: { style: { color: "white" }, label: "x2" },
-    3: { style: { color: "white" }, label: "x3" },
-    4: { style: { color: "white" }, label: "x4" },
-  };
-
   window.onkeydown = (event: KeyboardEvent): any => {
     if (event.key === " ") {
       if (!editorIsFocused) {
@@ -170,6 +176,18 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     }
   };
 
+  const onactionChange = (e: any) => {
+    setaction(e.target.value);
+  };
+
+  const onstartstopchange = (e: any) => {
+    if (e.target.value == "true") {
+      setstartstop(true);
+    } else {
+      setstartstop(false);
+    }
+  };
+
   return (
     <div>
       <div
@@ -187,7 +205,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           onLoadedMetadata={handleLoadedMDN}
           crossOrigin="Anonymous"
           style={{
-            cursor: "pointer"
+            cursor: "pointer",
           }}
         >
           <source src={videoSrc} type="video/mp4" />
@@ -202,8 +220,8 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           videoElement={videoElement}
         />
       </div>
-      <div className="live-note-container">{/* <LiveNote /> */}</div>
-      <div className="note-and-slider-container">
+
+      {/* <div className="note-and-slider-container">
         <div className="slider-container">
           Video Speed
           <Slider
@@ -222,6 +240,124 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           setIsFocused={seteditorIsFocused}
           setonEdit={setonEdit}
         />
+      </div> */}
+      <div>
+        <div className="steps">
+          <br />
+          <div className="step-one">
+            1. Start continuous actions
+            <div className="step-one-option">
+              <Radio.Group onChange={onactionChange} value={action}>
+                <Radio value={"Incise / Separate"}>Incise / Separate</Radio>
+                <Radio value={"Suture"}>Suture</Radio>
+              </Radio.Group>
+              <br />
+              <br />
+              <Button
+                onClick={(e: any) => {
+                  actions = [];
+                  actionTime = [];
+                  actions.push("start");
+                  setactionlist(actions);
+                  actionTime.push(videoTime);
+                }}
+              >
+                Start
+              </Button>
+              <Button
+                onClick={(e: any) => {
+                  actions.push("stop");
+                  setactionlist(actions);
+                  actionTime.push(videoTime);
+                  console.log(actions);
+                  console.log(actionTime);
+                }}
+              >
+                Stop
+              </Button>
+            </div>
+          </div>
+          <div className="step-two">
+            2. Select instant actions in between
+            <br />
+            <div className="step-two-option">
+              <button
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "white",
+                  borderColor: "transparent",
+                }}
+                onClick={(e: any) => {
+                  actions.push("clip");
+                  setactionlist(actions);
+                  actionTime.push(videoTime);
+                }}
+              >
+                <Space align="center">
+                  <img src={clipicon} width="32px" />
+                </Space>
+              </button>
+              <button
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "white",
+                  borderColor: "transparent",
+                }}
+                onClick={(e: any) => {
+                  actions.push("energy");
+                  setactionlist(actions);
+                  actionTime.push(videoTime);
+                }}
+              >
+                <Space align="center">
+                  <img src={energyicon} width="32px" />
+                </Space>
+              </button>
+              <button
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "white",
+                  borderColor: "transparent",
+                }}
+                onClick={(e: any) => {
+                  actions.push("suction");
+                  setactionlist(actions);
+                  actionTime.push(videoTime);
+                }}
+              >
+                <Space align="center">
+                  <img src={suctionicon} width="32px" />
+                </Space>
+              </button>
+              <button
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "white",
+                  borderColor: "transparent",
+                }}
+                onClick={(e: any) => {
+                  actions.push("stitch");
+                  setactionlist(actions);
+                  actionTime.push(videoTime);
+                }}
+              >
+                <Space align="center">
+                  <img src={stitchicon} width="32px" />
+                </Space>
+              </button>
+            </div>
+          </div>
+          <div className="step-three">
+            3. Stop and map the actions to the anatomy model on the right
+            <div>
+              {actionlist.map((actionname: any) =>
+                <div style={{display: "inline-block"}}>
+                  <ActionIcon iconName = {actionname}  />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

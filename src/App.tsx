@@ -8,6 +8,7 @@ import { Menu, ChevronRight, ChevronLeft } from "@material-ui/icons";
 import Video from "./Video";
 import { VideoElementProvider } from "./VideoElementContext";
 
+
 const drawerWidth = 360;
 
 const useStyles = makeStyles((theme) => ({
@@ -130,37 +131,10 @@ const App: React.FC<AppProps> = (props) => {
               [classes.contentShift]: open,
             })}
           >
-            <Video src="http://dg1fmc8qbela5.cloudfront.net/study_video_1.mp4" />
+            <Video src="https://firebasestorage.googleapis.com/v0/b/kixlab-music.appspot.com/o/videos%2FConductor_Tom.mp4?alt=media&token=cffa42de-effd-4b56-a16d-00967ec730bf" />
           </div>
         </div>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="end"
-          onClick={handleDrawerOpen}
-          className={clsx(!open && classes.open, open && classes.hide)}
-        >
-          <div className={clsx(classes.viewNotes)}>View Notes</div>
-          <ChevronLeft style={{ fontSize: 40 }} />
-          {/* View Notes */}
-          {/* <Menu /> */}
-        </IconButton>
-        <Drawer
-          className={classes.drawer}
-          variant="persistent"
-          anchor="right"
-          open={open}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <div className="closebutton">
-            <IconButton onClick={handleDrawerClose}>
-              <ChevronRight />
-            </IconButton>
-          </div>
-          <NoteCollection />
-        </Drawer>
+        
       </VideoElementProvider>
     </div>
   );

@@ -1,3 +1,4 @@
+@import '~antd/dist/antd.css';
 .video-player-container {
     position: relative;
     background: rgba(0, 0, 0);
@@ -15,6 +16,45 @@
     width: 90vw;
     align-items: flex-start;
     padding-top: 8px;
+}
+
+.steps {
+    
+}
+.step-one{
+    width: 170px;
+    display: inline-block;
+}
+.step-one-option {
+    display: inline-block;
+    background: #bae7ff;
+    border-color: #1890ff;
+    border-width: thick;
+    border-radius: 7px;
+    width: 160px;
+    height: 120px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.step-two {
+    display: inline-block;
+    width: 250px;
+    vertical-align: top;
+    margin-left: 10px;
+}
+
+.step-two-option{
+    display: inline-block;
+    width: 250px;
+    margin-top: 10px;
+}
+
+.step-three {
+    display: inline-block;
+    width: 500px;
+    vertical-align: top;
+    margin-left: 10px;
 }
 
 .slider-container {
