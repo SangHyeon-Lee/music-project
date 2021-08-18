@@ -42,7 +42,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const [conaction, setconaction] = React.useState("Incise / Separate");
   const [startstop, setstartstop] = useState(false);
   const [actionlist, setactionlist] = useState(actions);
-
+  const [updatenum, setupdatenum] = useState(0);
   const [actiontimelist, setactiontimelist] = useState(actionTime);
   
 
@@ -186,7 +186,9 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     setconaction(e.target.value);
   };
 
-  
+  const update = () => {
+    setupdatenum(updatenum + 1);
+  }
 
   return (
     <div>
@@ -261,6 +263,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                   actions.push("start");
                   setactionlist(actions);
                   actionTime.push(videoTime);
+                  update();
                 }}
               >
                 Start
@@ -271,8 +274,8 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                   actions.push("stop");
                   setactionlist(actions);
                   actionTime.push(videoTime);
-                  console.log(actions);
-                  console.log(actionTime);
+                  
+                  update();
                 }}
               >
                 Stop
@@ -294,7 +297,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                     actions.push("clip");
                     setactionlist(actions);
                     actionTime.push(videoTime);
-                    
+                    update();
                   }
                 }}
               >
@@ -313,6 +316,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                     actions.push("energy");
                     setactionlist(actions);
                     actionTime.push(videoTime);
+                    update();
                   }
                 }}
               >
@@ -331,6 +335,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                     actions.push("suction");
                     setactionlist(actions);
                     actionTime.push(videoTime);
+                    update();
                   }
                 }}
               >
@@ -349,6 +354,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                     actions.push("stitch");
                     setactionlist(actions);
                     actionTime.push(videoTime);
+                    update();
                   }
                 }}
               >
@@ -356,6 +362,21 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                   <img src={stitchicon} width="32px" />
                 </Space>
               </button>
+            </div>
+            <div>
+            <Button
+                onClick={(e: any) => {
+                  if(startstop){
+                    actions.pop();
+                    setactionlist(actions);
+                    actionTime.pop();
+                    update();
+                  }
+  
+                }}
+              >
+                Undo
+              </Button>
             </div>
           </div>
           <div className="step-three">
@@ -365,6 +386,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                 <div style={{ display: "inline-block" }}>{actiontime} &nbsp;</div>
               ))}
               <ActionIcon actionlist={actionlist} />
+              
             </div>
           </div>
         </div>

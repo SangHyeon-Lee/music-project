@@ -10,9 +10,9 @@ interface ActionIconProps {
 }
 
 const ActionIcon: React.FC<ActionIconProps> = ({ actionlist }) => {
-  console.log("hi");
+  
   function Icon(iconName: any) {
-    console.log(JSON.stringify(iconName));
+    
     switch (iconName.iconName) {
       case "clip":
         console.log("clip");
