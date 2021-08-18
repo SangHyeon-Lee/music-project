@@ -28,6 +28,10 @@ interface IProps {
 var actions: string[] = [];
 var actionTime: number[] = [];
 
+function useForceUpdate(): () => void {
+  return React.useReducer(() => ({}), {})[1] as () => void // <- paste here
+}
+
 const Video: React.FC<IProps> = ({ className, src }) => {
   const [nowPlaying, setNowPlaying] = useState(false);
   const [showControl, setShowControl] = useState(false);
@@ -35,10 +39,12 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const { videoElement, setVideoElement } = useVideoElement()!;
   const [editorIsFocused, seteditorIsFocused] = useState(false);
   const [onEdit, setonEdit] = useState(false);
-  const [action, setaction] = React.useState("Incise / Separate");
+  const [conaction, setconaction] = React.useState("Incise / Separate");
   const [startstop, setstartstop] = useState(false);
-  const [actionlist, setactionlist] = useState(["start"]);
-  const [actiontimelist, setactiontimelist] = useState([0]);
+  const [actionlist, setactionlist] = useState(actions);
+
+  const [actiontimelist, setactiontimelist] = useState(actionTime);
+  
 
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
@@ -176,17 +182,11 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     }
   };
 
-  const onactionChange = (e: any) => {
-    setaction(e.target.value);
+  const onconactionChange = (e: any) => {
+    setconaction(e.target.value);
   };
 
-  const onstartstopchange = (e: any) => {
-    if (e.target.value == "true") {
-      setstartstop(true);
-    } else {
-      setstartstop(false);
-    }
-  };
+  
 
   return (
     <div>
@@ -247,7 +247,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           <div className="step-one">
             1. Start continuous actions
             <div className="step-one-option">
-              <Radio.Group onChange={onactionChange} value={action}>
+              <Radio.Group onChange={onconactionChange} value={conaction}>
                 <Radio value={"Incise / Separate"}>Incise / Separate</Radio>
                 <Radio value={"Suture"}>Suture</Radio>
               </Radio.Group>
@@ -255,6 +255,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
               <br />
               <Button
                 onClick={(e: any) => {
+                  setstartstop(true);
                   actions = [];
                   actionTime = [];
                   actions.push("start");
@@ -266,6 +267,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
               </Button>
               <Button
                 onClick={(e: any) => {
+                  setstartstop(false);
                   actions.push("stop");
                   setactionlist(actions);
                   actionTime.push(videoTime);
@@ -288,9 +290,12 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                   borderColor: "transparent",
                 }}
                 onClick={(e: any) => {
-                  actions.push("clip");
-                  setactionlist(actions);
-                  actionTime.push(videoTime);
+                  if (startstop) {
+                    actions.push("clip");
+                    setactionlist(actions);
+                    actionTime.push(videoTime);
+                    
+                  }
                 }}
               >
                 <Space align="center">
@@ -304,9 +309,11 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                   borderColor: "transparent",
                 }}
                 onClick={(e: any) => {
-                  actions.push("energy");
-                  setactionlist(actions);
-                  actionTime.push(videoTime);
+                  if (startstop) {
+                    actions.push("energy");
+                    setactionlist(actions);
+                    actionTime.push(videoTime);
+                  }
                 }}
               >
                 <Space align="center">
@@ -320,9 +327,11 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                   borderColor: "transparent",
                 }}
                 onClick={(e: any) => {
-                  actions.push("suction");
-                  setactionlist(actions);
-                  actionTime.push(videoTime);
+                  if (startstop) {
+                    actions.push("suction");
+                    setactionlist(actions);
+                    actionTime.push(videoTime);
+                  }
                 }}
               >
                 <Space align="center">
@@ -336,9 +345,11 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                   borderColor: "transparent",
                 }}
                 onClick={(e: any) => {
-                  actions.push("stitch");
-                  setactionlist(actions);
-                  actionTime.push(videoTime);
+                  if (startstop) {
+                    actions.push("stitch");
+                    setactionlist(actions);
+                    actionTime.push(videoTime);
+                  }
                 }}
               >
                 <Space align="center">
@@ -350,11 +361,10 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           <div className="step-three">
             3. Stop and map the actions to the anatomy model on the right
             <div>
-              {actionlist.map((actionname: any) =>
-                <div style={{display: "inline-block"}}>
-                  <ActionIcon iconName = {actionname}  />
-                </div>
-              )}
+              {actionTime.map((actiontime: any) => (
+                <div style={{ display: "inline-block" }}>{actiontime} &nbsp;</div>
+              ))}
+              <ActionIcon actionlist={actionlist} />
             </div>
           </div>
         </div>
