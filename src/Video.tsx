@@ -388,9 +388,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           <div className="step-three">
             3. Stop and map the actions to the anatomy model on the right
             <div>
-              {actionTime.map((actiontime: any) => (
-                <div style={{ display: "inline-block" }}>{actiontime} &nbsp;</div>
-              ))}
+              
               <ActionIcon actionlist={actionlist} actionTime = {actiontimelist} />
               
             </div>
