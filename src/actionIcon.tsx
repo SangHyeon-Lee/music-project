@@ -11,9 +11,10 @@ import { Left } from "react-bootstrap/lib/Media";
 interface ActionIconProps {
   actionlist: string[];
   actionTime: number[];
+  longactionlist: number[];
 }
 
-const ActionIcon: React.FC<ActionIconProps> = ({ actionlist, actionTime }) => {
+const ActionIcon: React.FC<ActionIconProps> = ({ actionlist, actionTime, longactionlist }) => {
   const total = actionTime[actionTime.length - 1] - actionTime[0];
 
   var deltalist: number[] = [];
@@ -36,7 +37,9 @@ const ActionIcon: React.FC<ActionIconProps> = ({ actionlist, actionTime }) => {
 
   function Icon(iconName: any, index: number) {
     var linewidth = `${deltalist[iconName.index]}px`;
-
+    var lineheight = longactionlist.includes(iconName.index)? "8px" : "2px";
+    var linemargin = longactionlist.includes(iconName.index)? "12px" : "15px";
+    console.log(longactionlist)
     switch (iconName.iconName) {
       case "clip":
         return (
@@ -46,10 +49,10 @@ const ActionIcon: React.FC<ActionIconProps> = ({ actionlist, actionTime }) => {
               style={{
                 float: "right",
                 width: linewidth,
-                marginTop: "15px",
+                marginTop: linemargin,
                 backgroundColor: "#1890ff",
                 border: "0px",
-                height: "2px",
+                height: lineheight,
               }}
             />
           </div>
@@ -62,10 +65,10 @@ const ActionIcon: React.FC<ActionIconProps> = ({ actionlist, actionTime }) => {
               style={{
                 float: "right",
                 width: linewidth,
-                marginTop: "15px",
+                marginTop: linemargin,
                 backgroundColor: "#1890ff",
                 border: "0px",
-                height: "2px",
+                height: lineheight,
               }}
             />
           </div>
@@ -78,10 +81,10 @@ const ActionIcon: React.FC<ActionIconProps> = ({ actionlist, actionTime }) => {
               style={{
                 float: "right",
                 width: linewidth,
-                marginTop: "15px",
+                marginTop: linemargin,
                 backgroundColor: "#1890ff",
                 border: "0px",
-                height: "2px",
+                height: lineheight,
               }}
             />
           </div>
@@ -94,10 +97,10 @@ const ActionIcon: React.FC<ActionIconProps> = ({ actionlist, actionTime }) => {
               style={{
                 float: "right",
                 width: linewidth,
-                marginTop: "15px",
+                marginTop: linemargin,
                 backgroundColor: "#1890ff",
                 border: "0px",
-                height: "2px",
+                height: lineheight,
               }}
             />
           </div>
@@ -144,7 +147,7 @@ const ActionIcon: React.FC<ActionIconProps> = ({ actionlist, actionTime }) => {
           </div>
           <Icon iconName={actionname} index={index} />
           <div>
-            <Badge style={{backgroundColor:"#108ee9", top:"5px", left:"6px"}} count={index} showZero />
+            <Badge style={{backgroundColor:"#108ee9", top:"5px", left:"6px"}} count={index+1} showZero />
           </div>
         </div>
       ))}

@@ -4,7 +4,7 @@ import NoteTaking from "./note-taking";
 import Controlbar from "./Controlbar";
 import { Slider } from "antd";
 import { Select } from "antd";
-import { Radio, Space, Button } from "antd";
+import { Radio, Space, Button, Checkbox } from "antd";
 import LiveNote from "./live-note";
 import "./Video.css";
 import { useVideoElement } from "./VideoElementContext";
@@ -27,9 +27,10 @@ interface IProps {
 
 var actions: string[] = [];
 var actionTime: number[] = [];
+var longaction: number[] = [];
 
 function useForceUpdate(): () => void {
-  return React.useReducer(() => ({}), {})[1] as () => void // <- paste here
+  return React.useReducer(() => ({}), {})[1] as () => void; // <- paste here
 }
 
 const Video: React.FC<IProps> = ({ className, src }) => {
@@ -44,7 +45,8 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const [actionlist, setactionlist] = useState(actions);
   const [updatenum, setupdatenum] = useState(0);
   const [actiontimelist, setactiontimelist] = useState(actionTime);
-  
+  const [islongaction, setislongaction] = useState(false);
+  const [longactionlist, setlongactionlist] = useState(longaction);
 
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
@@ -188,7 +190,24 @@ const Video: React.FC<IProps> = ({ className, src }) => {
 
   const update = () => {
     setupdatenum(updatenum + 1);
-  }
+  };
+
+  const onLongActionChecked = (e: any) => {
+    if (e.target.checked) {
+      setislongaction(true);
+    } else {
+      setislongaction(false);
+    }
+  };
+
+  const stopLongaction = (e: any) => {
+    setislongaction(false);
+    actions.push(actions[actions.length - 1]);
+    setactionlist(actions);
+    actionTime.push(videoTime);
+    setactiontimelist(actionTime);
+    update();
+  };
 
   return (
     <div>
@@ -260,10 +279,12 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                   setstartstop(true);
                   actions = [];
                   actionTime = [];
+                  longaction = [];
                   actions.push("start");
                   setactionlist(actions);
                   actionTime.push(videoTime);
                   setactiontimelist(actionTime);
+                  setlongactionlist(longaction);
                   update();
                 }}
               >
@@ -299,6 +320,10 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                     setactionlist(actions);
                     actionTime.push(videoTime);
                     setactiontimelist(actionTime);
+                    if (islongaction) {
+                      longaction.push(actions.length - 1);
+                      setlongactionlist(longaction);
+                    }
                     update();
                   }
                 }}
@@ -319,6 +344,10 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                     setactionlist(actions);
                     actionTime.push(videoTime);
                     setactiontimelist(actionTime);
+                    if (islongaction) {
+                      longaction.push(actions.length - 1);
+                      setlongactionlist(longaction);
+                    }
                     update();
                   }
                 }}
@@ -339,6 +368,10 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                     setactionlist(actions);
                     actionTime.push(videoTime);
                     setactiontimelist(actionTime);
+                    if (islongaction) {
+                      longaction.push(actions.length - 1);
+                      setlongactionlist(longaction);
+                    }
                     update();
                   }
                 }}
@@ -359,6 +392,10 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                     setactionlist(actions);
                     actionTime.push(videoTime);
                     setactiontimelist(actionTime);
+                    if (islongaction) {
+                      longaction.push(actions.length - 1);
+                      setlongactionlist(longaction);
+                    }
                     update();
                   }
                 }}
@@ -369,28 +406,57 @@ const Video: React.FC<IProps> = ({ className, src }) => {
               </button>
             </div>
             <div>
-            <Button
+              <Button
                 onClick={(e: any) => {
-                  if(startstop){
+                  if (startstop) {
+                    if (
+                      longaction[longaction.length - 1] ==
+                      actions.length - 1
+                    ) {
+                      longaction.pop();
+                      setlongactionlist(longaction);
+                      setislongaction(false);
+                    } else if (
+                      longaction[longaction.length - 1] ==
+                      actions.length - 2
+                    ) {
+                      setislongaction(true);
+                    }
+
                     actions.pop();
                     setactionlist(actions);
                     actionTime.pop();
                     setactiontimelist(actionTime);
+
                     update();
                   }
-  
                 }}
               >
                 Undo
+              </Button>
+            </div>
+            <br />
+            <div>
+              <Checkbox onChange={onLongActionChecked} checked={islongaction}>
+                Long Action
+              </Checkbox>
+              <Button
+                type="primary"
+                disabled={!islongaction}
+                onClick={stopLongaction}
+              >
+                Stop
               </Button>
             </div>
           </div>
           <div className="step-three">
             3. Stop and map the actions to the anatomy model on the right
             <div>
-              
-              <ActionIcon actionlist={actionlist} actionTime = {actiontimelist} />
-              
+              <ActionIcon
+                actionlist={actionlist}
+                actionTime={actiontimelist}
+                longactionlist={longactionlist}
+              />
             </div>
           </div>
         </div>

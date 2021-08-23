@@ -131,7 +131,7 @@ const App: React.FC<AppProps> = (props) => {
               [classes.contentShift]: open,
             })}
           >
-            <Video src="https://firebasestorage.googleapis.com/v0/b/kixlab-music.appspot.com/o/videos%2FConductor_Tom.mp4?alt=media&token=cffa42de-effd-4b56-a16d-00967ec730bf" />
+            <Video src="http://dg1fmc8qbela5.cloudfront.net/study_video_1.mp4" />
           </div>
         </div>
         
