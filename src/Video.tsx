@@ -300,13 +300,25 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                   update();
                 }}
               >
-                Stop
+                End
               </Button>
             </div>
           </div>
           <div className="step-two">
             2. Select instant actions in between
             <br />
+            <div>
+              <Checkbox onChange={onLongActionChecked} checked={islongaction}>
+                Long Action
+              </Checkbox>
+              <Button
+                type="primary"
+                disabled={!islongaction}
+                onClick={stopLongaction}
+              >
+                Stop
+              </Button>
+            </div>
             <div className="step-two-option">
               <button
                 style={{
@@ -331,6 +343,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                 <Space align="center">
                   <img src={clipicon} width="32px" />
                 </Space>
+                <div>Clip</div>
               </button>
               <button
                 style={{
@@ -355,7 +368,9 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                 <Space align="center">
                   <img src={energyicon} width="32px" />
                 </Space>
+                <div>Energy</div>
               </button>
+
               <button
                 style={{
                   cursor: "pointer",
@@ -379,6 +394,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                 <Space align="center">
                   <img src={suctionicon} width="32px" />
                 </Space>
+                <div>Suction</div>
               </button>
               <button
                 style={{
@@ -403,9 +419,14 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                 <Space align="center">
                   <img src={stitchicon} width="32px" />
                 </Space>
+                <div>Stitch</div>
               </button>
             </div>
-            <div>
+            <br />
+          </div>
+          <div className="step-three">
+            3. Stop and map the actions to the anatomy model on the right &nbsp;
+            <div style={{ display: "inline-block" }}>
               <Button
                 onClick={(e: any) => {
                   if (startstop) {
@@ -435,22 +456,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                 Undo
               </Button>
             </div>
-            <br />
-            <div>
-              <Checkbox onChange={onLongActionChecked} checked={islongaction}>
-                Long Action
-              </Checkbox>
-              <Button
-                type="primary"
-                disabled={!islongaction}
-                onClick={stopLongaction}
-              >
-                Stop
-              </Button>
-            </div>
-          </div>
-          <div className="step-three">
-            3. Stop and map the actions to the anatomy model on the right
             <div>
               <ActionIcon
                 actionlist={actionlist}
