@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/music-project/static/css/main.93406096.chunk.css",
-    "main.js": "/music-project/static/js/main.fbd3e675.chunk.js",
-    "main.js.map": "/music-project/static/js/main.fbd3e675.chunk.js.map",
-    "runtime-main.js": "/music-project/static/js/runtime-main.80ee6307.js",
-    "runtime-main.js.map": "/music-project/static/js/runtime-main.80ee6307.js.map",
-    "static/css/2.2366b202.chunk.css": "/music-project/static/css/2.2366b202.chunk.css",
-    "static/js/2.0b59a75a.chunk.js": "/music-project/static/js/2.0b59a75a.chunk.js",
-    "static/js/2.0b59a75a.chunk.js.map": "/music-project/static/js/2.0b59a75a.chunk.js.map",
-    "static/js/3.b2256beb.chunk.js": "/music-project/static/js/3.b2256beb.chunk.js",
-    "static/js/3.b2256beb.chunk.js.map": "/music-project/static/js/3.b2256beb.chunk.js.map",
+    "main.css": "/music-project/static/css/main.2f6c53ab.chunk.css",
+    "main.js": "/music-project/static/js/main.cbae42d7.chunk.js",
+    "main.js.map": "/music-project/static/js/main.cbae42d7.chunk.js.map",
+    "runtime-main.js": "/music-project/static/js/runtime-main.e456f242.js",
+    "runtime-main.js.map": "/music-project/static/js/runtime-main.e456f242.js.map",
+    "static/css/2.c32983be.chunk.css": "/music-project/static/css/2.c32983be.chunk.css",
+    "static/js/2.69da3552.chunk.js": "/music-project/static/js/2.69da3552.chunk.js",
+    "static/js/2.69da3552.chunk.js.map": "/music-project/static/js/2.69da3552.chunk.js.map",
+    "static/js/3.d31f9718.chunk.js": "/music-project/static/js/3.d31f9718.chunk.js",
+    "static/js/3.d31f9718.chunk.js.map": "/music-project/static/js/3.d31f9718.chunk.js.map",
     "index.html": "/music-project/index.html",
-    "static/css/2.2366b202.chunk.css.map": "/music-project/static/css/2.2366b202.chunk.css.map",
-    "static/css/main.93406096.chunk.css.map": "/music-project/static/css/main.93406096.chunk.css.map",
-    "static/js/2.0b59a75a.chunk.js.LICENSE.txt": "/music-project/static/js/2.0b59a75a.chunk.js.LICENSE.txt",
+    "static/css/2.c32983be.chunk.css.map": "/music-project/static/css/2.c32983be.chunk.css.map",
+    "static/css/main.2f6c53ab.chunk.css.map": "/music-project/static/css/main.2f6c53ab.chunk.css.map",
+    "static/js/2.69da3552.chunk.js.LICENSE.txt": "/music-project/static/js/2.69da3552.chunk.js.LICENSE.txt",
     "static/media/volume.7e77501b.png": "/music-project/static/media/volume.7e77501b.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.80ee6307.js",
-    "static/css/2.2366b202.chunk.css",
-    "static/js/2.0b59a75a.chunk.js",
-    "static/css/main.93406096.chunk.css",
-    "static/js/main.fbd3e675.chunk.js"
+    "static/js/runtime-main.e456f242.js",
+    "static/css/2.c32983be.chunk.css",
+    "static/js/2.69da3552.chunk.js",
+    "static/css/main.2f6c53ab.chunk.css",
+    "static/js/main.cbae42d7.chunk.js"
   ]
 }
