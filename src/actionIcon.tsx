@@ -7,31 +7,114 @@ import startstopicon from "./assets/icons/startstop.png";
 
 interface ActionIconProps {
   actionlist: string[];
+  actionTime: number[];
 }
 
-const ActionIcon: React.FC<ActionIconProps> = ({ actionlist }) => {
-  
+const ActionIcon: React.FC<ActionIconProps> = ({ actionlist, actionTime }) => {
   function Icon(iconName: any) {
-    
     switch (iconName.iconName) {
       case "clip":
         console.log("clip");
-        return <img src={clipicon} width="32px" />;
+        return (
+          <div>
+            <img src={clipicon} width="32px" style={{ float: "left" }} />
+            <hr
+              style={{
+                float: "right",
+                width: "32px",
+                marginTop: "15px",
+                backgroundColor: "#1890ff",
+                border: "0px",
+                height: "2px",
+              }}
+            />
+          </div>
+        );
       case "energy":
-        return <img src={energyicon} width="32px" />;
+        return (
+          <div>
+            <img src={energyicon} width="32px" style={{ float: "left" }} />
+            <hr
+              style={{
+                float: "right",
+                width: "32px",
+                marginTop: "15px",
+                backgroundColor: "#1890ff",
+                border: "0px",
+                height: "2px",
+              }}
+            />
+          </div>
+        );
       case "suction":
-        return <img src={suctionicon} width="32px" />;
+        return (
+          <div>
+            <img src={suctionicon} width="32px" style={{ float: "left" }} />
+            <hr
+              style={{
+                float: "right",
+                width: "32px",
+                marginTop: "15px",
+                backgroundColor: "#1890ff",
+                border: "0px",
+                height: "2px",
+              }}
+            />
+          </div>
+        );
       case "stitch":
-        return <img src={stitchicon} width="32px" />;
+        return (
+          <div>
+            <img src={stitchicon} width="32px" style={{ float: "left" }} />
+            <hr
+              style={{
+                float: "right",
+                width: "32px",
+                marginTop: "15px",
+                backgroundColor: "#1890ff",
+                border: "0px",
+                height: "2px",
+              }}
+            />
+          </div>
+        );
+      case "start":
+        return (
+          <div>
+            <img
+              src={startstopicon}
+              width="28px"
+              style={{ marginTop: "1px", float: "left" }}
+            />
+            <hr
+              style={{
+                float: "right",
+                width: "32px",
+                marginTop: "15px",
+                backgroundColor: "#1890ff",
+                border: "0px",
+                height: "2px",
+              }}
+            />
+          </div>
+        );
       default:
-        return <img src={startstopicon} width="28px" />;
+        return (
+          <div>
+            <img
+              src={startstopicon}
+              width="28px"
+              style={{ marginTop: "1px", float: "left" }}
+            />
+          </div>
+        );
     }
   }
 
   return (
     <div>
       {actionlist.map((actionname: any) => (
-        <div style={{ display: "inline-block" }}>
+        <div style={{ display: "inline-block", height: "32px" }}>
           <Icon iconName={actionname} />
         </div>
       ))}

@@ -263,6 +263,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                   actions.push("start");
                   setactionlist(actions);
                   actionTime.push(videoTime);
+                  setactiontimelist(actionTime);
                   update();
                 }}
               >
@@ -274,7 +275,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                   actions.push("stop");
                   setactionlist(actions);
                   actionTime.push(videoTime);
-                  
+                  setactiontimelist(actionTime);
                   update();
                 }}
               >
@@ -297,6 +298,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                     actions.push("clip");
                     setactionlist(actions);
                     actionTime.push(videoTime);
+                    setactiontimelist(actionTime);
                     update();
                   }
                 }}
@@ -316,6 +318,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                     actions.push("energy");
                     setactionlist(actions);
                     actionTime.push(videoTime);
+                    setactiontimelist(actionTime);
                     update();
                   }
                 }}
@@ -335,6 +338,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                     actions.push("suction");
                     setactionlist(actions);
                     actionTime.push(videoTime);
+                    setactiontimelist(actionTime);
                     update();
                   }
                 }}
@@ -354,6 +358,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                     actions.push("stitch");
                     setactionlist(actions);
                     actionTime.push(videoTime);
+                    setactiontimelist(actionTime);
                     update();
                   }
                 }}
@@ -370,6 +375,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
                     actions.pop();
                     setactionlist(actions);
                     actionTime.pop();
+                    setactiontimelist(actionTime);
                     update();
                   }
   
@@ -385,7 +391,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
               {actionTime.map((actiontime: any) => (
                 <div style={{ display: "inline-block" }}>{actiontime} &nbsp;</div>
               ))}
-              <ActionIcon actionlist={actionlist} />
+              <ActionIcon actionlist={actionlist} actionTime = {actiontimelist} />
               
             </div>
           </div>
