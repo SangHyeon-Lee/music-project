@@ -131,7 +131,7 @@ const App: React.FC<AppProps> = (props) => {
               [classes.contentShift]: open,
             })}
           >
-            <Video src="http://dg1fmc8qbela5.cloudfront.net/study_video_1.mp4" />
+            <Video src="//bcmmedia.s3.amazonaws.com/bcp/video/transcodes/surgeon_093_video_04_03/1548951652/surgeon_093_video_04_03-1080p.mp4" />
           </div>
         </div>
         

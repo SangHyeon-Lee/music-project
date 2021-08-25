@@ -49,6 +49,8 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const [islongaction, setislongaction] = useState(false);
   const [longactionlist, setlongactionlist] = useState(longaction);
 
+  
+
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
   );
@@ -122,6 +124,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
 
   // play icon 클릭했을떄 실행되는 함수
   const onPlayIconClick = () => {
+    videoElement.playbackRate = 3;
     if (videoElement) {
       if (nowPlaying) {
         setNowPlaying(false);
@@ -226,6 +229,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           onClick={onPlayIconClick}
           onLoadedMetadata={handleLoadedMDN}
           crossOrigin="Anonymous"
+          
           style={{
             cursor: "pointer",
           }}
