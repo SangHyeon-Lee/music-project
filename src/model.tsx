@@ -10,7 +10,9 @@ import { Suspense } from "react";
 interface ModelProps {}
 
 const Model: React.FC<ModelProps> = ({}) => {
-  const [pos, setPos] = useState([0, 0, 0]);
+  const [pos, setPos] = useState([
+    0.008337695545746877, -0.9525817161016015, 0.19693626481506687,
+  ]);
   const Scene = () => {
     THREE.DefaultLoadingManager.addHandler(/\.dds$/i, new DDSLoader());
     // const materials = useLoader(MTLLoader, "Poimandres.mtl");
