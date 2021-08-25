@@ -16,7 +16,7 @@ const Model: React.FC<ModelProps> = ({}) => {
   const Scene = () => {
     THREE.DefaultLoadingManager.addHandler(/\.dds$/i, new DDSLoader());
     // const materials = useLoader(MTLLoader, "Poimandres.mtl");
-    const obj = useLoader(OBJLoader, "model/Urogenital_Male.obj", (loader) => {
+    const obj = useLoader(OBJLoader, "model/Urogenital_Male_2.obj", (loader) => {
       // materials.preload();
     });
 
