@@ -4,8 +4,10 @@ import { Canvas } from "@react-three/fiber";
 import { useLoader } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
+import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 import { DDSLoader } from "three-stdlib";
 import { Suspense } from "react";
+import { Group } from "three";
 
 interface ModelProps {}
 
@@ -13,29 +15,50 @@ const Model: React.FC<ModelProps> = ({}) => {
   const [pos, setPos] = useState([
     0.008337695545746877, -0.9525817161016015, 0.19693626481506687,
   ]);
+
+
+  function handleSubmit(e: any) {
+    // e.preventDefault();
+    e.stopPropagation();
+
+    console.log(e);
+    setPos(e.point);
+  }
+
+  function Node(pos: any) {
+    return (
+      <mesh position={pos} receiveShadow castShadow>
+        <sphereBufferGeometry args={[1000, 16, 16]} />
+        <meshBasicMaterial color={"hotpink"} />
+      </mesh>
+    );
+  }
   const Scene = () => {
     THREE.DefaultLoadingManager.addHandler(/\.dds$/i, new DDSLoader());
-    // const materials = useLoader(MTLLoader, "Poimandres.mtl");
-    const obj = useLoader(OBJLoader, "model/Urogenital_Male_2.obj", (loader) => {
-      // materials.preload();
+    
+    const [obj, setobj] = useState(new Group);
+
+    var mtlLoader = new MTLLoader();
+    mtlLoader.load("new_model/Urogenital_Male.mtl", function (materials) {
+      materials.preload();
+
+      var objLoader = new OBJLoader();
+      objLoader.setMaterials(materials);
+
+      objLoader.load("new_model/Urogenital_Male.obj", function (object) {
+        setobj(object);
+       
+      });
+
     });
+    
+    // const materials = useLoader(MTLLoader, "new_model/Urogenital_Male.mtl");
+    // const obj = useLoader(OBJLoader, "new_model/Urogenital_Male.obj", (loader) => {
+    //   materials.preload();
+    //   loader.setMaterials(materials);
+    // });
 
-    function handleSubmit(e: any) {
-      // e.preventDefault();
-      e.stopPropagation();
-
-      console.log(e);
-      setPos(e.point);
-    }
-
-    function Node(pos: any) {
-      return (
-        <mesh position={pos} receiveShadow castShadow>
-          <sphereBufferGeometry args={[1000, 16, 16]} />
-          <meshBasicMaterial color={"hotpink"} />
-        </mesh>
-      );
-    }
+    
 
     console.log(obj);
     return (
