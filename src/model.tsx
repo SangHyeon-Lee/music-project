@@ -60,7 +60,7 @@ const Model: React.FC<ModelProps> = ({}) => {
 
     
 
-    console.log(obj);
+    
     return (
       <group>
         <Node pos={pos} />
