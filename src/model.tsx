@@ -31,7 +31,7 @@ const Model: React.FC<ModelProps> = ({}) => {
     function Node(pos: any) {
       return (
         <mesh position={pos} receiveShadow castShadow>
-          <sphereBufferGeometry args={[100, 16, 16]} />
+          <sphereBufferGeometry args={[1000, 16, 16]} />
           <meshBasicMaterial color={"hotpink"} />
         </mesh>
       );
@@ -39,7 +39,7 @@ const Model: React.FC<ModelProps> = ({}) => {
 
     console.log(obj);
     return (
-      <mesh>
+      <group>
         <Node pos={pos} />
         <primitive
           onPointerOver={(e: any) => e.stopPropagation()}
@@ -48,7 +48,7 @@ const Model: React.FC<ModelProps> = ({}) => {
           object={obj}
           scale={10}
         />
-      </mesh>
+      </group>
     );
   };
   return (
