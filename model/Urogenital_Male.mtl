@@ -1,0 +1,14 @@
+newmtl Urogenital_Male
+Kd 1 1 1
+Ke 0.0470588 0.0470588 0.0470588
+Ka 0.752941 0.752941 0.752941
+Ks 0.3 0.3 0.3
+Ns 300
+Tr 0
+d 1
+Ni 1.5
+Tf 1 1 1
+map_Kd C:Users/EUICHEON_PC/Desktop/KIXLAB/Urogenital_lwo/SexMaleColor.jpg
+map_bump C:Users/EUICHEON_PC/Desktop/KIXLAB/Urogenital_lwo/SexMaleBump.jpg
+bump C:Users/EUICHEON_PC/Desktop/KIXLAB/Urogenital_lwo/SexMaleBump.jpg
+
