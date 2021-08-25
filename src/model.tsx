@@ -17,23 +17,24 @@ const Model: React.FC<ModelProps> = ({}) => {
   ]);
 
 
-  function handleSubmit(e: any) {
-    // e.preventDefault();
-    e.stopPropagation();
-
-    console.log(e);
-    setPos(e.point);
-  }
-
-  function Node(pos: any) {
-    return (
-      <mesh position={pos} receiveShadow castShadow>
-        <sphereBufferGeometry args={[1000, 16, 16]} />
-        <meshBasicMaterial color={"hotpink"} />
-      </mesh>
-    );
-  }
+  
   const Scene = () => {
+    function handleSubmit(e: any) {
+      // e.preventDefault();
+      e.stopPropagation();
+  
+      console.log(e);
+      setPos(e.point);
+    }
+  
+    function Node(pos: any) {
+      return (
+        <mesh position={pos} receiveShadow castShadow>
+          <sphereBufferGeometry args={[1000, 16, 16]} />
+          <meshBasicMaterial color={"hotpink"} />
+        </mesh>
+      );
+    }
     THREE.DefaultLoadingManager.addHandler(/\.dds$/i, new DDSLoader());
     
     const [obj, setobj] = useState(new Group);
