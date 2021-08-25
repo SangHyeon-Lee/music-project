@@ -70,7 +70,7 @@ const Model: React.FC<ModelProps> = ({}) => {
           onPointerOut={(e: any) => e.intersections.length === 0}
           onPointerDown={(e: any) => handleSubmit(e)}
           object={obj}
-          scale={15}
+          scale={45}
         />
       </group>
     );
