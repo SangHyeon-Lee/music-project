@@ -29,7 +29,7 @@ const Model: React.FC<ModelProps> = ({}) => {
     function Node(pos: any) {
       return (
         <mesh position={pos} receiveShadow castShadow>
-          <sphereBufferGeometry args={[0.1, 16, 16]} />
+          <sphereBufferGeometry args={[100, 16, 16]} />
           <meshBasicMaterial color={"hotpink"} />
         </mesh>
       );
