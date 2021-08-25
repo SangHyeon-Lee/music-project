@@ -37,8 +37,8 @@ const ProgressBar: React.FC<IProps> = ({
 
   return (
     <div className={classProps}>
-      <div className={styles.stepContainer}>
-        {/* <div className={styles.step} style={{ width: firstStep }}>
+      {/* <div className={styles.stepContainer}>
+        <div className={styles.step} style={{ width: firstStep }}>
           <span className={styles.tooltip} style={{ marginLeft: -firstStep/2 }}>
               First Step</span>
         </div>
@@ -49,11 +49,11 @@ const ProgressBar: React.FC<IProps> = ({
         <div className={styles.step} style={{ width: secondStep }}>
           <span className={styles.tooltip} style={{ marginLeft: -secondStep/2 }}>
               Second Step</span>
-        </div> */}
+        </div>
         <div>
           <NoteIcon max={max} onChange={onChange}/>
         </div>
-      </div>
+      </div> */}
 
       <div className={styles.bgBar}>
         <TimeProgressBar

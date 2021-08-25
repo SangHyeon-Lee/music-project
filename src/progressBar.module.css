@@ -1,5 +1,5 @@
 .bgBar {
-  width: 65vw;
+  width: 50vw;
   height: 10px;
   background-color: gray;
   border-radius: 1.5px;
@@ -17,7 +17,7 @@
   position: absolute;
   top: 4px;
   margin: 0;
-  width: 65vw;
+  width: 50vw;
   height: 3px;
   background-color: transparent;
   border-radius: 1.5px;

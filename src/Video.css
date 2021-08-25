@@ -2,8 +2,8 @@
 .video-player-container {
     position: relative;
     background: rgba(0, 0, 0);
-    width: 80vw;
-    display: flex;
+    width: 65vw;
+    display: inline-flex;
     justify-content: center;
 }
 
@@ -16,6 +16,11 @@
     width: 90vw;
     align-items: flex-start;
     padding-top: 8px;
+}
+
+.model {
+    display: inline-block;
+    
 }
 
 .steps {

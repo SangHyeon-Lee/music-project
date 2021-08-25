@@ -19,6 +19,7 @@ import suctionicon from "./assets/icons/suction.png";
 import stitchicon from "./assets/icons/stitch.png";
 import { borderColor } from "@material-ui/system";
 import ActionIcon from "./actionIcon";
+import Model from "./model";
 
 interface IProps {
   className?: string;
@@ -240,6 +241,9 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           nowPlaying={nowPlaying}
           videoElement={videoElement}
         />
+      </div>
+      <div className="model">
+        <Model/>
       </div>
 
       {/* <div className="note-and-slider-container">
