@@ -40,13 +40,13 @@ const Model: React.FC<ModelProps> = ({}) => {
     const [obj, setobj] = useState(new Group);
 
     var mtlLoader = new MTLLoader();
-    mtlLoader.load("new_new_model/Urogenital_Male.mtl", function (materials) {
+    mtlLoader.load("new_new_model/Urogenital.mtl", function (materials) {
       materials.preload();
 
       var objLoader = new OBJLoader();
       objLoader.setMaterials(materials);
 
-      objLoader.load("new_new_model/Urogenital_Male.obj", function (object) {
+      objLoader.load("new_new_model/Urogenital.obj", function (object) {
         setobj(object);
        
       });
