@@ -19,11 +19,11 @@ const Model: React.FC<ModelProps> = ({}) => {
     });
 
     console.log(obj);
-    return <primitive object={obj} scale={4} />;
+    return <primitive object={obj} scale={20} />;
   };
   return (
     <div>
-      <Canvas  camera={{ position: [0, 0, 4] }}>
+      <Canvas style={{width: "400px", height: "700px", left: "50px"}} camera={{ position: [0, 0, 4] }}>
         <Suspense fallback={null}>
           <Scene />
           <OrbitControls />
