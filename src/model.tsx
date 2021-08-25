@@ -19,7 +19,7 @@ const Model: React.FC<ModelProps> = ({}) => {
     });
 
     console.log(obj);
-    return <primitive object={obj} scale={20} />;
+    return <primitive object={obj} scale={10} />;
   };
   return (
     <div>
